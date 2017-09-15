@@ -28,19 +28,23 @@
     }, {
         header: '名称',
         col: 'Name',
-        type: 'text'
+        type: 'text',
+        required: true
     }, {
         header: '接收人',
         col: 'Receiver',
-        type: 'text'
+        type: 'text',
+        required: true
     }, {
         header: '联系方式',
         col: 'Mobile',
-        type: 'text'
+        type: 'text',
+        required: true
     }, {
         header: '地址',
         col: 'Address',
-        type: 'text'
+        type: 'text',
+        required: true
     }];
     angular.module('channelApp').controller('AddressListCtrl', ['$scope', '$http', '$uibModal', function($scope, $http, $uibModal) {
 
@@ -95,6 +99,7 @@
         $scope.item = item || {};
         $scope.title = "地址管理";
         $scope.settings = tbOptions;
+        console.log(tbOptions, 'tbOptions')
         $scope.ok = function() {
             console.log($scope.item, '$scope.item')
             if ($scope.item.Id) {

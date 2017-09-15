@@ -25,6 +25,6 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">保存</button>
+    <button class="btn btn-primary" type="button" ng-disabled="agform.$invalid" ng-click="ok()">保存</button>
     <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
 </div>
