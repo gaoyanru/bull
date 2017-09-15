@@ -1,0 +1,43 @@
+<div class="o-list ng-scope">
+    <div>
+        <h2>返点设置</h2></div>
+    <div class="o-search well well-sm">
+        <form class="form-inline">
+            <div class="form-group">
+                <label>最低达成率(%)</label>：
+                <input type="text" class="form-control" ng-model="postData.LowRate" />
+            </div>
+            <div class="form-group">
+                <label>最高达成率(%)</label>：
+                <input type="text" class="form-control" ng-model="postData.HeighRate" />
+            </div>
+            <div class="form-group">
+                <label>返点(%)</label>：
+                <input type="text" class="form-control" ng-model="postData.RebatesRatio" />
+            </div>
+            <button class="btn btn-primary" ng-click="add()">增加设置</button>
+        </form>
+    </div>
+    <div class="o-body">
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+                <tr class="info">
+                    <th>最低达成率(≥)</th>
+                    <th>最高达成率(&lt;)</th>
+                    <th>返点</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="fd in fds">
+                    <td>{{::fd.LowRate}}%</td>
+                    <td>{{::fd.HeighRate}}%</td>
+                    <td>{{::fd.RebatesRatio}}%</td>
+                    <td class="table-opt">
+                         <a href="javascript:;" ng-click="delete(fd)">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

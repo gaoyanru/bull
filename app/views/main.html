@@ -1,0 +1,43 @@
+<!--<header>
+    <h1>
+        PILIPA渠道管理系统
+    </h1>
+
+    <div class="u-user">
+        <div class="pull-right warning blink" ng-if="showBalanceWarning">您的账户余额已不足1000元，为保证您的正常使用请尽快充值。</div>
+        <h2>
+            欢迎 <span ng-bind="user.RoleName"></span>:<span ng-bind="user.RealName"></span> 进入!
+        </h2>
+        <ul class="list-inline">
+            <li><a href="javascript:void(0)" ng-click="updatePswd()">[修改密码]</a></li>
+            <li><a href="javascript:;" ng-click="logout()">[退出登陆]</a></li>
+        </ul>
+    </div>
+</header>-->
+<md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar" md-colors="::{background: 'default-primary-50'}" style="height: 45px">
+    <div class="md-toolbar-tools" md-colors="::{background: 'default-primary-50'}" style="padding-left:0">
+        <a class="headerlogo"></a> <span style="margin: 0 0 0 212px;position:absolute;height:45px;z-index:1;top:0;line-height:50px;font-size:20px;">渠道管理系统</span>
+          <div class="warning" ng-if="showBalanceWarning" style="position: absolute;right: 350px;">您的账户余额已不足1000元，为保证您的正常使用请尽快充值。</div>
+        <div style="position: absolute; right: 12px;font-size: 16px; top:6px;line-height: 34px;">
+            <span>欢迎您，{{user.RealName}}&nbsp;进入！</span> <span class="btn btn-link pull-right" ng-if="user.se" style="color: #fff; text-align: right;" ng-click="logoutZY()"><i class="fa fa-sign-out" aria-hidden="true"></i>退出直营</span>
+            <span class="btn btn-link pull-right line" ng-click="logout()"><i class="fa fa-sign-out" aria-hidden="true"></i>[退出]</span>
+            <span class="btn btn-link pull-right line" ng-click="updatePswd()"><i class="fa fa-sign-out" aria-hidden="true"></i>[修改密码]</span>
+        </div>
+    </div>
+</md-toolbar>
+<div class="g-content">
+    <div class="m-main">
+        <div class="content-left">
+            <!--<h2>
+                <span class="glyphicon glyphicon-th-list"></span> 功能列表
+            </h2>-->
+            <div class="u-nav-container">
+                <treecontrol class="tree-light" tree-model="navTreeModel" options="navTreeOptions" on-selection="routerChange(node)" selected-node="selectedNavTree" expanded-nodes="expandedNodes">
+                    <span>{{::node.name}}</span>
+                </treecontrol>
+            </div>
+        </div>
+        <div class="content-right" ui-view>
+        </div>
+    </div>
+</div>

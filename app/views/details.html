@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">{{::title}}</h3>
+</div>
+<div class="modal-body clearfix">
+    <p class="detail-list" ng-bind-html="message"></p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>
+

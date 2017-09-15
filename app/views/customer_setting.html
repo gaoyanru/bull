@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">客户设置</h3>
+</div>
+<div class="modal-body clearfix">
+    <div class="o-body cussetting">
+        <br/>
+        <div class="row form-group">
+            <div class="col-md-3">客户类型</div>
+            <div class="col-md-3">库容（/个）</div>
+            <div class="col-md-3">跟进期限（/天）</div>
+            <div class="col-md-3">最大保护期（/天）</div>
+        </div>
+        <div class="row form-group" ng-repeat="setting in settings">
+            <label class="col-md-3 control-label">{{::setting.Name}}</label>
+            <div class="col-md-3">
+                <input ng-if="$index<4" type="text" class="form-control" ng-model="setting.Repertory">
+            </div>
+            <div class="col-md-3">
+                <input ng-if="$index<4" type="text" class="form-control" ng-model="setting.NoTrackDate">
+            </div>
+            <div class="col-md-3">
+                <input ng-if="$index<4" type="text" class="form-control" ng-model="setting.LongestData">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="save()">保存</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>

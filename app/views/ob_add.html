@@ -1,0 +1,103 @@
+<div class="order">
+    <form class="form-horizontal" name="myForm" ng-submit="save()" novalidate  ng-class="{readonly:isReadOnly,submited:submited}">
+        <p ng-if="hasBalance" class="u-balance">账户余额:<span style="color: red">{{::balance}}</span> </p>
+        <p>
+            <label>销售员：</label>
+            <select ng-model="postData.SaleId">
+                <option value="{{::sale.UserId}}" ng-repeat="sale in sales" ng-bind="sale.RealName"></option>
+            </select>
+        </p>
+        <div bu-group="业务信息">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="required" width="150">业务名称</td>
+                        <td>
+                            <input type="text" typeahead-min-length="0"   ng-model="postData.BusinessName" uib-typeahead="item.BusinessName for item in bnames| filter:{BusinessName:$viewValue}"  required>
+                            <span ng-bind="postData.BusinessName" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required" width="150">价格</td>
+                        <td>
+                            <input type="text" ng-model="postData.Price" required>
+                            <span ng-bind="postData.Price" ng-if="isReadOnly"></span>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div bu-group="客户信息">
+            <table class="table table-bordered">
+                <tbody>
+                    <th colspan="4" style="text-align:left;">
+                        <span class="t_header">客户基本信息</span>
+                    </th>
+                    <tr>
+                        <td class="required" width="150">公司名称</td>
+                        <td>
+                            <input type="text" typeahead-min-length="3" ng-if="!isReadOnly" ng-model="postData.Name" uib-typeahead="item.Name for item in getCompanyName($viewValue)"   required typeahead-on-select="companySelect($item, $model, $label, $event)">
+                            <span ng-bind="postData.Name" ng-if="isReadOnly"></span>
+                        </td>
+                        <!-- <td>公司别名</td>
+                    <td>
+                        <input type="text" ng-model="postData.ShortName" ng-readonly="isReadOnly" maxlength="50"/>
+                    </td> -->
+                        <td class="required" width="150">所在城市</td>
+                        <td>
+                            <select ng-model="postData.CityCode" ng-disabled="isReadOnly" required>
+                                <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">公司地址</td>
+                        <td>
+                            <input type="text" ng-model="postData.Address" ng-if="!isReadOnly" maxlength="100" required/>
+                            <span ng-bind="postData.Address" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">所属行业</td>
+                        <td>
+                            <select ng-model="postData.Industry" ng-disabled="isReadOnly" required>
+                                <option ng-repeat="item in industries" value="{{item.IndustryId}}" ng-bind="item.IndustryName"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">公司性质</td>
+                        <td>
+                            <select ng-model="postData.AddedValue" ng-disabled="isReadOnly" required>
+                                <option value="1">小规模</option>
+                                <option value="2">一般纳税人</option>
+                            </select>
+                        </td>
+                        <!-- <td>公司规模</td>
+                    <td>
+                        <input type="text" ng-model="postData.Scale" ng-readonly="isReadOnly" maxlength="20"/>
+                    </td> -->
+                        <td class="required">联系人</td>
+                        <td>
+                            <input type="text" ng-model="postData.Contacts"  ng-if="!isReadOnly" maxlength="10" required/>
+                            <span ng-bind="postData.Contacts" ng-if="isReadOnly"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">手机</td>
+                        <td>
+                            <input type="text" ng-model="postData.Mobile" ng-if="!isReadOnly" maxlength="11" required/>
+                            <span ng-bind="postData.Mobile" ng-if="isReadOnly"></span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+        
+       
+        <div class="text-center container-fluid">
+            <button ng-show="!isReadOnly" type="submit" class="btn btn-primary save">保存</button>
+            <a ng-if="showClose" class="btn btn-primary" ng-click="close();">关闭</a>
+        </div>
+    </form>
+</div>

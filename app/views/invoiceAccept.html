@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">开具发票</h3>
+</div>
+<div class="modal-body">
+    <form class="form-inline clearfix invoice-form">
+        <div class="form-group col-sm-12">
+            <label class="col-sm-2 control-label">税号</label>
+            <input type="text" class="form-control col-sm-10" ng-model="invoice.InvoiceNumber" />
+        </div>
+        <div class="form-group col-sm-12">
+            <label class="col-sm-2 control-label">开票人</label>
+            <input type="text" class="form-control col-sm-10" ng-model="invoice.InvoiceBy" />
+        </div>
+        <div class="form-group col-sm-12">
+            <label class="col-sm-2 control-label">开票日期</label>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="kpdate" uib-datepicker-popup="yyyy-MM-dd" ng-required date-options="datepickerConfig.options" close-text="{{::datepickerConfig.closeText}}" clear-text="{{::datepickerConfig.clearText}}" current-text="{{::datepickerConfig.currentText}}" is-open="isOpen" ng-click="isOpen = !isOpen" readonly="" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="isOpen = !isOpen">
+                        <i class="glyphicon glyphicon-calendar"></i>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <label for="inputDesc" class="col-sm-2 control-label">审核意见</label>
+            <input type="text" class="form-control col-sm-10" name="desc" maxlength="50" ng-model="invoice.AuditMsg">
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">保存</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>

@@ -1,0 +1,72 @@
+<div class="m-finance">
+    <h2>
+        财务明细查询
+    </h2>
+    <div class="table-container">
+        <div class="well well-sm u-search">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label>
+                        选择代理：
+                    </label>
+                    <select class="form-control" ng-model="selectedAgent" ng-options="agent.ChannelName for agent in agentModel ">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        选择类型：
+                    </label>
+                    <select class="form-control" ng-model="selectedType" ng-options="type.name for type in typeModel ">
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" ng-click="getFinanceDetail()">查询</button>
+            </form>
+        </div>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr class="info">
+                    <th>省</th>
+                    <th>市</th>
+                    <th>一级代理</th>
+                    <th>二级代理</th>
+                    <th ng-if="user.IsCenter==1 || user.Category==2 || selectedType.type !== 1 ">{{selectedType.type === 1 ? '订单金额' : '充值金额'}}</th>
+                    <th ng-if="user.IsCenter==1 || user.Category==2 || selectedType.type !== 1 ">余额</th>
+                    <th ng-if="user.IsCenter==1 || user.Category==2 || selectedType.type !== 1 ">{{selectedType.type === 1 ? '订单描述' : '帐单描述'}}</th>
+                    <th ng-if="user.IsCenter==0 && user.Category !=2 && selectedType.type === 1 ">合同金额</th>
+                    <th>{{selectedType.type === 1 ? '订单时间' : '账单时间'}}</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="finance in financeModel">
+                    <td>{{::finance.ProvinceName}}</td>
+                    <td>{{::finance.CityName}}</td>
+                    <td>{{::finance.ChannelName1}}</td>
+                    <td>{{::finance.ChannelName2}}</td>
+                    <td ng-if="user.IsCenter==1 || user.Category==2||selectedType.type !== 1 " class="text-right">{{::finance.Amount}}</td>
+                    <td ng-if="user.IsCenter==1 || user.Category==2||selectedType.type !== 1 " class="text-right">{{::finance.Balance}}</td>
+                    <td ng-if="user.IsCenter==1 || user.Category==2||selectedType.type !== 1 ">{{::finance.Description}}</td>
+                    <td ng-if="user.IsCenter==0 && user.Category !=2 && selectedType.type === 1 ">{{::finance.ContractAmount}}</td>
+                    <td>{{::finance.BillTime}}</td>
+                    <td><a ng-if="selectedType.type === 1 && finance.OrderId" ui-sref="main.addOrder({orderId: finance.OrderId})">查看订单</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="u-paginator">
+            <uib-pagination total-items="paginator.total" items-per-page="paginator.perPage" boundary-links="true" ng-model="paginator.currentPage" previous-text="{{::paginator.previousText}}" next-text="{{::paginator.nextText}}" first-text="{{::paginator.firstText}}" last-text="{{::paginator.lastText}}" force-ellipses="true" max-size="6" num-pages="paginator.numPages" ng-change="pageChanged()">
+            </uib-pagination>
+            <div class="u-pages">
+                <span>{{paginator.currentPage}}</span> /
+                <span>{{paginator.numPages}}</span>
+            </div>
+            <form name="paginatorForm" novalidate>
+                <div class="input-group">
+                    <input type="number" name="paginatorInput" ng-model="currentPage" required min="1" max="{{paginator.numPages}}" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"  ng-disabled="!paginatorForm.$valid" ng-click="setCurrentPage()">Go!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

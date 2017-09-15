@@ -1,0 +1,45 @@
+/*login*/
+.l-box {
+    position: absolute;
+    width: 1000px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.l-lbox {
+    width: 400px;
+    height: 310px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+.l-lbox .l-header{
+    margin: 20px 0 20px;
+    border-bottom: 1px solid #eee
+}
+.l-lbox .l-header img{
+    width: 60%;
+}
+.l-lbox>form .form-group {
+    margin: 12px;
+}
+
+.l-lbox>form .form-group>label {
+    width: 80px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.l-back {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #204162;
+}
+

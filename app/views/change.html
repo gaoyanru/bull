@@ -1,0 +1,208 @@
+<div class="order">
+    <form class="form-horizontal" name="myForm" ng-submit="save()" novalidate ng-class="{readonly:isReadOnly,submited:submited}">
+        <p ng-if="hasBalance" class="u-balance">账户余额:<span style="color: red">{{::balance}}</span> </p>
+        <p>
+            <label>销售员：</label> <span ng-if="postData.OrderId" ng-bind="postData.SalerName"></span>
+            <select ng-if="!postData.OrderId" ng-model="postData.SalesId">
+                <option value="{{::sale.UserId}}" ng-repeat="sale in sales" ng-bind="sale.RealName"></option>
+            </select>
+            <span ng-if="postData.OrderId">订单号:{{::postData.OrderId}} ,&nbsp;所属公司:{{::postData.ChannelName}},&nbsp;提单人:{{::postData.BillName}}</span>
+        </p>
+
+        <div bu-group="客户信息">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th colspan="4" style="text-align:left;">
+                            <span class="t_header">客户基本信息</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="required">公司名称</td>
+                        <td>
+                            <input type="text" typeahead-min-length="3" ng-if="!isReadOnly" ng-model="postData.Name" uib-typeahead="item.Name for item in getCompanyName($viewValue)" typeahead-loading="loadingLocations" required typeahead-on-select="companySelect($item, $model, $label, $event)"><i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+                            <span ng-bind="postData.Name" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">所在城市</td>
+                        <td>
+                            <select ng-model="postData.CityCode" ng-disabled="isReadOnly" ng-change="setprice(true);" required>
+                                <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">公司地址</td>
+                        <td>
+                            <input type="text" ng-model="postData.Address" ng-if="!isReadOnly" maxlength="100" required/>
+                            <span ng-bind="postData.Address" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">所属行业</td>
+                        <td>
+                            <select ng-model="postData.Industry" ng-disabled="isReadOnly" required>
+                                <option ng-repeat="item in industries" value="{{item.IndustryId}}" ng-bind="item.IndustryName"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">公司性质</td>
+                        <td>
+                            <select ng-model="postData.AddedValue" ng-disabled="isReadOnly" required ng-change="setprice();">
+                                <option value="1">小规模</option>
+                                <option value="2">一般纳税人</option>
+                            </select>
+                        </td>
+                        <td class="required">联系人</td>
+                        <td>
+                            <input type="text" ng-model="postData.Contacts" ng-if="!isReadOnly" maxlength="10" required/>
+                            <span ng-bind="postData.Contacts" ng-if="isReadOnly"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">手机</td>
+                        <td>
+                            <input type="text" ng-model="postData.Mobile" ng-if="!isReadOnly" maxlength="11" required/>
+                            <span ng-bind="postData.Mobile" ng-if="isReadOnly"></span>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered">
+                <thead>
+                    <th colspan="4" style="text-align:left;">
+                        <span class="t_header">营业执照信息</span>
+                    </th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="required">注册号</td>
+                        <td>
+                            <input type="text" ng-model="postData.RegNO" ng-if="!isReadOnly" maxlength="20" required/>
+                            <span ng-bind="postData.RegNO" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">法人</td>
+                        <td>
+                            <input type="text" ng-model="postData.LegalPerson" ng-if="!isReadOnly" maxlength="10" required/>
+                            <span ng-bind="postData.LegalPerson" ng-if="isReadOnly"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">国税登记号</td>
+                        <td>
+                            <input type="text" ng-model="postData.NationalTaxNO" ng-if="!isReadOnly" maxlength="20" required/>
+                            <span ng-bind="postData.NationalTaxNO" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">地税登记号</td>
+                        <td>
+                            <input type="text" ng-model="postData.LocalTaxNO" ng-if="!isReadOnly" maxlength="20" required/>
+                            <span ng-bind="postData.LocalTaxNO" ng-if="isReadOnly"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">营业期限</td>
+                        <td>
+                            <span class="date_sel">
+                            <input type="text"  uib-datepicker-popup ng-model="postData.RegisterDate" is-open="dateIsOpened11" datepicker-options="dateOptions"  close-text="关闭" current-text="今天" clear-text="清空" ng-click="dateIsOpened11 = !dateIsOpened11" ng-disabled="isReadOnly" required />
+
+                            <button type="button"  ng-click="dateIsOpened11 = !dateIsOpened11" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>      
+                        </span>-
+                            <span class="date_sel" ng-hide="isReadOnly && (postData.NoDeadLine == 1)">
+                            <input type="text"  uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="dateIsOpened1" datepicker-options="dateOptions"  close-text="关闭" current-text="今天" clear-text="清空" ng-click="dateIsOpened1 = !dateIsOpened1" ng-disabled="isReadOnly || postData.NoDeadLine"/>
+
+                            <button type="button"  ng-click="dateIsOpened1 = !dateIsOpened1" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>      
+                        </span>
+                            <label ng-hide="isReadOnly && (postData.NoDeadLine == 0)">
+                                <input ng-hide="isReadOnly && (postData.NoDeadLine == 1)" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1" /> 无期限 </label>
+                        </td>
+                        <td class="required">注册资金</td>
+                        <td>
+                            <input type="text" ng-model="postData.RegisteredCapital" ng-if="!isReadOnly" maxlength="15" required/>
+                            <span ng-bind="postData.RegisteredCapital" ng-if="isReadOnly"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">经营范围</td>
+                        <td>
+                            <textarea ng-model="postData.BusinessScope" ng-if="!isReadOnly" style="width:80%" rows="5" required></textarea>
+                            <pre class="order_pre" ng-bind="postData.BusinessScope" ng-if="isReadOnly"></pre>
+                        </td>
+                        <td class="required">上传营业执照</td>
+                        <td>
+                            <img ng-src="{{postData.BusinessLicense}}" ng-if="postData.BusinessLicense" class="order-img" alt="" pic-view>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div bu-group="合同信息">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="required">合同编号</td>
+                        <td>
+                            <input type="text" ng-model="postData.ContractNO" ng-if="!isReadOnly" required/>
+                            <span ng-bind="postData.ContractNO" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">付款方式</td>
+                        <td>
+                            <span>产品变更</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">签订日期</td>
+                        <td>
+                            <span class="date_sel">
+                                <input type="text"  uib-datepicker-popup ng-model="postData.ContractDate" is-open="dateIsOpened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly  ng-click="dateIsOpened = !dateIsOpened" ng-disabled="isReadOnly" required/>
+                                <button type="button"  ng-click="dateIsOpened = !dateIsOpened" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </td>
+                        <td class="required">开始时间</td>
+                        <td>
+                            <span class="date_sel">
+                                <input type="text"  uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="dateIsOpened3" datepicker-options="dateOptions2" ng-required="true" ng-disabled="readonly" close-text="关闭" current-text="今天" clear-text="清空"  ng-click="dateIsOpened3 = !dateIsOpened3" ng-change="setprice()" required/>
+                                <button type="button" ng-disabled="readonly" ng-click="dateIsOpened3 = !dateIsOpened3"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            <small style="color:red">注:以实际账期为准。</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">结束时间</td>
+                        <td>
+                            <span class="date_sel">
+                                <input type="text" ng-model="postData.ServiceEnd" disabled/>
+                                <button type="button"  ng-click="dateIsOpened4 = !dateIsOpened4" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            <small style="color:red">注:以实际账期为准。</small>
+                        </td>
+                        <td class="required">合同金额</td>
+                        <td style="min-width:400px;width:45%;">
+                            <input type="text" ng-model="postData.ContractAmount" ng-if="!isReadOnly" ng-readonly="true" disabled="" required/><span ng-bind="postData.ContractAmount" ng-if="isReadOnly"></span>
+                            <br> <small style="color:red">注:合同金额根据所属城市、公司性质和付款方式自动计算，不包含礼包价格。</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>备注</td>
+                        <td colspan="3">
+                            <input type="text" ng-model="postData.ContractDescription" ng-if="!isReadOnly" style="width:90%" />
+                            <span ng-bind="postData.ContractDescription" ng-if="isReadOnly">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div bu-group="提单备注">
+            <div>提单特殊备注信息</div>
+            <textarea name="" id="" cols="100" rows="3" ng-model="postData.Remark" ng-if="!isReadOnly"></textarea>
+            <pre ng-bind="postData.Remark" ng-if="isReadOnly"></pre>
+        </div>
+        <div bu-group="拒审原因" ng-if="postData.Status === 3">
+            <span ng-bind="postData.BackReason" style="color:red;"></span>
+        </div>
+        <div class="text-center container-fluid">
+            <button ng-if="!readonly"  type="submit" class="btn btn-primary save">变更</button>
+            <a ng-if="showClose" class="btn btn-primary" ng-click="close();">关闭</a>
+        </div>
+    </form>
+</div>

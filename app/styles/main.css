@@ -1,0 +1,507 @@
+html, body {
+    height: 100%;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+header {
+    position: absolute;
+    height: 80px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-bottom: solid 1px #999;
+    /*background-image: linear-gradient(rgba(160,160,160,0.9), rgba(117,116,124,1));*/
+    background-color: rgba(204, 204, 204, 1);
+}
+
+header h1 {
+    padding-left: 20px;
+    font-size: 28px;
+    margin: 0;
+    line-height: 80px;
+}
+
+header .u-user {
+    position: absolute;
+    right: 20px;
+    top: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+header h2 {
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0 20px 10px 0;
+}
+
+.md-whiteframe-glow-z1 {
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.14), 0px 0px 2px 2px rgba(0, 0, 0, 0.098), 0px 0px 1px 1px rgba(0, 0, 0, 0.084);
+}
+
+.g-content {
+    position: absolute;
+    width: 100%;
+    top: 45px;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.g-content .m-main {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.g-content .content-left {
+    width: 200px;
+    position: relative;
+    background-color: #303f4a;
+}
+
+
+/*
+    content left
+*/
+
+
+/*功能列表*/
+
+.content-left h2 {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 18px;
+    line-height: 40px;
+    font-weight: normal;
+    color: #fff;
+    background-color: #75747c;
+    display: none;
+}
+
+.content-left .u-nav-container {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.content-left treecontrol li {
+    line-height: 36px;
+    color: #fff;
+    margin: 4px 0;
+}
+
+.g-content .content-right {
+    flex: 1;
+    position: relative;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+
+/*
+    paginator
+*/
+
+.u-paginator {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.u-paginator .pagination {
+    margin: 0;
+}
+
+.u-paginator .u-pages {
+    line-height: 40px;
+    text-align: right;
+    margin-right: 30px;
+    font-size: 16px;
+}
+
+.u-paginator form {
+    width: 120px;
+}
+
+.padding {
+    padding: 12px;
+}
+
+.m-password .panel {
+    margin-bottom: 0;
+}
+
+.message {
+    word-break: break-all;
+}
+
+
+/*
+input control
+*/
+
+.well .input-group .form-control {
+    width: 100px;
+}
+
+.table th {
+    text-align: center;
+}
+
+.agform-sm label {
+    width: 100px;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.upload_btn {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin-top: -5px;
+}
+
+.upload_btn input {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    opacity: 0;
+}
+
+.noImg {
+    width: 240px;
+    height: 190px;
+    position: relative;
+    margin: auto;
+    background: #ddd;
+    margin-bottom: 20px;
+}
+
+.noImg:before {
+    content: '暂无图片';
+    display: block;
+    text-align: center;
+    line-height: 200px;
+    font-size: 24px;
+    font-weight: 700;
+    font-family: '微软雅黑';
+    color: #999;
+}
+
+.addGift input.form-control {
+    width: 80px;
+}
+
+.table.clone {
+    margin-bottom: 0;
+}
+
+.object {
+    width: 20px;
+    height: 20px;
+    background-color: #FFF;
+    float: left;
+    margin-right: 20px;
+    margin-top: 65px;
+    -moz-border-radius: 50% 50% 50% 50%;
+    -webkit-border-radius: 50% 50% 50% 50%;
+    border-radius: 50% 50% 50% 50%;
+}
+
+#object_one {
+    -webkit-animation: object_one 1.5s infinite;
+    animation: object_one 1.5s infinite;
+}
+
+#object_two {
+    -webkit-animation: object_two 1.5s infinite;
+    animation: object_two 1.5s infinite;
+    -webkit-animation-delay: 0.25s;
+    animation-delay: 0.25s;
+}
+
+#object_three {
+    -webkit-animation: object_three 1.5s infinite;
+    animation: object_three 1.5s infinite;
+    -webkit-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+
+@-webkit-keyframes object_one {
+    75% {
+        -webkit-transform: scale(0);
+    }
+}
+
+@keyframes object_one {
+    75% {
+        transform: scale(0);
+        -webkit-transform: scale(0);
+    }
+}
+
+@-webkit-keyframes object_two {
+    75% {
+        -webkit-transform: scale(0);
+    }
+}
+
+@keyframes object_two {
+    75% {
+        transform: scale(0);
+        -webkit-transform: scale(0);
+    }
+}
+
+@-webkit-keyframes object_three {
+    75% {
+        -webkit-transform: scale(0);
+    }
+}
+
+@keyframes object_three {
+    75% {
+        transform: scale(0);
+        -webkit-transform: scale(0);
+    }
+}
+
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 9998;
+}
+
+.loading .loading_icon {
+    position: fixed;
+    bottom: 50px;
+    right: 100px;
+}
+
+.loading .loading_text {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.warning {
+    font-size: 14px;
+    color: red;
+}
+
+.blink {
+    position: relative;
+    color: #0000ff;
+    -webkit-animation: flash 2s infinite cubic-bezier(1, 0, 0.5, 0);
+    animation: flash 2s infinite cubic-bezier(1, 0, 0.5, 0);
+}
+
+@-webkit-keyframes flash {
+    0% {
+        opacity: 1;
+        color: #ff0000;
+        font-size: 14px;
+    }
+    50% {
+        opacity: .5;
+    }
+    100% {
+        opacity: 1;
+        color: #ff0000;
+        font-size: 14px;
+    }
+}
+
+@keyframes flash {
+    0% {
+        opacity: 1;
+        color: #ff0000;
+        font-size: 14px;
+    }
+    50% {
+        opacity: .1;
+    }
+    100% {
+        opacity: 1;
+        color: #ff0000;
+        font-size: 14px;
+    }
+}
+
+input[type='checkbox'] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    vertical-align: middle;
+}
+
+button[disabled] {
+    color: #a8a8a8;
+}
+
+button[disabled] .text-info {
+    color: #a8a8a8;
+}
+
+.outerworkline span {
+    line-height: 37px;
+    padding: 0 6px 0 0;
+}
+
+.outerworkline md-checkbox {
+    margin-bottom: 0;
+}
+
+.outerworkline md-input-container {
+    margin: 0 6px;
+}
+
+.outworkline>div>* {
+    margin: 0 6px;
+}
+
+.modal-hg {
+    width: 1200px;
+}
+
+.headerlogo {
+    display: block;
+    background: #f3f3f3 url(/images/headerlogo.png) no-repeat center;
+    background-size: 70%;
+    width: 200px;
+    height: 45px;
+    border-bottom: 1px solid #303f4a;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+md-toolbar:not(.md-menu-toolbar) {
+    background-color: #fff;
+    color: rgba(255, 255, 255, 0.87);
+}
+
+md-toolbar {
+    min-height: 45px;
+}
+
+.btn.btn-link {
+    padding: 0 6px;
+}
+
+.btn.line {
+    height: 34px;
+    line-height: 34px;
+}
+
+.recharge-modal {}
+
+.recharge-modal .btn-amount {
+    border: solid 1px #ccc;
+    background: #fff;
+    padding: 6px 24px;
+}
+
+.recharge-modal .btn-selected {
+    position: relative;
+}
+
+.recharge-modal .btn-selected {
+    color: #5b89e7;
+    border-color: #5b89e7;
+}
+
+.recharge-modal .btn-selected:before {
+    content: "\e013";
+    font-family: 'Glyphicons Halflings';
+    color: #5b89e7;
+    font-size: 14px;
+    right: 3px;
+    position: absolute;
+    bottom: 3px;
+}
+
+.recharge-modal .row>span {
+    vertical-align: top;
+    padding: 6px 12px;
+    display: inline-block;
+}
+
+.recharge-modal .row>span.required:before {
+    vertical-align: top;
+}
+
+.recharge-modal .row {
+    margin-bottom: 20px;
+}
+
+.recharge-modal .row>.table {
+    margin-bottom: 0;
+}
+
+.recharge-modal .table td {
+    padding: 0;
+}
+
+.recharge-modal .table td.opt {
+    border: none;
+    line-height: 34px;
+    padding: 0 6px;
+}
+
+.recharge-modal .table td.opt i {
+    cursor: pointer;
+}
+
+.recharge-modal .row .img-container {
+    padding: 12px 0;
+}
+
+.recharge-modal .row .img-container>.img-thumbnail {
+    width: 110px;
+    height: 85px;
+    float: left;
+    margin: 10px 5px;
+    line-height: 75px;
+    text-align: center;
+    position: relative;
+}
+
+.recharge-modal .row .img-container>.img-thumbnail img {
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.recharge-modal .row .img-container>.img-thumbnail .close {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+    background: red;
+    opacity: 1;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 10px;
+    display: none;
+}
+
+.recharge-modal .row .img-container>.img-thumbnail:hover .close {
+    display: block;
+}

@@ -1,0 +1,130 @@
+.order{
+	padding: 12px;
+}
+.order .u-balance{
+    font-size: 20px;
+}
+.order .table{
+	border: 0;
+}
+.order .table th{
+	border: 0;
+	padding: 0;
+    line-height: 28px;
+    border-bottom: 2px solid #a1bfd4;
+}
+.order .table .t_header{
+	background-color: #a1bfd4;
+	color: #fff;
+	font-size: 14px;
+	font-weight: 700;
+	padding: 6px 12px;
+}
+
+.o-list{
+	padding: 0 10px;
+}
+.o-list h2{
+    margin: 0;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 15px;
+    border-bottom: solid 2px #001D7E;
+}
+.o-list .header{
+	width: 100%;
+	margin: 20px 0;
+	padding: 12px 0;
+}
+.o-list .header>span.main{
+	position: relative;
+	width: auto;
+	font-size: 16px;
+	font-weight: 700;
+	border-bottom:  solid 4px #001D7E;
+	top: 2px;
+	padding: 12px;
+}
+.o-search{
+	margin-bottom: 20px;
+}
+.o-buttons{
+	display: inline-block;
+}
+.buGroup{
+	border: 1px solid #ddd;
+	margin-top: 12px;
+}
+.buGroup .header{
+	padding: 6px 12px;
+    border-bottom: 1px solid #ddd;
+}
+.buGroup .header .title{
+	font-size: 16px;
+	color: #001D7E;
+	font-weight: 700;
+}
+.buGroup .header .toggle{
+	margin-left: 12px;
+}
+.buGroup .header .toggle i{
+	padding: 0 2px 0 0;
+    border: 1px solid #999;
+}
+.buGroup .body{
+	padding:12px;
+}
+.buGroup input[type='text']{
+	width: 90%;
+}
+.date_sel{
+	position: relative;
+	display: inline-block;
+	width: 110px;
+}
+.date_sel>input{
+	width: 100%;
+}
+.date_sel>button{
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.order .save{
+	margin: 20px;
+}
+.order-img{
+	display: inline-block;
+	width: 75px;
+    height: 60px;
+    cursor: pointer;
+}
+.order .readonly *[readonly]{
+	border: none;
+	background-color: #fff;
+}
+.required:before{
+	color: red;
+	content: '*';
+	padding: 6px;
+}
+.submited .ng-invalid{
+	border: solid 1px red;
+}
+.agform input[type='file']{
+	display: inline-block;
+    width: 75px;
+}
+.order_pre{
+	max-width: 400px;
+    white-space: normal;
+    border: none;
+}
+
+.viewer-toolbar .viewer-prev{
+	display: none;
+}
+.viewer-toolbar .viewer-next{
+	display: none;
+}

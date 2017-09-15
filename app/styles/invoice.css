@@ -1,0 +1,28 @@
+.m-invoice{
+    padding: 0 15px;
+}
+.m-invoice h2{
+    margin: 0;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 15px;
+    border-bottom: solid 2px #001D7E;
+}
+.m-invoice .u-account span{
+    margin-right: 40px;
+}
+.m-invoice .u-search{
+    margin-bottom: 15px;
+}
+.m-invoice .form-control{
+    width: 100px;
+}
+
+.m-applyInvoice .panel{
+    margin-bottom: 0;
+}
+.invoice-form .form-group{
+    line-height: 34px;
+    margin-bottom: 12px;
+}

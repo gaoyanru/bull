@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">{{::title}}</h3>
+</div>
+<div class="modal-body">
+    <form class="form-inline clearfix invoice-form">
+        <div class="form-group col-sm-12">
+            <label for="inputDesc"  class="col-sm-2 control-label">原因</label>
+            <textarea class="form-control col-sm-10" name="desc" cols="50" rows="5" maxlength="50" ng-model="invoice.AuditMsg">
+            </textarea>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">保存</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>

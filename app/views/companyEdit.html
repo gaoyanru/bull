@@ -1,0 +1,133 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">公司信息修改</h3>
+</div>
+<div class="modal-body">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th colspan="4" style="text-align:left;">
+                    <span class="t_header">客户基本信息</span>
+                </th>
+            </tr>
+            <tr>
+                <td class="">公司名称</td>
+                <td>
+                    <input type="text" ng-model="postData.Name">
+                </td>
+                <td class="">所在城市</td>
+                <td>
+                    <select ng-model="postData.CityCode">
+                    <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td>区域</td>
+                <td>
+                    <select ng-model="postData.AreaCode" ng-disabled="isReadOnly">
+                    <option ng-repeat="item in areas" value="{{item.AreaCode}}" ng-bind="item.AreaName"></option>
+                  </select>
+                </td>
+                <td class="">公司地址</td>
+                <td>
+                    <input type="text" ng-model="postData.Address" ng-if="!isReadOnly" maxlength="100" />
+                </td>
+            </tr>
+            <tr>
+                <td class="">公司性质</td>
+                <td>
+                    <select ng-model="postData.AddedValue" ng-disabled="isReadOnly">
+                    <option value="1">小规模</option>
+                    <option value="2">一般纳税人</option>
+                </select>
+                </td>
+                <td class="">所属行业</td>
+                <td>
+                    <select ng-model="postData.Industry" ng-disabled="isReadOnly">
+                    <option ng-repeat="item in industries" value="{{item.IndustryId}}" ng-bind="item.IndustryName"></option>
+                </select>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="">联系人</td>
+                <td>
+                    <input type="text" ng-model="postData.Contacts" ng-if="!isReadOnly" maxlength="10" />
+                </td>
+                <td class="">手机</td>
+                <td>
+                    <input type="text" ng-model="postData.Mobile" ng-if="!isReadOnly" maxlength="11" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <thead>
+            <th colspan="4" style="text-align:left;">
+                <span class="t_header">营业执照信息</span>
+            </th>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="">注册号</td>
+                <td>
+                    <input type="text" ng-model="postData.RegNO" ng-if="!isReadOnly" maxlength="20" />
+                </td>
+                <td class="">法人</td>
+                <td>
+                    <input type="text" ng-model="postData.LegalPerson" ng-if="!isReadOnly" maxlength="10" />
+                </td>
+            </tr>
+            <tr>
+                <td class="">国税登记号</td>
+                <td>
+                    <input type="text" ng-model="postData.NationalTaxNO" ng-if="!isReadOnly" maxlength="20" />
+                </td>
+                <td class="">地税登记号</td>
+                <td>
+                    <input type="text" ng-model="postData.LocalTaxNO" ng-if="!isReadOnly" maxlength="20" />
+                </td>
+            </tr>
+            <tr>
+                <td class="">营业期限</td>
+                <td>
+                    <span class="date_sel">
+                <input type="text"  uib-datepicker-popup ng-model="postData.RegisterDate" is-open="dateIsOpened11" datepicker-options="dateOptions"  close-text="关闭" current-text="今天" clear-text="清空" ng-click="dateIsOpened11 = !dateIsOpened11" ng-disabled="isReadOnly"  />
+
+                <button type="button"  ng-click="dateIsOpened11 = !dateIsOpened11" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>-
+                    <span class="date_sel">
+                    <input type="text"  uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="dateIsOpened1" datepicker-options="dateOptions"  close-text="关闭" current-text="今天" clear-text="清空" ng-click="dateIsOpened1 = !dateIsOpened1" ng-disabled="isReadOnly || postData.NoDeadLine"/>
+                    <button type="button"  ng-click="dateIsOpened1 = !dateIsOpened1" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+
+                    <input type="checkbox" name="noLimitDate" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1" /> 无期限 </label>
+                </td>
+                <td class="">注册资金</td>
+                <td>
+                    <input type="text" ng-model="postData.RegisteredCapital" ng-if="!isReadOnly" maxlength="15" />
+                </td>
+            </tr>
+            <tr>
+                <td class="">经营范围</td>
+                <td>
+                    <textarea ng-model="postData.BusinessScope" ng-if="!isReadOnly" style="width:80%" rows="5"></textarea>
+                </td>
+                <td class="">上传营业执照</td>
+                <td>
+                    <img ng-src="{{postData.BusinessLicense}}" ng-if="postData.BusinessLicense" class="order-img" alt="" pic-view>
+                    <input type="file" nv-file-select="" uploader="uploader2" ng-show="!isReadOnly" />
+                    <div class="progress" style="width:80%;margin-left:90px" ng-if="uploader2.isUploading">
+                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader2.progress + '%' }" style="width: 100%;"></div>
+                    </div>
+                    <span>上传的图片大小请不要超过1M。</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">保存</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>

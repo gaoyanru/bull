@@ -1,0 +1,63 @@
+<div class="m-password">
+    <div class="panel panel-primary">
+        <div class="panel-heading">修改密码</div>
+        <div class="panel-body">
+            <form class="form-horizontal" name="updateForm" ng-submit="update()">
+                <div class="form-group">
+                    <label for="oldPswd" class="col-sm-3 control-label"><span class="text-danger">*</span>旧密码</label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" name="old" id="oldPswd" ng-minlength="6"  required ng-model="pswdParams.Old">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-danger" ng-messages="updateForm.old.$error" ng-if="interacted(updateForm.old)">
+                            <span ng-message="required">
+                                请输入密码
+                            </span>
+                            <span ng-message="minlength">
+                                密码最小长度为6位
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newPswd" class="col-sm-3 control-label"><span class="text-danger">*</span>新密码</label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" name="new" id="newPswd" ng-minlength="6"  required ng-model="pswdParams.New">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-danger" ng-messages="updateForm.new.$error" ng-if="interacted(updateForm.new)">
+                            <span ng-message="required">
+                                请输入密码
+                            </span>
+                            <span ng-message="minlength">
+                                密码最小长度为6位
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPswd" class="col-sm-3 control-label"><span class="text-danger">*</span>确认新密码</label>
+                    <div class="col-sm-5">
+                        <input type="password" class="form-control" name="confirm" id="confirmPswd" compare-to="pswdParams.New" ng-minlength="6"  required ng-model="pswdParams.Confirm">
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="text-danger" ng-messages="updateForm.confirm.$error" ng-if="interacted(updateForm.confirm)">
+                            <span ng-message="required">
+                                请输入密码
+                            </span>
+                            <span ng-message="compareTo">
+                                与新密码不一致
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary" ng-disabled="updateForm.$invalid">修改</button>
+                        <button type="button" class="btn btn-link" ng-click="dismiss();">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

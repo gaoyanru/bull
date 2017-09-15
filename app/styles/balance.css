@@ -1,0 +1,32 @@
+.m-balance{
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    overflow: auto;
+}
+.m-balance .balance-content{
+    padding: 0 15px;
+}
+.m-balance h2{
+    margin: 0;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 15px;
+    border-bottom: solid 2px #001D7E;
+}
+.m-balance .panel{
+    margin-top: 15px;
+}
+.m-balance .search-item{
+    margin-bottom: 15px;
+}
+.m-balance .search-item .navbar-text{
+    margin: 0 20px;
+    line-height: 36px;
+}
+.m-balance .account-detail strong{
+    font-size: 24px;
+}

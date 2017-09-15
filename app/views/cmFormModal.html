@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">{{::title}}</h3>
+</div>
+<div class="modal-body">
+    <form class="form-inline agform-sm" name="agform" ng-submit="save()" novalidate ng-class="{readonly:isReadOnly,submited:submited}">
+        <div class="container-fluid">
+            <div class="form-group col-md-6" ng-repeat="setting in settings">
+                <label ng-class="{required:setting.required}">{{::setting.header}}</label>
+                <input type="text" class="form-control" ng-model="item[setting.col]" ng-if="setting.type=='text'" ng-required="setting.required">
+                <select class="form-control" ng-model="item[setting.col]" ng-if="setting.type=='select'" ng-required="setting.required">
+                    <option ng-repeat="option in setting.options" ng-value="option.value" ng-selected="option.value == item[setting.col]" ng-bind="option.label"></option>
+                </select>
+                <span ng-if="setting.type=='date'">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup ng-model="item[setting.col]" ng-model-options="dateOptions" is-open="dateIsOpened" datepicker-options="dateOptions" ng-required="setting.required" close-text="关闭" current-text="今天" clear-text="清空" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="dateIsOpened = !dateIsOpened"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+                </span>
+                <select class="form-control" ng-required="setting.required" ng-model="item[setting.realCol]" has-default="true" ac-model="item" ac-select="setting" ng-if="setting.type=='acSelect'"></select>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">保存</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>

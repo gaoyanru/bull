@@ -1,0 +1,142 @@
+<div class="m-addUser">
+    <h2>
+        新增员工
+    </h2>
+    <form class="form-horizontal" name="addForm" ng-submit="addUser()"  novalidate>
+        <div class="form-group">
+            <label for="inputUserName" class="col-sm-2 control-label"><span class="text-danger">*</span>用户名</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="userName" ng-maxlength="20" ng-model="addParams.UserName" required id="inputUserName">
+            </div>
+            <div class="col-sm-2">
+                <div class="text-danger" ng-messages="addForm.userName.$error" ng-if="interacted(addForm.userName)">
+                    <span ng-message="required">
+                        请输入用户名
+                    </span>
+                    <span ng-message="maxlength">
+                        最大长度为20
+                    </span>
+                </div>
+            </div>
+            <label for="inputRealName" class="col-sm-2 control-label"><span class="text-danger">*</span>真实姓名</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="realName" ng-model="addParams.RealName" id="inputRealName">
+            </div>
+
+            <div class="col-sm-2">
+                <div class="text-danger" ng-messages="addForm.realName.$error" ng-if="interacted(addForm.realName)">
+                    <span ng-message="required">
+                        请输入真实姓名
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail" class="col-sm-2 control-label"><span class="text-danger">*</span>邮箱</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="email" ng-model="addParams.Email" ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required id="inputEmail">
+            </div>
+
+            <div class="col-sm-2">
+                <div class="text-danger" ng-messages="addForm.email.$error" ng-if="interacted(addForm.email)">
+                    <span ng-message="required">
+                        请输入邮箱
+                    </span>
+                    <span ng-message="pattern">
+                        邮箱格式错误
+                    </span>
+                </div>
+            </div>
+
+            <label for="inputPswd" class="col-sm-2 control-label"><span class="text-danger">*</span>密码</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="password" ng-model="addParams.Password" required ng-minlength="6" id="inputPswd">
+            </div>
+            <div class="col-sm-2">
+                <div class="text-danger" ng-messages="addForm.password.$error" ng-if="interacted(addForm.password)">
+                    <span ng-message="required">
+                        请输入密码
+                    </span>
+                    <span ng-message="minlength">
+                        密码最小长度为6位
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputTel" class="col-sm-2 control-label"><span class="text-danger">*</span>电话</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" name="mobile" ng-model="addParams.Mobile" ng-pattern="/(^(13\d|14[57]|15[^4,\D]|17[135678]|18\d)\d{8}|170[^346,\D]\d{7})$/" required  id="inputTel">
+            </div>
+            <div class="col-sm-2">
+                <div class="text-danger" ng-messages="addForm.mobile.$error" ng-if="interacted(addForm.mobile)">
+                    <span ng-message="required">
+                        请输入手机号
+                    </span>
+                    <span ng-message="pattern">
+                        手机格式不正确
+                    </span>
+                </div>
+            </div>
+
+            <label for="inputRole" class="col-sm-2 control-label"><span class="text-danger">*</span>角色</label>
+            <div class="col-sm-2">
+                <select class="form-control" id="inputRole" ng-change="setAddParams('role')" ng-model="selectedRole" ng-options="role.RoleName for role in rolesModel ">
+                </select>
+            </div>
+            <div class="col-sm-2">
+
+            </div>
+        </div>
+        <div class="form-group">
+
+            <label for="inputDep" class="col-sm-2 control-label"><span class="text-danger">*</span>部门</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" ng-model="seletedParent.DepartmentName"  id="inputDep" disabled>
+            </div>
+
+            <div class="col-sm-2">
+
+            </div>
+            <label ng-if="selectedRole.RoleName === '渠道经理'" class="col-sm-2 control-label"><span class="text-danger">*</span>负责大区</label>
+            <div class="col-sm-2"  ng-if="selectedRole.RoleName === '渠道经理'" >
+                <select class="form-control"  ng-model="addParams.ChannelPartitionId">
+                    <option ng-repeat="fq in fqs" ng-value="fq.Id" ng-bind="fq.PartitionName"></option>
+                </select>
+            </div>
+
+            <!--<label for="inputCenter" class="col-sm-2 control-label">是否中心</label>
+            <div class="col-sm-2">
+                <select class="form-control" id="inputCenter" ng-change="setAddParams('center')" ng-model="selectedCenter" ng-options="center.name for center in centerModel ">
+                </select>
+            </div>
+            <div class="col-sm-2">
+
+            </div>-->
+
+
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="text-danger">*</span>选择模块</label>
+            <div class="col-sm-10">
+                <div class="tree-container">
+                    <treecontrol
+                        class="tree-light"
+                        tree-model="functionModel"
+                        options="functionTreeOptions"
+                        on-selection="setSelectedTree(node)"
+                        selected-nodes="selectedFunction">
+                        <span ng-class="{'selectd': node.selectd}">{{::node.name}}</span>
+                    </treecontrol>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" ng-disabled="addForm.$invalid" class="btn btn-primary">新增</button>
+            <button type="reset" class="btn btn-default">重置</button>
+            <a class="btn btn-default" ui-sref="main.users.usersList">返回</a>
+        </div>
+    </form>
+</div>

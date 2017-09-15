@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">{{::title}}</h3>
+</div>
+<div class="modal-body">
+    <form name="cusform" novalidate  class="form-inline">
+        <div class="clearfix" style="width:80%">
+            <div class="form-group col-md-12" style="margin: 12px 0">
+                <label for="" class="required">任务名称</label>
+                <input type="text" class="form-control" ng-model="postData.TaskName" required style="width:300px;" maxlength="15"/>
+            </div>
+            <div class="form-group col-md-12" style="margin: 12px 0">
+                <label for="" class="required">分类名称</label>
+                <select ng-model="postData.BusinessType" class="form-control" required style="width:200px;">
+                    <option value="">请选择</option>
+                    <option ng-value="1" ng-selected="postData.BusinessType ==1">税务任务</option>
+                    <option ng-value="2" ng-selected="postData.BusinessType ==2">工商任务</option>
+                    <option ng-value="3" ng-selected="postData.BusinessType ==3">其他任务</option>
+                </select>
+            </div>
+            <div class="form-group col-md-12" style="margin: 12px 0">
+                <label for="" class="required">服务费用</label>
+                <input type="number" class="form-control" ng-model="postData.Price" required placeholder="0" min="0" ng-input="checkPrice()"/>
+            </div>
+            <div class="form-group col-md-12" style="margin: 12px 0">
+                是否启用：<lable style="margin:0 30px;display:inline-block"><input type="radio" name="ifuse" value="1" ng-model="postData.ifuse.use">启用</lable>
+                <lable style="margin:0 30px;display:inline-block"><input type="radio" name="ifuse" value="2" ng-model="postData.ifuse.use">停用</lable>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-disabled="cusform.$invalid" ng-click="ok()">保存</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>

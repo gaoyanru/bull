@@ -1,0 +1,9 @@
+<div class="buGroup">
+    <div class="header">
+    	<span class="title" ng-bind="title"></span> 
+    	<span class="toggle" ng-click="toggle()">
+    		<i class="glyphicon" ng-class="{'glyphicon-minus':!isHide,'glyphicon-plus':isHide}"></i> {{toggleMsg}}
+    	</span> 
+    </div>
+    <div class="body" ng-transclude ng-show="!isHide"></div>
+</div>

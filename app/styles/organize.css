@@ -1,0 +1,10 @@
+.m-organize{
+
+}
+.m-organize .panel{
+    margin-bottom: 0;
+}
+.m-organize .u-group-container{
+    max-height: 200px;
+    overflow: auto;
+}

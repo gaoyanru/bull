@@ -1,0 +1,49 @@
+<div class="m-achieve">
+    <h2>
+        新增客户统计
+    </h2>
+    <div class="table-container">
+        <div class="well well-sm u-search">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="dateIsOpenedS" datepicker-options="dateOptions1" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedS = !dateIsOpenedS" ng-change="startChange()" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"  ng-click="dateIsOpenedS = !dateIsOpenedS"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div> —
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" type="text" uib-datepicker-popup ng-model="enddate" is-open="dateIsOpenedE" datepicker-options="dateOptions2" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedE = !dateIsOpenedE" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"  ng-click="dateIsOpenedE = !dateIsOpenedE"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
+            </form>
+        </div>
+        <table class="table table-striped table-hover table-bordered" id="dataTable" style="width: 600px;">
+            <thead>
+                <tr class="info">
+                    <th>渠道</th>
+                    <th class="text-right">新增客户数</th>
+                    <th class="text-right">新增客户合同金额</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in rows track by row.ChannelId">
+                    <td >{{row.ChannelName}}</td>
+                    <td class="text-right">{{row.CustomerNum}}</td>
+                    <td class="text-right">{{row.ContractAmount}}</td>
+                </tr>
+                <tr>
+                    <td>合计</th>
+                    <td class="text-right">{{totalNum}}</th>
+                    <td class="text-right">{{totalAmount}}</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

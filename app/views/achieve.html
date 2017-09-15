@@ -1,0 +1,90 @@
+<div class="m-achieve">
+    <h2>
+        业绩统计
+    </h2>
+    <div class="table-container">
+        <div class="well well-sm u-search">
+            <form class="form-inline">
+                <div class="form-group">
+                    <!--<span class="date_sel">
+                        <input type="text"  uib-datepicker-popup ng-model="params.startdate" is-open="dateIsOpenedS" datepicker-options="dateOptions1" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly  ng-click="dateIsOpenedS = !dateIsOpenedS" ng-change="startChange()"/>
+                        <button type="button"  ng-click="dateIsOpenedS = !dateIsOpenedS"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span> —-->
+                    <div class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="dateIsOpenedS" datepicker-options="dateOptions1" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedS = !dateIsOpenedS" ng-change="startChange()" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"  ng-click="dateIsOpenedS = !dateIsOpenedS"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div> —
+                </div>
+                <div class="form-group">
+                    <!--<span class="date_sel">
+                        <input type="text"  uib-datepicker-popup ng-model="params.enddate" is-open="dateIsOpenedE" datepicker-options="dateOptions2" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly  ng-click="dateIsOpenedE = !dateIsOpenedE"/>
+                        <button type="button"  ng-click="dateIsOpenedE = !dateIsOpenedE"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>-->
+                    <div class="input-group">
+                        <input class="form-control" type="text" uib-datepicker-popup ng-model="enddate" is-open="dateIsOpenedE" datepicker-options="dateOptions2" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedE = !dateIsOpenedE" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"  ng-click="dateIsOpenedE = !dateIsOpenedE"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <!-- <div class="btn-group" uib-dropdown ng-if="isCenter">
+                    <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+                        <span ng-bind="params.selectedText"></span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-multiselect" uib-dropdown-menu  role="menu" aria-labelledby="single-button"  ng-click=" $event.stopPropagation();">
+                        <li role="menuitem"> <button class="btn btn-default" ng-click="params.selectedAll(true)">全选</button> <button class="btn btn-default"  ng-click="params.selectedAll(false)">取消</button></li>
+                        <li role="menuitem" ng-repeat="city in cities"><label ng-click="params.setSelectedText()"><input type="checkbox"  ng-model="city.selected" ng-value="true">{{::city.Name}}</label></li>
+                    </ul>
+                </div> -->
+
+                <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
+                <button type="button" class="btn btn-primary" ng-click="toExcel()">导出</button>
+            </form>
+        </div>
+        <div style="overflow: auto;" js-height>
+          <table class="table table-striped table-hover table-bordered" id="dataTable">
+              <thead fix-head>
+                  <tr class="info">
+                      <th rowspan="2">省</th>
+                      <th rowspan="2">市</th>
+                      <th rowspan="2">一级代理商</th>
+                      <th rowspan="2">二级代理商</th>
+                      <th colspan="3" class="text-center">应收</th>
+                      <th colspan="3" class="text-center">实收</th>
+                      <th colspan="3" class="text-center">订单数量</th>
+                  </tr>
+                  <tr class="info">
+                      <th>小规模</th>
+                      <th>一般纳税人</th>
+                      <th>合计</th>
+                      <th>小规模</th>
+                      <th>一般纳税人</th>
+                      <th>合计</th>
+                      <th>小规模</th>
+                      <th>一般纳税人</th>
+                      <th>合计</th>
+                  </tr>
+                  <tr>
+                      <th colspan="4">合计</th>
+                      <th class="text-right">{{aYSSmall.toFixed(2)}}</th>
+                      <th class="text-right">{{aYSGeneral.toFixed(2)}}</th>
+                      <th class="text-right">{{aYSHJ.toFixed(2)}}</th>
+                      <th class="text-right">{{aSSSmall.toFixed(2)}}</th>
+                      <th class="text-right">{{aSSGeneral.toFixed(2)}}</th>
+                      <th class="text-right">{{aSSHJ.toFixed(2)}}</th>
+                      <th class="text-right">{{aOrderNumSmall}}</th>
+                      <th class="text-right">{{aOrderNumGeneral}}</th>
+                      <th class="text-right">{{aOrderNumHJ}}</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="row in rows track by row.ChannelId">
+                      <td ng-repeat="col in row.cols  track by $index" ng-class="{'text-right': rightAlign && rightAlign.indexOf($index)>-1}" ng-bind-html="col"></td>
+                  </tr>
+              </tbody>
+          </table>
+        </div>
+    </div>
+</div>

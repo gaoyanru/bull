@@ -1,0 +1,54 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">充值申请</h3>
+</div>
+<div class="modal-body form-inline recharge-modal">
+    <div class="row">
+        <span class="required">充值金额</span>
+        <div class="form-group" style="padding: 6px 12px;display: inline-block;">
+          <span style="vertical-align: middle;">{{rAmount}}元</span>
+        </div>
+    </div>
+    <div class="row">
+        <span class="required">付款明细</span>
+        <div class="form-group">
+            <table class="table table-hover table-bordered" style="width:500px;">
+                <thead>
+                    <tr class="info">
+                        <th>*付款账户</th>
+                        <th>*付款时间</th>
+                        <th>*付款金额（元）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rg in rlist">
+                        <td style="height:34px;line-height: 20px; padding: 6px 12px;">{{rg.AccountOfPayment}}</td>
+                        <td style="height:34px;line-height: 20px; padding: 6px 12px;">{{rg.PayTime|date:'yyyy-MM-dd'}}</td>
+                        <td class="text-right" style="height:34px;line-height: 20px; padding: 6px 12px;">{{rg.Amount}}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" style="height:20px;line-height: 34px;font-weight: 600;" class="text-center">付款金额合计</td>
+                      <td style="height:34px;line-height: 20px; padding: 6px 12px;" class="text-right">{{reduce(rlist)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+      <span class="required">付款凭证</span>
+      <div class="form-group" style="max-width: 600px;">
+          <div class="img-container clearfix">
+              <img ng-repeat="img in imgs" ng-src="{{img}}" additional="?x-oss-process=image/resize,m_lfit,h_75,w_100" alt="" pic-view>
+          </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <span style="width: 90px;padding-left:30px;">备注</span>
+      <div class="form-group"></div>
+      <textarea cols="100" rows="3" ng-model="Remark" readonly></textarea>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>

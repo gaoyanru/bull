@@ -1,0 +1,138 @@
+<div class="m-order">
+    <div class="m-order-content">
+        <h2>
+            订单查询
+        </h2>
+
+        <div class="table-container">
+            <div class="well well-sm u-search">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="cusname">公司名称</label>：
+                            <input type="text" class="form-control" id="cusname" ng-model="searchParams.cusname"  />
+                        </div>
+                        <div class="form-group">
+                            <label> 法人：</label>
+                            <input type="text" ng-model="LegalPerson" class="form-control">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="start" uib-datepicker-popup="yyyy-MM-dd" ng-required date-options="datepickerConfig.options" close-text="{{::datepickerConfig.closeText}}" clear-text="{{::datepickerConfig.clearText}}" current-text="{{::datepickerConfig.currentText}}" is-open="datepickerConfig.startFlag" ng-click="showDatepicker('start')" readonly="" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="showDatepicker('start')">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+                        </div> —
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="end" uib-datepicker-popup="yyyy-MM-dd" ng-required date-options="datepickerConfig.options" close-text="{{::datepickerConfig.closeText}}" clear-text="{{::datepickerConfig.clearText}}" current-text="{{::datepickerConfig.currentText}}" is-open="datepickerConfig.endFlag" ng-click="showDatepicker('end')" readonly="" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="showDatepicker('end')">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="province">审核状态</label>：
+                        <select class="form-control" id="province" ng-model="selectedStatus" ng-options="status.name for status in statusModel ">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>订单类型</label>：
+                        <select class="form-control" ng-model="category">
+                            <option value="0">全部</option>
+                            <option value="1">正常</option>
+                            <option value="2">预提单初审</option>
+                            <option value="3">预提单复审</option>
+                        </select>
+                    </div>
+                    <div class="form-group" ng-show="user.IsCenter == 1">
+                        <label for="agent">代理商</label>：
+                        <input type="text" ng-model="channel" typeahead-min-length=0 uib-typeahead="agent as agent.ChannelName for agent in agentModel | filter:$viewValue | limitTo:8" class="form-control">
+
+                    </div>
+                    <button type="button" class="btn btn-primary" ng-click="pageChanged()">查询</button>
+                </form>
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr class="info">
+                        <!-- <th>订单编号</th> -->
+                        <th>省</th>
+                        <th>市</th>
+                        <th>一级代理商</th>
+                        <th>二级代理商</th>
+                        <th>公司名称</th>
+                        <th>类型</th>
+                        <th>合同金额</th>
+                        <th>礼包</th>
+                        <th>活动</th>
+                        <th>法人</th>
+                        <th>状态</th>
+                        <th>订单日期</th>
+                        <th ng-if="user.Category !==7">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in orderModel">
+                        <!-- <td>{{::order.OrderId}}</td> -->
+                        <td>{{::order.ProvinceName}}</td>
+                        <td>{{::order.CityName}}</td>
+                        <td>{{::order.ChannelName1}}</td>
+                        <td>{{::order.ChannelName2}}</td>
+                        <td>{{::order.Name}}</td>
+                        <td>{{::order.Category|cusCategory}}</td>
+                        <td class="text-right">{{::order.ContractAmount}}</td>
+                        <td> <span ng-if="order.GiftTypeId">{{::(order.GiftTypeName + '(￥' + order.GiftPrice + ')') }}</span></td>
+                        <td>{{::order.PromotionName}}</td>
+                        <td>{{order.LegalPerson}}</td>
+                        <td>{{order.Status | filterStatus}}</td>
+                        <td>{{::order.CreateDate}}</td>
+                        <td ng-if="user.Category !==7"><a href="javascript:;" ng-click="view(order.OrderId)">查看</a>
+                        <a href="javascript:;" ng-click="modify(order)" ng-if="order.Status == 1 || order.Status == 3 || user.IsCenter">修改</a>
+                        <a href="javascript:;" ng-click="delete(order.OrderId)" ng-if="order.Status == 1 || order.Status == 3">删除</a>
+                        <a href="javascript:;" ng-click="reback(order.OrderId)" ng-if="order.Status == 2 && user.IsCenter">审核回退</a>
+                        <a href="javascript:;" ng-click="guaqi(order)" ng-if="order.Status == 2 && user.IsCenter">挂起</a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="u-paginator">
+            <uib-pagination
+                total-items="paginator.total"
+                items-per-page="paginator.perPage"
+                boundary-links="true"
+                ng-model="paginator.currentPage"
+                previous-text="{{::paginator.previousText}}"
+                next-text="{{::paginator.nextText}}"
+                first-text="{{::paginator.firstText}}"
+                last-text="{{::paginator.lastText}}"
+                force-ellipses="true"
+                max-size="6"
+                num-pages="paginator.numPages"
+                ng-change="pageChanged()">
+
+            </uib-pagination>
+            <div class="u-pages">
+                <span>{{paginator.currentPage}}</span>
+                /
+                <span>{{paginator.numPages}}</span>
+            </div>
+            <form name="paginatorForm" novalidate>
+                <div class="input-group">
+                    <input type="number" name="paginatorInput" ng-model="currentPage" required min="1" max="{{paginator.numPages}}" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"  ng-disabled="!paginatorForm.$valid" ng-click="setCurrentPage()">Go!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

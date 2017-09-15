@@ -1,0 +1,151 @@
+<div class="m-agent">
+    <h2 class="title">代理商申请</h2>
+    <form class="form-inline agform" ng-class="{submited:submited}" name="agForm" novalidate ng-submit="ok()" ng-init="$parent.agForm = agForm">
+        <div class="clearfix" style="width:80%">
+            <div class="form-group col-md-6">
+                <label for="" class="required">代理商名称</label>
+                <input type="text" class="form-control" ng-model="item.ChannelName" required />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="" class="required">城市</label>
+                <select ng-model="item.CityCode" class="form-control" required>
+                    <option ng-repeat="city in cities" ng-selected="item.CityCode == city.Code" value="{{::city.Code}}">{{::city.Name}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">负责人</label>
+                <input type="text" class="form-control" ng-model="item.Principal" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">手机</label>
+                <input type="text" class="form-control" ng-model="item.Mobile" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">固定电话</label>
+                <input type="text" class="form-control" ng-model="item.Tel" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">传真</label>
+                <input type="text" class="form-control" ng-model="item.Fax" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">地址</label>
+                <input type="text" class="form-control" ng-model="item.Address" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">邮政编码</label>
+                <input type="text" class="form-control" ng-model="item.Postcode" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">法人</label>
+                <input type="text" class="form-control" ng-model="item.LegalPerson" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">开户行</label>
+                <input type="text" class="form-control" ng-model="item.DepositBank" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">开户行支行</label>
+                <input type="text" class="form-control" ng-model="item.BranchBank" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">开户名</label>
+                <input type="text" class="form-control" ng-model="item.AccountName" />
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">银行账号</label>
+                <input type="text" class="form-control" ng-model="item.BankAccount" />
+            </div>
+            <div class="form-group col-md-6" ng-if="(!item.ChannelId) && isCenter">
+                <label for="" class="required">总经理用户名</label>
+                <input type="text" class="form-control" name="userName" ng-pattern="/^[@a-zA-Z0-9_\u4e00-\u9fa5]+$/" ng-model="item.UserName" required />
+                <span class="text-danger" ng-messages="agForm.userName.$error">
+                <i ng-message="pattern">
+                    请输入汉字数字字母或者下划线的任意组合
+                </i>
+            </span>
+            </div>
+            <div class="form-group col-md-6" ng-if="(!item.ChannelId) && isCenter">
+                <label for="" class="required">总经理密码</label>
+                <input type="text" class="form-control" ng-model="item.PassWrod" required/>
+            </div>
+        </div>
+        <hr class="col-md-12" />
+        <div class="clearfix" style="width:80%">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="text-center"><span class="upload_btn pull-right"><a href="javascript:;" class="btn btn-primary btn-sm" role="button">上传</a><input style="font-size:12px;" type="file" nv-file-select="" uploader="uploader1" /></span><span style="font-weight:700">上传身份证 </span> </h4>
+                        <div class="progress" style="">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{ 'width': uploader1.progress + '%' }" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <a href="{{item.IdCard}}" target="_blank" ng-if="item.IdCard">
+                        <img class="order-img thumbnail" ng-src="{{item.IdCard}}" alt="" style="width:240px; height:190px;"></a>
+                    </a>
+                    <div class="thumbnail noImg" ng-if="!item.IdCard"></div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="text-center"><span class="upload_btn pull-right"><a href="javascript:;" class="btn btn-primary btn-sm" role="button">上传</a><input style="font-size:12px;" type="file" nv-file-select="" uploader="uploader2" /></span><span style="font-weight:700">代帐资质 </span> </h4>
+                        <div class="progress" style="">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{ 'width': uploader2.progress + '%' }" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <a href="{{item.Aptitude}}" target="_blank" ng-if="item.Aptitude">
+                        <img class="order-img thumbnail" ng-src="{{item.Aptitude}}" alt="" style="width:240px; height:190px;"></a>
+                    </a>
+                    <div class="thumbnail noImg" ng-if="!item.Aptitude"></div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="text-center"><span class="upload_btn pull-right"><a href="javascript:;" class="btn btn-primary btn-sm" role="button">上传</a><input style="font-size:12px;" type="file" nv-file-select="" uploader="uploader3" /></span><span style="font-weight:700">营业执照(三证合一) </span> </h4>
+                        <div class="progress" style="">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{ 'width': uploader3.progress + '%' }" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <a href="{{item.Documents}}" target="_blank" ng-if="item.Documents">
+                        <img class="order-img thumbnail" ng-src="{{item.Documents}}" alt="" style="width:240px; height:190px;"></a>
+                    </a>
+                    <div class="thumbnail noImg" ng-if="!item.Documents"></div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="text-center"><span class="upload_btn pull-right"><a href="javascript:;" class="btn btn-primary btn-sm" role="button">上传</a><input style="font-size:12px;" type="file" nv-file-select="" uploader="uploader4" /></span><span style="font-weight:700">税务登记证 </span> </h4>
+                        <div class="progress" style="">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{ 'width': uploader4.progress + '%' }" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <a href="{{item.Documents2}}" target="_blank" ng-if="item.Documents2">
+                        <img class="order-img thumbnail" ng-src="{{item.Documents2}}" alt="" style="width:240px; height:190px;"></a>
+                    </a>
+                    <div class="thumbnail noImg" ng-if="!item.Documents2"></div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h4 class="text-center"><span class="upload_btn pull-right"><a href="javascript:;" class="btn btn-primary btn-sm" role="button">上传</a><input style="font-size:12px;" type="file" nv-file-select="" uploader="uploader5" /></span><span style="font-weight:700">组织机构代码证 </span> </h4>
+                        <div class="progress" style="">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{ 'width': uploader5.progress + '%' }" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                    <a href="{{item.Documents3}}" target="_blank" ng-if="item.Documents3">
+                        <img class="order-img thumbnail" ng-src="{{item.Documents3}}" alt="" style="width:240px; height:190px;"></a>
+                    </a>
+                    <div class="thumbnail noImg" ng-if="!item.Documents3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-12 text-center" ng-if="!isModal">
+            <button class="btn btn-primary" type="submit">添加</button>
+            <button class="btn btn-default" type="reset">重置</button>
+        </div>
+    </form>
+</div>

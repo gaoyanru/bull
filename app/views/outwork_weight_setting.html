@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">{{::title}}</h3>
+</div>
+<div class="modal-body">
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th style="width:150px;">序号</th>
+                <th style="width:350px;">子任务名称</th>
+                <th style="width:150px;">权重</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in Tasks|filter:{selected:true} as result track by item.TaskId">
+                <td>{{$index+1}}</td>
+                <td>{{item.TaskName}}</td>
+                <td><input type="number" ng-model="item._weight" ng-init="item._weight=$index+1" min="1" max="99" maxlength="2"  ng-model-options="{allowInvalid:true}" ng-change="item._weight = toInt(item._weight)" min="1"></td>
+                <td>
+                    <a ng-click="delete(item)" style="cursor:pointer">删除</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-disabled="cusform.$invalid" ng-click="ok()">确认</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+</div>

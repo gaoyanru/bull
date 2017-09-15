@@ -1,0 +1,23 @@
+.m-addUser{
+    padding: 0 10px;
+}
+
+.m-addUser form{
+    margin-top: 10px;
+    overflow: hidden;
+}
+.m-addUser form .btn{
+    width: 100px;
+    margin-right: 40px;
+}
+.m-addUser form .btn:last-child{
+    margin-right: 0;
+}
+.m-addUser form .text-danger{
+    line-height: 30px;
+}
+
+.m-addUser .tree-container span.selectd{
+    color: #f00;
+    font-weight: bold;
+}

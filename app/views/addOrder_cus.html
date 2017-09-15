@@ -1,0 +1,143 @@
+<div class="order">
+    <form class="form-horizontal" name="myForm" ng-submit="save()" novalidate ng-controller="AddOrderCtrl" ng-class="{readonly:isReadOnly,submited:submited}">
+        <p ng-if="hasBalance" class="u-balance">账户余额:<span style="color: red">{{::balance}}</span> </p>
+        <p>
+            <label>销售员：</label> <span ng-if="postData.OrderId" ng-bind="postData.SalerName"></span>
+            <select ng-if="!postData.OrderId" ng-model="postData.SalesId">
+                <option value="{{::sale.UserId}}" ng-repeat="sale in sales" ng-bind="sale.RealName"></option>
+            </select>
+            <span ng-if="postData.OrderId">订单号:{{::postData.OrderId}} ,&nbsp;所属公司:{{::postData.ChannelName}},&nbsp;提单人:{{::postData.BillName}}</span>
+        </p>
+        <div bu-group="客户信息">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th colspan="4" style="text-align:left;">
+                            <span class="t_header">客户基本信息</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="required">联系人</td>
+                        <td>
+                            <input type="text" ng-model="postData.Contacts"  ng-if="!isReadOnly" maxlength="10" required/>
+                            <span ng-bind="postData.Contacts" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">手机</td>
+                        <td>
+                            <input type="text" ng-model="postData.Mobile" ng-if="!isReadOnly" maxlength="11" required/>
+                            <span ng-bind="postData.Mobile" ng-if="isReadOnly"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">所在城市</td>
+                        <td>
+                            <select ng-model="postData.CityCode" ng-disabled="isReadOnly" ng-change="setprice(true);" required>
+                                <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
+                            </select>
+                        </td>
+                         <td class="required">公司性质</td>
+                        <td>
+                            <select ng-model="postData.AddedValue" ng-disabled="isReadOnly" required ng-change="setprice();">
+                                <option value="1">小规模</option>
+                                <option value="2">一般纳税人</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">联系人</td>
+                        <td>
+                            <input type="text" ng-model="postData.Contacts"  ng-if="!isReadOnly" maxlength="10" required/>
+                            <span ng-bind="postData.Contacts" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">手机</td>
+                        <td>
+                            <input type="text" ng-model="postData.Mobile" ng-if="!isReadOnly" maxlength="11" required/>
+                            <span ng-bind="postData.Mobile" ng-if="isReadOnly"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">法人</td>
+                        <td>
+                            <input type="text" ng-model="postData.LegalPerson" ng-if="!isReadOnly" maxlength="11" required/>
+                            <span ng-bind="postData.LegalPerson" ng-if="isReadOnly"></span>
+                        </td>
+                        <td class="required">上传法人身份证照片</td>
+                        <td>
+                            <img ng-src="{{postData.BusinessLicense}}" ng-if="postData.BusinessLicense" class="order-img" alt="" pic-view>
+                            <input type="file" nv-file-select="" uploader="uploader2" ng-show="!isReadOnly" />
+                            <div class="progress" style="width:80%" ng-if="uploader2.isUploading">
+                                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader2.progress + '%' }" style="width: 100%;"></div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div bu-group="合同信息">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="required">合同编号</td>
+                        <td>
+                            <input type="text" ng-model="postData.ContractNO" ng-if="!isReadOnly" required/>
+                            <span ng-bind="postData.ContractNO" ng-if="isReadOnly"></span>
+                        </td>
+                        <!-- <td class="required">保密手机</td>
+                    <td>
+                        <input type="text" ng-model="postData.ContractMobile" ng-readonly="isReadOnly" required/>
+                    </td> -->
+                        <td class="required">付款方式</td>
+                        <td>
+                            <select ng-model="postData.PayType" ng-disabled="isReadOnly" required ng-change="setprice();setEndDate();">
+                                <option value="3">季付</option>
+                                <option value="1">半年付</option>
+                                <option value="2">年付</option>
+                                <option value="4" ng-if="postData.AddedValue==1">零税(半年)</option>
+                            </select>
+                            <select ng-model="postData.gift" ng-if="showGift && !isReadOnly"  ng-change="setgift();setEndDate();">
+                                <option value="">不使用礼包</option>
+                                <option ng-repeat="item in gifts" value="{{item.Id}}" ng-disabled="{{item.Num ===0}}">{{::item.GiftTypeName}}(￥{{::item.Price}})</option>
+                            </select>
+                            <span ng-if="isReadOnly && postData.GiftStr">礼包:{{::postData.GiftStr}}</span>
+                            <br> <small style="color:red">注:零税指零报税并且零票据。</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="required">签订日期</td>
+                        <td>
+                            <span class="date_sel">
+                            <input type="text"  uib-datepicker-popup ng-model="postData.ContractDate" is-open="dateIsOpened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly  ng-click="dateIsOpened = !dateIsOpened" ng-disabled="isReadOnly" required/>
+                            <button type="button"  ng-click="dateIsOpened = !dateIsOpened" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                        </td>
+                        <td class="required">合同金额</td>
+                        <td style="min-width:400px;width:45%;">
+                            <input type="text" ng-model="postData.ContractAmount" ng-if="!isReadOnly" ng-readonly="true" disabled="" required/><span ng-bind="postData.ContractAmount" ng-if="isReadOnly"></span>
+                            <br> <small style="color:red">注:合同金额根据所属城市、公司性质和付款方式自动计算，不包含礼包价格。</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>备注</td>
+                        <td colspan="3">
+                            <input type="text" ng-model="postData.ContractDescription" ng-if="!isReadOnly" style="width:90%" />
+                            <span ng-bind="postData.ContractDescription" ng-if="isReadOnly">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div bu-group="提单备注">
+            <div>提单特殊备注信息</div>
+            <textarea name="" id="" cols="100" rows="3" ng-model="postData.Remark" ng-if="!isReadOnly"></textarea>
+            <pre ng-bind="postData.Remark" ng-if="isReadOnly"></pre>
+        </div>
+        <div bu-group="拒审原因" ng-if="postData.Status === 3">
+            <span ng-bind="postData.BackReason" style="color:red;"></span>
+        </div>
+        <div class="text-center container-fluid">
+            <button ng-show="!isReadOnly" type="submit" class="btn btn-primary save">保存</button>
+            <button ng-if="postData.Status === 3 && !isReadOnly" type="button" class="btn btn-primary save" ng-click="save(true)">提交</button>
+            <a ng-if="showClose" class="btn btn-primary" ng-click="close();">关闭</a>
+        </div>
+    </form>
+</div>

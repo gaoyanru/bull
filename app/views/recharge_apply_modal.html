@@ -1,0 +1,73 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">充值申请</h3>
+</div>
+<div class="modal-body form-inline recharge-modal">
+    <div class="row">
+        <span class="required">充值金额</span>
+        <div class="form-group">
+            <button class="btn btn-amount" ng-class="{'btn-selected':rAmount==5000}" ng-click="rAmount=5000">5000</button>
+            <button class="btn btn-amount" ng-class="{'btn-selected':rAmount==10000}" ng-click="rAmount=10000">10000</button>
+            <button class="btn btn-amount" ng-class="{'btn-selected':rAmount!=5000&& rAmount!=10000}" ng-click="rAmount=0">更多</button>
+            <input ng-show="rAmount!= 5000 && rAmount!=10000" ng-model="rAmount" type="text" ng-change="rAmount = Math.round(rAmount*100)/100 || ''" ng-model-options="{updateOn: 'blur',debounce: { 'default': 1000, 'blur': 0 }}" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <span class="required">付款明细</span>
+        <div class="form-group">
+            <table class="table table-hover">
+                <thead>
+                    <tr class="info">
+                        <th style="border: 1px solid #ddd;">*付款账户</th>
+                        <th style="border: 1px solid #ddd;">*付款时间</th>
+                        <th style="border: 1px solid #ddd;">*付款金额（元）</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="rg in rlist">
+                        <td><input type="text" class="form-control" ng-model="rg.AccountOfPayment"></td>
+                        <td>
+                            <p class="input-group" style="margin:0">
+                                <input type="text" class="form-control" ng-click="rg.opened= true" ng-model="rg.PayTime" uib-datepicker-popup="yyyy-MM-dd" ng-model="dt" is-open="rg.opened" datepicker-options="dateOptions" close-text="关闭" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                  <button type="button" class="btn btn-default" ng-click="rg.opened= true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" style="text-align: right;" ng-model="rg.Amount" ng-change="rg.Amount = Math.round(rg.Amount*100)/100 || ''" ng-model-options="{updateOn: 'blur',debounce: { 'default': 1000, 'blur': 0 }}">
+                        </td>
+                        <td class="opt">
+                            <i class="glyphicon glyphicon-minus" aria-hidden="true" ng-if="$index>0 || rlist.length>1" ng-click="delete($index)"></i> <i class="glyphicon glyphicon-plus" aria-hidden="true" ng-if="$index+1 == rlist.length" ng-click="rlist.push({})"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td colspan="2" style="border: 1px solid #ddd; height:20px;line-height: 34px;font-weight: 600;" class="text-center">付款金额合计</td>
+                      <td style="border: 1px solid #ddd; height:34px;line-height: 20px; padding: 6px 12px;" class="text-right">{{reduce(rlist)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+      <span class="required">付款凭证</span>
+      <div class="form-group" style="max-width: 600px;">
+          <span class="btn btn-default" style="position: relative;">
+            上传文件
+            <input type="file" nv-file-select="" uploader="uploader1" title="上传文件" multiple style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;opacity: 0;width: 100%;" />
+          </span>
+          <div class="img-container clearfix">
+              <img ng-repeat="img in imgs" ng-src="{{img}}" additional="?x-oss-process=image/resize,m_lfit,h_75,w_100" alt="" pic-view pic-delete="imgs.splice({{$index}},1)">
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <span style="width: 90px;padding-left:30px;">备注</span>
+      <div class="form-group"></div>
+      <textarea cols="100" rows="3" ng-model="Remark"></textarea>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="save()">保存</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>

@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">{{::title}}</h3>
+</div>
+<div class="modal-body clearfix">
+    <form name="vm.form" novalidate class="form-inline">
+	    <formly-form model="vm.model" fields="vm.fields" options="vm.options" form="vm.form">
+	    </formly-form>
+    </form>
+</form>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="save()">保存</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>
+

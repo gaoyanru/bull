@@ -1,0 +1,50 @@
+<div class="m-achieve">
+    <h2>
+        签单类型统计
+    </h2>
+    <div class="table-container">
+        <div class="well well-sm u-search">
+            <form class="form-inline">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="dateIsOpenedS" datepicker-options="dateOptions1" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedS = !dateIsOpenedS" ng-change="startChange()" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"  ng-click="dateIsOpenedS = !dateIsOpenedS"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div> —
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input class="form-control" type="text" uib-datepicker-popup ng-model="enddate" is-open="dateIsOpenedE" datepicker-options="dateOptions2" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedE = !dateIsOpenedE" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"  ng-click="dateIsOpenedE = !dateIsOpenedE"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
+            </form>
+        </div>
+        <table class="table table-striped table-hover table-bordered" id="dataTable">
+            <thead>
+                <tr class="info">
+                    <th>城市</th>
+                    <th>一级渠道</th>
+                    <th>二级渠道</th>               
+                    <th ng-repeat="pn in priceNames">{{pn}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key,row) in rows">
+                    <td >{{row.CityName}}</td>
+                    <td >{{row.ChannelName1}}</td>
+                    <td >{{row.ChannelName2}}</td>
+                    <td ng-repeat="pn in priceNames" class="text-right">{{row[pn]}}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">合计</th>
+                   <td ng-repeat="pn in priceNames" class="text-right">{{total[pn]||0}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

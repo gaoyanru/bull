@@ -1,0 +1,17 @@
+.m-finance{
+    padding: 0 15px;
+}
+.m-finance h2{
+    margin: 0;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 15px;
+    border-bottom: solid 2px #001D7E;
+}
+.m-finance .u-search{
+    margin-bottom: 15px;
+}
+.m-finance  select.form-control{
+    width: 120px;
+}

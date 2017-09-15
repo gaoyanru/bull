@@ -1,0 +1,49 @@
+.recharge{
+	padding: 0 10px;
+}
+.recharge h2{
+    margin: 0;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 15px;
+    border-bottom: solid 2px #001D7E;
+}
+.recharge h2 .btn{
+    margin-top: 8px;
+}
+.recharge .table{
+    margin-top: 15px;
+}
+.agform .form-group{
+	height: 28px;
+	margin-bottom: 12px;
+}
+/*.agform select{
+	height: 25px;
+}*/
+.agform label{
+	width: 150px;
+	text-align: right;
+    margin-top: 9px;
+}
+.agform label:after{
+	content: ':';
+}
+.m-agent{
+    padding: 0 10px;
+}
+.m-agent h2.title{
+    margin: 0;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 15px;
+    border-bottom: solid 2px #001D7E;
+}
+.m-agent select.form-group{
+    height: 28px;
+}
+.m-agent form{
+    margin-top: 15px;
+}

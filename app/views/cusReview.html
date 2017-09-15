@@ -1,0 +1,72 @@
+<div class="o-list">
+    <h2>
+        订单审核
+    </h2>
+    <div class="well well-sm u-search">
+        <form class="form-inline">
+            <div class="form-group">
+                <label>代理商</label>：
+                <select ng-model="channelId" class="form-control">
+                    <option ng-value="undefined" ng-selected="true">全部</option>
+                    <option ng-repeat="item in agents" ng-value="item.ChannelId" ng-selected="false" ng-bind="item.ChannelName"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="sdateIsOpened" datepicker-options="sdateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="sdateIsOpened = !sdateIsOpened" ng-change="setMinDate()" />
+                    <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"  ng-click="sdateIsOpened = !sdateIsOpened"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                </div> —
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup ng-model="enddate" is-open="edateIsOpened" datepicker-options="edateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="edateIsOpened = !edateIsOpened" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"  ng-click="edateIsOpened = !edateIsOpened"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" ng-click="searchFn()">查询</button>
+            <button class="btn btn-default" ng-click="reset()">重置</button>
+        </form>
+    </div>
+    <div class="o-body">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr class="info">
+                    <th>序号</th>
+                    <th ng-repeat="head in headers" ng-bind="head"></th>
+                    <th>礼包</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in data">
+                    <td ng-bind="$index+1"></td>
+                    <td ng-repeat="col in row.cols  track by $index" ng-bind-html="col"></td>
+                    <td> <span ng-if="order.GiftTypeId">{{::(row.GiftTypeName + '(￥' + row.GiftPrice + ')') }}</span></td>
+                    <td>
+                        <div class="operate" ng-if="row.Status == 1"><a href="javascript:;" ng-click="view(row.OrderId)">查看</a> <a href="javascript:;" ng-click="audit(row.OrderId)">通过</a> <a href="javascript:;" ng-click="back(row.OrderId)">驳回</a></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="u-paginator">
+            <uib-pagination total-items="paginator.total" items-per-page="paginator.perPage" boundary-links="true" ng-model="paginator.currentPage" previous-text="{{::paginator.previousText}}" next-text="{{::paginator.nextText}}" first-text="{{::paginator.firstText}}" last-text="{{::paginator.lastText}}" force-ellipses="true" max-size="6" num-pages="paginator.numPages" ng-change="pageChanged()">
+            </uib-pagination>
+            <div class="u-pages">
+                <span>{{paginator.currentPage}}</span> /
+                <span>{{paginator.numPages}}</span>
+            </div>
+            <form name="paginatorForm" novalidate>
+                <div class="input-group">
+                    <input type="number" name="paginatorInput" ng-model="currentPage" required min="1" max="{{paginator.numPages}}" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"  ng-disabled="!paginatorForm.$valid" ng-click="setCurrentPage()">Go!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

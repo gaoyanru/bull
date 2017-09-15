@@ -1,0 +1,114 @@
+<div class="m-order">
+    <div class="m-order-content">
+        <h2>
+            发票审核
+        </h2>
+        <div class="table-container">
+            <div class="well well-sm u-search">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="">发票申请时间</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="start" uib-datepicker-popup="yyyy-MM-dd" ng-required date-options="datepickerConfig.options" close-text="{{::datepickerConfig.closeText}}" clear-text="{{::datepickerConfig.clearText}}" current-text="{{::datepickerConfig.currentText}}" is-open="datepickerConfig.startFlag" ng-click="showDatepicker('start')" readonly="" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="showDatepicker('start')">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+                        </div> —
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="end" uib-datepicker-popup="yyyy-MM-dd" ng-required date-options="datepickerConfig.options" close-text="{{::datepickerConfig.closeText}}" clear-text="{{::datepickerConfig.clearText}}" current-text="{{::datepickerConfig.currentText}}" is-open="datepickerConfig.endFlag" ng-click="showDatepicker('end')" readonly="" />
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="showDatepicker('end')">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show="user.IsCenter == 1">
+                        <label for="agent">代理商</label>：
+                        <input type="text" ng-model="channel" typeahead-min-length=0 uib-typeahead="agent as agent.ChannelName for agent in agentModel | filter:$viewValue | limitTo:8" class="form-control">
+                    </div>
+                    <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
+                </form>
+            </div>
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr class="info">
+                        <th>发票申请编号</th>
+                        <th>省</th>
+                        <th>市</th>
+                        <th>一级代理商</th>
+                        <th>二级代理商</th>
+                        <th>发票性质</th>
+                        <th>发票类型</th>
+                        <th>发票抬头</th>
+                        <th>税号</th>
+                        <th>发票金额</th>
+                        <th>申请时间</th>
+                        <th>状态</th>
+                        <th>审核评价</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr><td>{{invoices.length}}</td></tr> -->
+                    <tr ng-repeat="invoice in invoices track by invoice.InvoiceId">
+                        <td>{{::invoice.InvoiceId}}</td>
+                        <td>{{::invoice.ProvinceName}}</td>
+                        <td>{{::invoice.CityName}}</td>
+                        <td>{{::invoice.ChannelName1}}</td>
+                        <td>{{::invoice.ChannelName2}}</td>
+                        <td>{{::invoice.Property | filterInvoiceProperty}} </td>
+                        <td>{{::invoice.Category | filterInvoiceCategory}}</td>
+                        <td>{{::invoice.Title}}</td>
+                        <td>{{::invoice.InvoiceNumber}}</td>
+                        <td class="text-right">{{::invoice.Amount}}</td>
+                        <td class="text-right">{{::invoice.ApplyDate.substr(0,10)}}</td>
+                        <td>{{::invoice.Status|filterStatus}}</td>
+                        <td>{{::invoice.AuditMsg}}</td>
+                        <td>
+                            <a href="javascript:;" ng-click="scan(invoice)" >查看</a>&nbsp;
+                            <a href="javascript:;" ng-click="accept(invoice)">开具发票</a> &nbsp; 
+                            <a href="javascript:;" ng-if="invoice.Status!=3" ng-click="reject(invoice)">拒绝开票</a> 
+                        </td>
+                    </tr> 
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="u-paginator">
+            <uib-pagination
+                total-items="paginator.total"
+                items-per-page="paginator.perPage"
+                boundary-links="true"
+                ng-model="paginator.currentPage"
+                previous-text="{{::paginator.previousText}}"
+                next-text="{{::paginator.nextText}}"
+                first-text="{{::paginator.firstText}}"
+                last-text="{{::paginator.lastText}}"
+                force-ellipses="true"
+                max-size="6"
+                num-pages="paginator.numPages"
+                ng-change="pageChanged()">
+
+            </uib-pagination>
+            <div class="u-pages">
+                <span>{{paginator.currentPage}}</span>
+                /
+                <span>{{paginator.numPages}}</span>
+            </div>
+            <form name="paginatorForm" novalidate>
+                <div class="input-group">
+                    <input type="number" name="paginatorInput" ng-model="currentPage" required min="1" max="{{paginator.numPages}}" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"  ng-disabled="!paginatorForm.$valid" ng-click="setCurrentPage()">Go!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

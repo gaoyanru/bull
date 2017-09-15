@@ -1,0 +1,158 @@
+<!doctype html>
+<html ng-app="channelApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>噼里啪渠道系统</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="bower_components/angular-tree-control/css/tree-control.css" />
+    <link rel="stylesheet" href="bower_components/imageviewer/dist/viewer.css" />
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/login.css" />
+    <link rel="stylesheet" href="styles/order.css" />
+    <link rel="stylesheet" href="styles/balance.css" />
+    <link rel="stylesheet" href="styles/finance.css" />
+    <link rel="stylesheet" href="styles/achieve.css" />
+    <link rel="stylesheet" href="styles/users.css" />
+    <link rel="stylesheet" href="styles/recharge.css" />
+    <link rel="stylesheet" href="styles/addUser.css" />
+    <link rel="stylesheet" href="styles/organize.css" />
+    <link rel="stylesheet" href="styles/orderSearch.css" />
+    <link rel="stylesheet" href="styles/invoice.css" />
+    <link rel="stylesheet" href="styles/customer.css" />
+    <link rel="stylesheet" href="styles/material.css" />
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div ui-view class="main" layout="column">
+    </div>
+    <div class=" loading " ng-if="isLoading ">
+        <div class="loading_icon ">
+            <div class="object " id="object_one"></div>
+            <div class="object " id="object_two"></div>
+            <div class="object " id="object_three"></div>
+            <div class="loading_text ">Loading ...</div>
+        </div>
+    </div>
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-tree-control/angular-tree-control.js"></script>
+    <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <script src="bower_components/api-check/dist/api-check.js"></script>
+    <script src="bower_components/angular-formly/dist/formly.js"></script>
+    <script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
+    <script src="bower_components/angular-fixed-table-header/src/fixed-table-header.js"></script>
+    <script src="bower_components/imageviewer/dist/viewer.js"></script>
+    <script src="bower_components/echarts/dist/echarts.js"></script>
+    <script src="bower_components/angular-echarts/dist/angular-echarts.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js "></script>
+    <script src="scripts/services/user.js "></script>
+    <script src="scripts/services/angular-locale_zh-cn.js "></script>
+    <script src="scripts/controllers/main.js "></script>
+    <script src="scripts/controllers/login.js "></script>
+    <script src="scripts/controllers/employee.js "></script>
+    <script src="scripts/controllers/finance.js "></script>
+    <script src="scripts/services/finance.js "></script>
+    <script src="scripts/controllers/addOrder.js "></script>
+    <script src="scripts/controllers/orderList.js "></script>
+    <script src="scripts/controllers/user.js "></script>
+    <script src="scripts/controllers/userList.js "></script>
+    <script src="scripts/controllers/addUser.js "></script>
+    <script src="scripts/controllers/updateUser.js "></script>
+    <script src="scripts/controllers/customers.js "></script>
+    <script src="scripts/controllers/addCustomer.js "></script>
+    <script src="scripts/controllers/customer_pub.js "></script>
+    <script src="scripts/controllers/customer_setting.js "></script>
+    <script src="scripts/controllers/customer_total.js "></script>
+    <script src="scripts/controllers/customer_totaltoc.js "></script>
+    <script src="scripts/services/userList.js "></script>
+    <script src="scripts/controllers/addOrganize.js "></script>
+    <script src="scripts/controllers/updateOrganize.js "></script>
+    <script src="scripts/controllers/delOrganize.js "></script>
+    <script src="scripts/services/organize.js "></script>
+    <script src="scripts/controllers/orderSearch.js "></script>
+    <script src="scripts/services/orderSearch.js "></script>
+
+    <script src="scripts/directives/bugroup.js "></script>
+    <script src="scripts/directives/buSelect.js "></script>
+    <script src="scripts/directives/jsheight.js "></script>
+    <script src="scripts/directives/picview.js "></script>
+
+    <script src="scripts/controllers/balance.js "></script>
+    <script src="scripts/controllers/achieve.js "></script>
+    <script src="scripts/controllers/recharge.js "></script>
+    <script src="scripts/controllers/review.js "></script>
+    <script src="scripts/controllers/review_cus.js "></script>
+    <script src="scripts/controllers/review_tob.js "></script>
+    <script src="scripts/controllers/agent.js "></script>
+    <script src="scripts/controllers/updatePswd.js "></script>
+    <script src="scripts/controllers/invoice.js "></script>
+    <script src="scripts/controllers/invoiceApply.js "></script>
+    <script src="scripts/controllers/invoiceScan.js "></script>
+    <script src="scripts/controllers/InvoiceSearchCtrl.js "></script>
+    <script src="scripts/controllers/addressList.js "></script>
+    <script src="scripts/controllers/customer_signed.js "></script>
+    <script src="scripts/controllers/orderstob.js "></script>
+
+    <script src="scripts/controllers/ob_add.js "></script>
+    <script src="scripts/controllers/ob_list.js "></script>
+
+    <script src="scripts/controllers/dateremind.js "></script>
+    <script src="scripts/controllers/conchange.js "></script>
+    <script src="scripts/controllers/newcus.js "></script>
+    <script src="scripts/controllers/statis_paytype.js "></script>
+    <script src="scripts/controllers/statisProportionC.js "></script>
+    <script src="scripts/controllers/fd_settings.js "></script>
+    <script src="scripts/controllers/fd_aglist.js "></script>
+    <script src="scripts/controllers/users_fq.js "></script>
+    <script src="scripts/services/invoice.js "></script>
+    <script src="scripts/services/customer.js "></script>
+    <script src="scripts/services/toexcel.js "></script>
+    <script src="scripts/services/pinyin.js "></script>
+    <script src="scripts/controllers/invoiceReview.js "></script>
+    <script src="scripts/filter/filter.js "></script>
+
+    <script src="scripts/controllers/user_outworker.js "></script>
+    <script src="scripts/controllers/go_task_config.js "></script>
+    <script src="scripts/controllers/outwork_dict.js "></script>
+    <script src="scripts/controllers/order_outworker.js "></script>
+    <script src="scripts/controllers/RechargeApply.js "></script>
+    <script src="scripts/controllers/operateAccount.js"></script>
+    <script src="scripts/controllers/waitSetAccount.js"></script>
+    <script src="scripts/controllers/receipt.js"></script>
+    <script src="scripts/controllers/makeAccount.js"></script>
+    <!-- endbuild -->
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<div class="m-users clearfix">
+    <div class="m-group">
+        <h2>
+            组织结构
+        </h2>
+        <div class="u-group-btns">
+            <button class="btn btn-sm btn-primary" type="button" ng-click="addOragnize();">新增</button>
+            <!--<div class="dropdown">
+                <button class="btn btn-sm btn-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    新增
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dLabel">
+                    <li>
+                        <a href="javascript:void(0)" ng-click="addOragnize();">节点</a>
+                        <a href="javascript:void(0)" ng-click="addOragnize('root');">根节点</a>
+                    </li>
+                </ul>
+            </div>-->
+            <button class="btn btn-sm btn-info" type="button" ng-click="updateOragnize();">修改</button>
+            <button class="btn btn-sm btn-danger" type="button" ng-click="delOragnize()">删除</button>
+        </div>
+        <div class="u-group-container">
+            <treecontrol
+                class="tree-light"
+                tree-model="organizeTreeModel"
+                options="organizeTreeOptions"
+                on-selection="selectedNodeChange(node)"
+                expanded-nodes="expandNodes"
+                selected-node="selectedOrganizeTree">
+                <span>{{node.DepartmentName}}</span>
+            </treecontrol>
+        </div>
+    </div>
+
+    <div class="m-users-content" ui-view onload="refreshUserList()">
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="m-organize">
+    <div class="panel panel-danger">
+        <div class="panel-heading">删除机构</div>
+        <div class="panel-body">
+            <form class="form-horizontal" ng-submit="delOragnize()">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">移入新机构</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputName" disabled ng-model="selectedNode.DepartmentName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-sm-9">
+                        <div class="u-group-container">
+                            <treecontrol
+                                class="tree-light"
+                                tree-model="treeModel"
+                                options="treeOptions"
+                                on-selection="selectedNodeChange(node)"
+                                selected-node="selectedNode">
+                                <span>{{::node.DepartmentName}}</span>
+                            </treecontrol>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">删除</button>
+                        <button type="button" class="btn btn-link" ng-click="dismiss();">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

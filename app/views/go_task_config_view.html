@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">{{::title}}</h3>
+</div>
+<div class="modal-body">
+    <form name="cusform" novalidate class="form-inline">
+        <div class="clearfix" style="width:80%">
+            <div class="form-group col-md-6" style="margin: 12px 0;float:left">
+                <label for="" class="required">通办任务名称</label>
+                <input type="text" class="form-control" ng-model="task.CommonTaskName" maxlength="15" required />
+            </div>
+            <div class="form-group col-md-6" style="margin: 12px 0;float:left">
+                <label for="" class="required">排序权重</label>
+                <input  class="form-control" ng-model="task.Weight" min="1" max="99" maxlength="2" required  style="width:80px" ng-change="task.Weight = Math.floor(Math.abs(task.Weight)) || ''" />
+            </div>
+        </div>
+    </form>
+    <div>
+        <uib-accordion close-others="false">
+            <!--<div uib-accordion-group class="panel-default" is-open="true">
+                <uib-accordion-heading>
+                    {{item.name}}
+                    <div style="position:absolute;top:0;right:20px;">
+                        <button class="btn btn-primary pull-right" ng-click="ifuse($event)" style="margin:5px 0;height:29px;line-height:16px">&nbsp;&nbsp;&nbsp;启用&nbsp;&nbsp;&nbsp;</button>
+                        <button class="btn btn-primary pull-right" ng-click="add('',$event,'编辑任务')" style="margin:5px 20px 0;height:29px;line-height:16px;">&nbsp;&nbsp;&nbsp;编辑&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                </uib-accordion-heading>
+                <lable ng-repeat="_item in item.tasks"><input type="checkbox" name="" checked value="{{_item}}">{{$index+1}}.{{_item}}</lable>
+            </div>-->
+            <div uib-accordion-group class="panel-default" is-open="open1">
+                <uib-accordion-heading>税务任务 <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': open1, 'glyphicon-chevron-right': !open1}"></i></uib-accordion-heading>
+                <label ng-repeat="item in Tasks|filter:{BusinessType:1}:true" style="font-size:14px; min-width:200px;line-height:24px;display: inline-block; font-weight:400;"><input type="checkbox"  ng-model="item.checked">{{item.TaskName}}</label>
+            </div>
+            <!--ifChecked(item.Id) ifAdd && item.Status==1 ng-model="item.checked"-->
+            <div uib-accordion-group class="panel-default" is-open="open2">
+                <uib-accordion-heading>工商任务 <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': open2, 'glyphicon-chevron-right': !open2}"></i></uib-accordion-heading>
+                <label ng-repeat="item in Tasks|filter:{BusinessType:2}:true" style="font-size:14px; min-width:200px;line-height:24px;display: inline-block;font-weight:400;"><input type="checkbox"  ng-model="item.checked">{{item.TaskName}}</label>
+            </div>
+            <div uib-accordion-group class="panel-default" is-open="open3">
+                <uib-accordion-heading>其他任务 <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': open3, 'glyphicon-chevron-right': !open3}"></i></uib-accordion-heading>
+                <label ng-repeat="item in Tasks|filter:{BusinessType:3}:true" style="font-size:14px;min-width:200px;display: inline-block;line-height:24px;font-weight:400;"><input type="checkbox" ng-model="item.checked">{{item.TaskName}}</label>
+            </div>
+        </uib-accordion>
+        <table class="table table-striped table-hover table-bordered">
+          <thead>
+            <tr>
+              <th style="width:150px;">序号</th>
+              <th style="width:350px;">子任务名称</th>
+              <th style="width:150px;">权重</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in Tasks|filter:{checked:true} as result track by item.Id">
+                <td>{{$index+1}}</td>
+                <td>{{item.defaultValue || item.TaskName}}</td>
+                <td><input type="number" ng-model="item._weight" ng-init="item._weight=item._weight||result.length" min="1" max="99" maxlength="2" ng-change="task.Weight = Math.floor(Math.abs(task.Weight)) || ''"  min="1"></td>
+                <td>
+                    <a ng-click="item.checked=false" style="cursor:pointer" >删除</a>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-disabled="cusform.$invalid" ng-click="ok()">确认</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+</div>

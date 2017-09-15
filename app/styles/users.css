@@ -1,0 +1,58 @@
+.m-users{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+.m-users h2{
+    margin: 0;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 10px;
+    border-bottom: solid 2px #001D7E;
+}
+.m-users .u-group-container .tree-light li .tree-selected{
+    color: #f00;
+    font-weight: bold;
+}
+.m-group{
+    height: 100%;
+    float: left;
+    width: 200px;
+    margin-left: 10px;
+    position: relative;
+}
+.m-group .u-group-container{
+    position: absolute;
+    left: -10px;
+    right: 0;
+    top: 100px;
+    bottom: 10px;
+    overflow: auto;
+}
+
+.m-group treecontrol li{
+    line-height: 24px;
+}
+.m-group .u-group-btns{
+    position: absolute;
+    width: 100%;
+    top: 60px;
+    display: flex;
+    justify-content: space-around;
+}
+.m-users-content{
+    margin-left: 210px;
+}
+
+.u_list{
+	padding: 0 10px;
+}
+.u-search{
+	margin-bottom: 10px;
+}
+.u-buttons{
+	margin-bottom: 10px;
+}

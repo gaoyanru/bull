@@ -1,0 +1,41 @@
+.m-achieve {
+    padding: 0 15px;
+}
+
+.m-achieve h2 {
+    margin: 0;
+    line-height: 50px;
+    font-size: 24px;
+    font-weight: normal;
+    padding-left: 15px;
+    border-bottom: solid 2px #001D7E;
+}
+
+.m-achieve .u-search {
+    margin-bottom: 15px;
+}
+
+.dropdown-menu-multiselect {
+    padding: 0 12px;
+    min-width: 100px;
+}
+
+.dropdown-menu-multiselect input {
+    margin: 0 3px 2px 0px;
+    width: 14px;
+    height: 14px;
+}
+
+.dropdown-menu-multiselect label {
+    font-weight: 300;
+}
+
+.multiselect-button {
+    border: 1px solid #ccc;
+    margin-top: 2px;
+    min-width: 100px;
+}
+
+.m-achieve .text-right {
+  text-align: right;
+}

@@ -1,0 +1,28 @@
+<div class="m-applyInvoice">
+    <div class="panel panel-primary">
+        <div class="panel-heading">发票详情</div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12">发票抬头：{{invoiceInfo.Title}}</div>
+                <div class="col-sm-6">发票性质：{{invoiceInfo.Property | filterProp}}</div>
+                <div class="col-sm-6">发票类型：{{invoiceInfo.Category | filterCate}}</div>
+                <div class="col-sm-6">发票项目：服务费</div>
+                <div class="col-sm-6">税号：{{invoiceInfo.InvoiceNumber}}</div>
+                <div class="col-sm-6">发票金额：{{invoiceInfo.Amount}}</div>
+                <div class="col-sm-6">申请类型：{{invoiceInfo.projectMap}}</div>
+                <div class="col-sm-12"  ng-if="invoiceInfo.Category == 1">开户银行：{{invoiceInfo.DepositBank}}</div>
+                <div class="col-sm-12"  ng-if="invoiceInfo.Category == 1">对公账号：{{invoiceInfo.BankNo}}</div>
+                <div class="col-sm-12">公司姓名：{{invoiceInfo.ReceiveAddress.Name}}</div>
+                <div class="col-sm-12">收货地址：{{invoiceInfo.ReceiveAddress.Address}}</div>
+                <div class="col-sm-12">联系电话：{{invoiceInfo.ReceiveAddress.Mobile}}</div>
+                <div class="col-sm-12">
+                  <span>审核意见</span>
+                  ：{{invoiceInfo.InvoiceAudit.AuditMsg ? invoiceInfo.InvoiceAudit.AuditMsg : '无'}}
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-default" type="button" ng-click="dismiss();">关闭</button>
+        </div>
+    </div>
+</div>

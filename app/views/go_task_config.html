@@ -1,0 +1,24 @@
+<div class="recharge">
+    <h2 class="clearfix">
+        外勤通办任务配置
+    </h2>
+    <div class="well well-sm u-search clearfix">
+        <button class="btn btn-primary pull-right" ng-click="add('',$event,'新增通办任务')" style="margin:12px 0">&nbsp;&nbsp;&nbsp;新增&nbsp;&nbsp;&nbsp;</button>
+    </div>
+    <!--<div ng-repeat="item in tasks">-->
+    <div style="position:relative" ng-repeat="item in tasksArr">
+        <uib-accordion close-others="false">
+            <div uib-accordion-group class="panel-default" is-open="true">
+                <uib-accordion-heading>
+                    {{item.CommonTaskName}}&nbsp;
+                    <div style="position:absolute;top:0;right:20px;">
+                        <button class="btn btn-primary pull-right" ng-click="ifuse($event,item)" style="margin:5px 0;height:29px;line-height:16px">&nbsp;&nbsp;&nbsp;{{item.Status==1?"禁用":"启用"}}&nbsp;&nbsp;&nbsp;</button>
+                        <button class="btn btn-primary pull-right" ng-click="add(item,$event,'编辑任务')" style="margin:5px 20px 0;height:29px;line-height:16px;">&nbsp;&nbsp;&nbsp;编辑&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                </uib-accordion-heading>
+                <label ng-repeat="_item in item.TaskList" style="margin-right:20px">{{$index+1}}.{{_item.TaskName}}</label>
+            </div>
+        </uib-accordion>
+    </div>
+
+</div>

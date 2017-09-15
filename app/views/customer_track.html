@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+    <h3 class="modal-title">{{::title}}</h3>
+</div>
+<div class="modal-body clearfix">
+    <div class="trackblock">
+        <div ng-repeat="track in tracks" class="trackItem">
+            <div class="pull-right saler">{{::track.RealName}}</div>
+            <div class="date">{{::track.TrackDate.substr(0,10)}}</div>
+            <div class="pull-right" ng-if="user.UserId == track.SalesId && track.TrackDate.substr(0,10)==today"><a href="javascript:;" ng-click="delete(track)"><i class="glyphicon glyphicon-trash" aria-hidden="true"></i></a></div>
+            <pre class="description">{{::track.Description}}</pre>
+        </div>
+        <div ng-if="!tracks || tracks.length === 0" class="trackItem">暂无跟踪记录</div>
+    </div>
+    <div class="addtrack well-sm">
+        <div class="container-fluid form-group">
+            <label for="">跟踪日期</label>
+            <span class="date_sel" class="col-md-4">
+                <input type="text"  uib-datepicker-popup ng-model="TrackDate " is-open="dateIsOpened1" datepicker-options="dateOptions"  close-text="关闭" current-text="今天" clear-text="清空" ng-click="dateIsOpened1 = !dateIsOpened1"/>
+                <button type="button"  ng-click="dateIsOpened1 = !dateIsOpened1"><i class="glyphicon glyphicon-calendar"></i></button>      
+            </span>
+        </div>
+        <div class="container-fluid">
+            <label for="">跟踪记录</label>
+            <textarea class="col-md-8" ng-model="content" ></textarea>
+            <button class="btn btn-primary save" type="button" ng-click="save()">添加</button>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+</div>
