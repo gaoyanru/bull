@@ -105,12 +105,12 @@
                             <span class="date_sel">
                             <input type="text"  uib-datepicker-popup ng-model="postData.RegisterDate" is-open="dateIsOpened11" datepicker-options="dateOptions"  close-text="关闭" current-text="今天" clear-text="清空" ng-click="dateIsOpened11 = !dateIsOpened11" ng-disabled="isReadOnly" required />
 
-                            <button type="button"  ng-click="dateIsOpened11 = !dateIsOpened11" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>      
+                            <button type="button"  ng-click="dateIsOpened11 = !dateIsOpened11" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>-
                             <span class="date_sel" ng-hide="isReadOnly && (postData.NoDeadLine == 1)">
                             <input type="text"  uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="dateIsOpened1" datepicker-options="dateOptions"  close-text="关闭" current-text="今天" clear-text="清空" ng-click="dateIsOpened1 = !dateIsOpened1" ng-disabled="isReadOnly || postData.NoDeadLine"/>
 
-                            <button type="button"  ng-click="dateIsOpened1 = !dateIsOpened1" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>      
+                            <button type="button"  ng-click="dateIsOpened1 = !dateIsOpened1" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>
                             <label ng-hide="isReadOnly && (postData.NoDeadLine == 0)">
                                 <input ng-hide="isReadOnly && (postData.NoDeadLine == 1)" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1" /> 无期限 </label>
@@ -157,7 +157,7 @@
                                 <button type="button"  ng-click="dateIsOpened = !dateIsOpened" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </td>
-                        <td class="required">开始时间</td>
+                        <td class="required">开始账期</td>
                         <td>
                             <span class="date_sel">
                                 <input type="text"  uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="dateIsOpened3" datepicker-options="dateOptions2" ng-required="true" ng-disabled="readonly" close-text="关闭" current-text="今天" clear-text="清空"  ng-click="dateIsOpened3 = !dateIsOpened3" ng-change="setprice()" required/>
@@ -167,7 +167,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="required">结束时间</td>
+                        <td class="required">结束账期</td>
                         <td>
                             <span class="date_sel">
                                 <input type="text" ng-model="postData.ServiceEnd" disabled/>

@@ -179,7 +179,7 @@
                                     <button type="button"  ng-click="dateIsOpened = !dateIsOpened" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>
                             </td>
-                            <td class="required">开始时间</td>
+                            <td class="required">开始账期</td>
                             <td>
                                 <span class="date_sel">
                                     <input type="text"  uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="dateIsOpened3" datepicker-options="dateOptions2" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly  ng-click="dateIsOpened3 = !dateIsOpened3" ng-disabled="isReadOnly"  required/>
@@ -189,7 +189,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="required">结束时间</td>
+                            <td class="required">结束账期</td>
                             <td>
                                 <span class="date_sel">
                                     <input type="text" ng-model="postData.ServiceEnd" disabled ng-value="setEndDate()"/>
@@ -500,7 +500,7 @@
                                     <button type="button" disabled ng-click="dateIsOpened = !dateIsOpened" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>
                             </td>
-                            <td class="required">开始时间</td>
+                            <td class="required">开始账期</td>
                             <td>
                                 <span class="date_sel">
                                     <input type="text"  uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="dateIsOpened3" datepicker-options="dateOptions2" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly  ng-click="dateIsOpened3 = !dateIsOpened3" ng-disabled="isReadOnly" required/>
@@ -511,7 +511,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="required">结束时间</td>
+                            <td class="required">结束账期</td>
                             <td>
                                 <span class="date_sel">
                                     <input type="text" ng-model="postData.ServiceEnd" disabled ng-value="setEndDate()"/>
