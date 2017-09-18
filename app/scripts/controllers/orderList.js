@@ -132,6 +132,10 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
 
     }
 
+    $scope.add = function(cusid,ld) {
+        $state.go('^.addOrder', { orderId: 'C' + cusid + '&'+ld });
+    }
+
     function getHeaders() {
         return tbOptions.map(function(item) {
             return item.header
