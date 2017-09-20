@@ -1,0 +1,56 @@
+<div class="statis-ytorders">
+  <h2>小规模转为一般纳税人统计</h2>
+  <div class="table-container">
+    <div class="well well-sm u-search">
+      <form class="form-inline">
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="dateIsOpenedS" datepicker-options="dateOptions1" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedS = !dateIsOpenedS" ng-change="startChange()" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default"  ng-click="dateIsOpenedS = !dateIsOpenedS"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div> —
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" type="text" uib-datepicker-popup ng-model="enddate" is-open="dateIsOpenedE" datepicker-options="dateOptions2" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedE = !dateIsOpenedE" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default"  ng-click="dateIsOpenedE = !dateIsOpenedE"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
+        <button type="button" class="btn btn-primary" ng-click="toExcel()">导出</button>
+      </form>
+    </div>
+    <div style="overflow: auto;" js-height>
+      <table class="table table-striped table-hover table-bordered" id="dataTable">
+          <thead fix-head>
+              <tr class="info">
+                <th>省</th>
+                <th>市</th>
+                <th>一级代理商</th>
+                <th>二级代理商</th>
+                <th>小规模数量</th>
+                <th>转为一般纳税人数量</th>
+              </tr>
+              <tr>
+                <th colspan="4">合计</th>
+                <th class="text-right">{{alittlenum}}</th>
+                <th class="text-right">{{aformalnum}}</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in tableData">
+              <td style="text-align:center; width:200px">{{item.ProvinceName}}</td>
+              <td style="text-align:center; width:120px">{{item.CityName}}</td>
+              <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
+              <td style="text-align:center; width:120px">{{item.ChannelName2}}</td>
+              <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn1(item)">{{item.littlenum}}</td>
+              <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn2(item)">{{item.formalnum}}</td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -238,6 +238,22 @@ channelApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'use
                 url: '/statis_newCustomers',
                 templateUrl: 'views/statisNewCustomers.html',
                 controller: 'StatisNewCustomers'
+            }).state('main.statis_renew', {
+                url: '/statis_renew',
+                templateUrl: 'views/statisRenew.html',
+                controller: 'StatisRenew'
+            }).state('main.statis_ytOdersTozsOders', {
+                url: '/statis_ytOdersTozsOders',
+                templateUrl: 'views/statisYtOdersTozsOders.html',
+                controller: 'StatisYtOdersTozsOders'
+            }).state('main.statis_ZeroTonoZero', {
+                url: '/statis_ZeroTonoZero',
+                templateUrl: 'views/statisZeroTonoZero.html',
+                controller: 'StatisZeroTonoZero'
+            }).state('main.statis_companyType1To2', {
+                url: '/statis_companyType',
+                templateUrl: 'views/statisCompanyType.html',
+                controller: 'StatisCompanyType'
             });
         $urlRouterProvider
             .when('/main/user', '/login')

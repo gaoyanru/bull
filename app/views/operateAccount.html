@@ -22,7 +22,7 @@
           <table class="table table-striped table-hover table-bordered" id="dataTable">
               <thead fix-head>
                   <tr class="info">
-                      <th rowspan="2">大区</th>
+                      <!-- <th rowspan="2">大区</th> -->
                       <th rowspan="2">省</th>
                       <th rowspan="2">市</th>
                       <th rowspan="2">一级代理商</th>
@@ -39,7 +39,7 @@
                       <th>未开始做账</th>
                   </tr>
                   <tr>
-                      <th colspan="5">合计</th>
+                      <th colspan="4">合计</th>
                       <th class="text-right">{{aAllCusNum.toFixed(2)}}</th>
                       <th class="text-right">{{aTotalNum.toFixed(2)}}</th>
                       <th class="text-right">{{aNoSetUpNum.toFixed(2)}}</th>
@@ -51,7 +51,7 @@
               </thead>
               <tbody>
                 <tr ng-repeat="item in tableData">
-                  <td style="text-align:center; width:90px">{{item.PartitionName}}</td>
+                  <!-- <td style="text-align:center; width:90px">{{item.PartitionName}}</td> -->
                   <td style="text-align:center; width:200px">{{item.ProvinceName}}</td>
                   <td style="text-align:center; width:120px">{{item.CityName}}</td>
                   <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
