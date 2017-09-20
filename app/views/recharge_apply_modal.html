@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="rg in rlist">
-                        <td><input type="text" class="form-control" ng-model="rg.AccountOfPayment"></td>
+                        <td><input type="text" class="form-control" ng-model="rg.AccountOfPayment" placeholder="付款账户不要填写空格"></td>
                         <td>
                             <p class="input-group" style="margin:0">
                                 <input type="text" class="form-control" ng-click="rg.opened= true" ng-model="rg.PayTime" uib-datepicker-popup="yyyy-MM-dd" ng-model="dt" is-open="rg.opened" datepicker-options="dateOptions" close-text="关闭" alt-input-formats="altInputFormats" />
