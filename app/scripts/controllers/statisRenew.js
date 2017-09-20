@@ -5,8 +5,10 @@ angular.module('channelApp').controller('StatisRenew', ['$scope', '$http', '$fil
 		months: ''
 	}
   var date = new Date()
-  $scope.month = (date + '').match(/\d{4}-(\d{1,2})-\d{1,2}/)[1]
-  console.log($scope.month, '$scope.month')
+  // console.log(date)
+  $scope.month = date.getMonth()
+  $scope.month = $scope.month < 10 ? ('0' + $scope.month) : $scope.month
+  // console.log($scope.month, '$scope.month')
   $scope.params.months = $scope.month
   $scope.months = [];
 	for (var i = 1; i < 13; i++) {

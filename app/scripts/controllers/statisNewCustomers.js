@@ -4,6 +4,21 @@ angular.module('channelApp').controller('StatisNewCustomers', ['$scope', '$http'
     startdate: "",
     enddate: "",
   }
+  function getNowMonthStartDate () {
+    var date = new Date();
+    date.setDate(1)
+    return date
+  }
+  function getNowMonthLastDate () {
+    var date = new Date();
+    date.setMonth(date.getMonth() + 1)
+    date.setDate(0)
+    return date
+  }
+  var start = getNowMonthStartDate()
+  var end = getNowMonthLastDate()
+  $scope.startdate = start
+  $scope.enddate = end
   $scope.tableData = []
   $scope.search = function() {
     if ($scope.startdate) $scope.params.startdate = $filter('date')($scope.startdate, 'yyyy-MM-dd');

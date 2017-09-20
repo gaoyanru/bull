@@ -13,7 +13,7 @@
         <div class="btn-group" uib-dropdown>
           <label style="line-height: 34px;">结束账期</label>
           <select class="form-control" ng-model="params.months">
-            <option ng-repeat="month in months" ng-value="month.value" ng-selected="month.value == params.months">{{month.label}}</option>
+            <option ng-repeat="month in months" value="{{month.value}}" ng-selected="month.value == params.months">{{month.label}}</option>
           </select>
         </div>
         <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
