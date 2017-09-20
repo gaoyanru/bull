@@ -1,0 +1,91 @@
+<div class="statis-achieve">
+  <h2>业绩统计</h2>
+  <div class="table-container">
+    <div class="well well-sm u-search">
+      <form class="form-inline">
+        <div class="form-group">
+          <div class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="dateIsOpenedS" datepicker-options="dateOptions1" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedS = !dateIsOpenedS" ng-change="startChange()" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default"  ng-click="dateIsOpenedS = !dateIsOpenedS"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div> —
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <input class="form-control" type="text" uib-datepicker-popup ng-model="enddate" is-open="dateIsOpenedE" datepicker-options="dateOptions2" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="dateIsOpenedE = !dateIsOpenedE" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default"  ng-click="dateIsOpenedE = !dateIsOpenedE"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
+        <button type="button" class="btn btn-primary" ng-click="toExcel()">导出</button>
+      </form>
+    </div>
+    <div style="overflow: auto;" js-height>
+      <table class="table table-striped table-hover table-bordered" id="dataTable">
+          <thead fix-head>
+              <tr class="info">
+                <th rowspan="2">省</th>
+                <th rowspan="2">市</th>
+                <th rowspan="2">一级代理商</th>
+                <th rowspan="2">二级代理商</th>
+                <th colspan="4" class="text-center">应收</th>
+                <th colspan="4" class="text-center">实收</th>
+                <th colspan="4" class="text-center">订单数量</th>
+              </tr>
+              <tr class="info">
+                <th>零申报</th>
+                <th>小规模</th>
+                <th>一般纳税人</th>
+                <th>合计</th>
+                <th>零申报</th>
+                <th>小规模</th>
+                <th>一般纳税人</th>
+                <th>合计</th>
+                <th>零申报</th>
+                <th>小规模</th>
+                <th>一般纳税人</th>
+                <th>合计</th>
+              </tr>
+              <tr>
+                <th colspan="4">合计</th>
+                <th class="text-right">{{aOrderNumZero}}</th>
+                <th class="text-right">{{aYSSmall}}</th>
+                <th class="text-right">{{aYSGeneral}}</th>
+                <th class="text-right">{{aYSHJ}}</th>
+                <th class="text-right">{{aYSZero}}</th>
+                <th class="text-right">{{aSSSmall}}</th>
+                <th class="text-right">{{aSSGeneral}}</th>
+                <th class="text-right">{{aSSHJ}}</th>
+                <th class="text-right">{{aSSZero}}</th>
+                <th class="text-right">{{aOrderNumSmall}}</th>
+                <th class="text-right">{{aOrderNumGeneral}}</th>
+                <th class="text-right">{{aOrderNumHJ}}</th>
+              </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in tableData">
+              <td style="text-align:center; width:200px">{{item.ProvinceName}}</td>
+              <td style="text-align:center; width:120px">{{item.CityName}}</td>
+              <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
+              <td style="text-align:center; width:120px">{{item.ChannelName2}}</td>
+              <td style="text-align:center; width:200px">{{item.OrderNumZero}}</td>
+              <td style="text-align:center; width:120px">{{item.YSSmall}}</td>
+              <td style="text-align:center; width:120px">{{item.YSGeneral}}</td>
+              <td style="text-align:center; width:120px">{{item.YSHJ}}</td>
+              <td style="text-align:center; width:120px">{{item.YSZero}}</td>
+              <td style="text-align:center; width:200px">{{item.SSSmall}}</td>
+              <td style="text-align:center; width:120px">{{item.SSGeneral}}</td>
+              <td style="text-align:center; width:120px">{{item.SSHJ}}</td>
+              <td style="text-align:center; width:120px">{{item.SSZero}}</td>
+              <td style="text-align:center; width:120px">{{item.OrderNumSmall}}</td>
+              <td style="text-align:center; width:120px">{{item.OrderNumGeneral}}</td>
+              <td style="text-align:center; width:120px">{{item.OrderNumHJ}}</td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>

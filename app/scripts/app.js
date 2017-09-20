@@ -36,63 +36,51 @@ channelApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'use
                 url: '/login',
                 templateUrl: 'views/login.html',
                 controller: 'LoginCtrl'
-            })
-            .state('main', {
+            }).state('main', {
                 url: '/main',
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
-            })
-            .state('main.employee', {
+            }).state('main.employee', {
                 url: '/employee',
                 templateUrl: 'views/employee.html',
                 controller: 'EmployeeCtrl'
-            })
-            .state('main.finance', { //财务明细
+            }).state('main.finance', { //财务明细
                 url: '/finance',
                 templateUrl: 'views/finance.html',
                 controller: 'FinanceCtrl'
-            })
-            .state('main.addOrder', {
+            }).state('main.addOrder', {
                 url: '/addOrder/:orderId',
                 templateUrl: 'views/addOrder.html',
                 controller: ''
-            })
-            .state('main.balance', { //余额（会员）
+            }).state('main.balance', { //余额（会员）
                 url: '/balance',
                 templateUrl: 'views/balance.html',
                 controller: 'BalanceCtrl'
-            })
-            .state('main.orderList', {
+            }).state('main.orderList', {
                 url: '/orderList',
                 templateUrl: 'views/orderList.html',
                 controller: 'OrderListCtrl'
-            })
-            .state('main.orderSearch', { //订单查询
+            }).state('main.orderSearch', { //订单查询
                 url: '/orderSearch',
                 templateUrl: 'views/orderSearch.html',
                 controller: 'OrderSearchCtrl'
-            })
-            .state('main.users', {
+            }).state('main.users', {
                 url: '/user',
                 templateUrl: 'views/users.html',
                 controller: 'UserCtrl'
-            })
-            .state('main.users.usersList', {
+            }).state('main.users.usersList', {
                 url: '/userList',
                 templateUrl: 'views/usersList.html',
                 controller: 'UserListCtrl'
-            })
-            .state('main.users.addUser', {
+            }).state('main.users.addUser', {
                 url: '/addUser?deparment',
                 templateUrl: 'views/addUser.html',
                 controller: 'AddUserCtrl'
-            })
-            .state('main.users.updateUser', {
+            }).state('main.users.updateUser', {
                 url: '/updateUser?user',
                 templateUrl: 'views/updateUser.html',
                 controller: 'UpdateUserCtrl'
-            })
-            .state('main.achieve', {
+            }).state('main.achieve', {
                 url: '/achieve',
                 templateUrl: 'views/achieve.html',
                 controller: 'AchieveCtrl'
@@ -238,6 +226,18 @@ channelApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'use
                 url: '/makeAccount',
                 templateUrl: 'views/makeAccount.html',
                 controller: 'MakeAccount'
+            }).state('main.statis_orders', {
+                url: '/statis_orders',
+                templateUrl: 'views/statisOrders.html',
+                controller: 'StatisOrders'
+            }).state('main.statis_achieve', {
+                url: '/statis_achieve',
+                templateUrl: 'views/statisAchieve.html',
+                controller: 'StatisAchieve'
+            }).state('main.statis_newCustomers', {
+                url: '/statis_newCustomers',
+                templateUrl: 'views/statisNewCustomers.html',
+                controller: 'StatisNewCustomers'
             });
         $urlRouterProvider
             .when('/main/user', '/login')

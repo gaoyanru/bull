@@ -5,10 +5,13 @@ angular.module('channelApp').factory('Excel',function($window){
         format=function(s,c){return s.replace(/{(\w+)}/g,function(m,p){return c[p];})};
     return {
         tableToExcel:function(tableId,worksheetName){
+            var el = document.createElement('a')
             var table=$(tableId),
                 ctx={worksheet:worksheetName,table:table.html()},
                 href=uri+base64(format(template,ctx));
-            return href;
+            el.href = href
+            el.download = worksheetName + '.xls'
+            el.click()
         }
     };
 })
