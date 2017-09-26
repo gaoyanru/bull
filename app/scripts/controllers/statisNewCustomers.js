@@ -65,7 +65,7 @@ angular.module('channelApp').controller('StatisNewCustomers', ['$scope', '$http'
     // console.log(item)
     var channelid = item.ChannelId
     $scope.postData.channelid = channelid
-    var url = '/api/download/getzeroorders?' + $.param($scope.postData);
+    var url = '/api/download/getzeroorders?iscustomers=1' + $.param($scope.postData);
     window.open(url)
   }
   // $scope.rightAlign = [4, 5, 6, 7, 8, 9, 10, 11, 12];
