@@ -19,6 +19,14 @@
             </span>
           </div>
         </div>
+        <div class="form-group">
+          <span>代理商是否解约</span>
+          <select class="form-control" ng-model="params.status">
+              <option value="">全部</option>
+              <option value="0">是</option>
+              <option value="1">否</option>
+          </select>
+        </div>
         <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
         <button type="button" class="btn btn-primary" ng-click="toExcel()">导出</button>
       </form>
@@ -31,6 +39,7 @@
                 <th rowspan="2">市</th>
                 <th rowspan="2">一级代理商</th>
                 <th rowspan="2">二级代理商</th>
+                <th rowspan="2">代理商是否解约</th>
                 <th colspan="4" class="text-center">套餐类型</th>
                 <th colspan="2" class="text-center">订单类型</th>
                 <th colspan="2" class="text-center">订单性质</th>
@@ -51,16 +60,16 @@
                 <th>小计</th>
               </tr>
               <tr>
-                <th colspan="4">合计</th>
+                <th colspan="5">合计</th>
                 <th class="text-right">{{aZeroYearNum}}</th>
                 <th class="text-right">{{aQuarterNum}}</th>
                 <th class="text-right">{{aHalfYearNum}}</th>
                 <th class="text-right">{{aYearNum}}</th>
-                <th class="text-right">{{aReserveNum}}</th>
+                <th style="text-align:center; text-decoration: underline; color: blue;" ng-click="downloadColumn1()">{{aReserveNum}}</th>
                 <th class="text-right">{{aFormalNum}}</th>
                 <th class="text-right">{{aNewNum}}</th>
                 <th class="text-right">{{aReNum}}</th>
-                <th class="text-right">{{aZeroNum}}</th>
+                <th style="text-align:center; text-decoration: underline; color: blue;" ng-click="downloadColumn2()">{{aZeroNum}}</th>
                 <th class="text-right">{{aSmallNum}}</th>
                 <th class="text-right">{{aNormalNum}}</th>
                 <th class="text-right">{{aTotalNum}}</th>
@@ -72,6 +81,7 @@
               <td style="text-align:center; width:120px">{{item.CityName}}</td>
               <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
               <td style="text-align:center; width:120px">{{item.ChannelName2}}</td>
+              <td style="text-align:center; width:120px">{{item.Status | filterStatus}}</td>
               <td style="text-align:center; width:200px">{{item.ZeroYearNum}}</td>
               <td style="text-align:center; width:120px">{{item.QuarterNum}}</td>
               <td style="text-align:center; width:120px">{{item.HalfYearNum}}</td>

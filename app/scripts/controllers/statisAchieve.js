@@ -3,6 +3,7 @@ angular.module('channelApp').controller('StatisAchieve', ['$scope', '$http', '$f
   $scope.params = {
     startdate: "",
     enddate: "",
+    status: ""
   }
   function getNowMonthStartDate () {
     var date = new Date();

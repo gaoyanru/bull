@@ -16,6 +16,14 @@
             <option ng-repeat="month in months" value="{{month.value}}" ng-selected="month.value == params.months">{{month.label}}</option>
           </select>
         </div>
+        <div class="form-group">
+          <span>代理商是否解约</span>
+          <select class="form-control" ng-model="params.status">
+              <option value="">全部</option>
+              <option value="0">是</option>
+              <option value="1">否</option>
+          </select>
+        </div>
         <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
         <button type="button" class="btn btn-primary" ng-click="toExcel()">导出</button>
       </form>
@@ -28,15 +36,16 @@
                 <th>市</th>
                 <th>一级代理商</th>
                 <th>二级代理商</th>
+                <th>代理商是否解约</th>
                 <th>到期客户数</th>
                 <th>未续费客户数</th>
                 <th>已续费客户数</th>
               </tr>
               <tr>
-                <th colspan="4">合计</th>
-                <th class="text-right">{{aExpireNum}}</th>
-                <th class="text-right">{{aNoReNum}}</th>
-                <th class="text-right">{{aReNum}}</th>
+                <th colspan="5">合计</th>
+                <th style="text-align:center; text-decoration: underline; color: blue;" ng-click="downloadColumn1()">{{aExpireNum}}</th>
+                <th style="text-align:center; text-decoration: underline; color: blue;" ng-click="downloadColumn2()">{{aNoReNum}}</th>
+                <th style="text-align:center; text-decoration: underline; color: blue;" ng-click="downloadColumn3()">{{aReNum}}</th>
               </tr>
           </thead>
           <tbody>
@@ -45,6 +54,7 @@
               <td style="text-align:center; width:120px">{{item.CityName}}</td>
               <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
               <td style="text-align:center; width:120px">{{item.ChannelName2}}</td>
+              <td style="text-align:center; width:120px">{{item.Status | filterStatus}}</td>
               <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn1(item)">{{item.ExpireNum}}</td>
               <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn2(item)">{{item.NoReNum}}</td>
               <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn3(item)">{{item.ReNum}}</td>

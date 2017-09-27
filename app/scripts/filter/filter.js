@@ -228,4 +228,8 @@ angular.module('channelApp').filter('filterAddValue', function() {
     return function(value) {
         return (value*100).toFixed(2) + '%';
     }
+}).filter('filterStatus', function() {
+    return function(value) {
+        return value ? '否' : '是';
+    }
 });

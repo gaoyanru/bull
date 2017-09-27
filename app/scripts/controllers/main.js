@@ -16,7 +16,7 @@ angular.module('channelApp')
         }
 
         var navTreeModel = angular.fromJson($scope.user.FunctionList);
-        navTreeModel = navTreeModel.sort(sortFn);
+        navTreeModel = _.sortBy(navTreeModel,'Rank');
         navTreeModel.forEach(function(item) {
             item.children = item.children.sort(sortFn);
         });

@@ -2,8 +2,10 @@
 angular.module('channelApp').controller('StatisRenew', ['$scope', '$http', '$filter', 'user', 'Excel', '$timeout', function($scope, $http, $filter, user, Excel, $timeout) {
   $scope.params = {
 		year: '2017',
-		months: ''
+		months: '',
+    status: ''
 	}
+  $scope.postData = {}
   var date = new Date()
   // console.log(date)
   $scope.month = date.getMonth()
@@ -19,6 +21,8 @@ angular.module('channelApp').controller('StatisRenew', ['$scope', '$http', '$fil
 	}
   $scope.tableData = []
   $scope.search = function() {
+    console.log($scope.params)
+    $scope.postData = $scope.params
     $http.get('/api/report/getreordersnum?' + jQuery.param($scope.params)).success(function(result) {
         // console.log(result, 'result')
         $scope.tableData = result.data
@@ -45,21 +49,45 @@ angular.module('channelApp').controller('StatisRenew', ['$scope', '$http', '$fil
   $scope.postData.months = $scope.params.months
   $scope.downloadColumn1 = function(item) {
     // console.log(item)
-    var channelid = item.ChannelId
-    $scope.postData.channelid = channelid
-    var url = '/api/download/getexpireorderdetails?' + $.param($scope.postData);
+    if (item) {
+      var post = {}
+      post = angular.copy($scope.postData)
+      var channelid = item.ChannelId
+      post.channelid = channelid
+      var url = '/api/download/getexpireorderdetails?' + $.param(post);
+    } else {
+      var posttotal = {}
+      posttotal = angular.copy($scope.postData)
+      var url = '/api/download/getexpireorderdetails?' + $.param(posttotal);
+    }
     window.open(url)
   }
   $scope.downloadColumn2 = function(item) {
-    var channelid = item.ChannelId
-    $scope.postData.channelid = channelid
-    var url = '/api/download/getnoreorderdetails?' + $.param($scope.postData);
+    if (item) {
+      var post = {}
+      post = angular.copy($scope.postData)
+      var channelid = item.ChannelId
+      post.channelid = channelid
+      var url = '/api/download/getnoreorderdetails?' + $.param(post);
+    } else {
+      var posttotal = {}
+      posttotal = angular.copy($scope.postData)
+      var url = '/api/download/getnoreorderdetails?' + $.param(posttotal);
+    }
     window.open(url)
   }
   $scope.downloadColumn3 = function(item) {
-    var channelid = item.ChannelId
-    $scope.postData.channelid = channelid
-    var url = '/api/download/getreorderdetails?' + $.param($scope.postData);
+    if (item) {
+      var post = {}
+      post = angular.copy($scope.postData)
+      var channelid = item.ChannelId
+      post.channelid = channelid
+      var url = '/api/download/getreorderdetails?' + $.param(post);
+    } else {
+      var posttotal = {}
+      posttotal = angular.copy($scope.postData)
+      var url = '/api/download/getreorderdetails?' + $.param(posttotal);
+    }
     window.open(url)
   }
   // $scope.rightAlign = [4, 5, 6, 7, 8, 9, 10, 11, 12];

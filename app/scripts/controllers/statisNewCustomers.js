@@ -3,7 +3,9 @@ angular.module('channelApp').controller('StatisNewCustomers', ['$scope', '$http'
   $scope.params = {
     startdate: "",
     enddate: "",
+    status: ""
   }
+  $scope.postData = {}
   function getNowMonthStartDate () {
     var date = new Date();
     date.setDate(1)
@@ -23,6 +25,7 @@ angular.module('channelApp').controller('StatisNewCustomers', ['$scope', '$http'
   $scope.search = function() {
     if ($scope.startdate) $scope.params.startdate = $filter('date')($scope.startdate, 'yyyy-MM-dd');
     if ($scope.enddate) $scope.params.enddate = $filter('date')($scope.enddate, 'yyyy-MM-dd');
+    $scope.postData = $scope.params
     $http.get('/api/newcustomer?' + jQuery.param($scope.params)).success(function(result) {
         console.log(result, 'result')
         $scope.tableData = result.data.DataInfo
@@ -56,16 +59,19 @@ angular.module('channelApp').controller('StatisNewCustomers', ['$scope', '$http'
     $scope.aZeroAmount = aZeroAmount;
     return data;
   }
-  $scope.postData = {}
-  var startdate = $filter('date')($scope.startdate, 'yyyy-MM-dd');
-  var enddate = $filter('date')($scope.enddate, 'yyyy-MM-dd');
-  $scope.postData.startdate = startdate
-  $scope.postData.enddate = enddate
   $scope.downloadColumn1 = function(item) {
     // console.log(item)
-    var channelid = item.ChannelId
-    $scope.postData.channelid = channelid
-    var url = '/api/download/getzeroorders?iscustomers=1' + $.param($scope.postData);
+    if (item) {
+      var post = {}
+      post = angular.copy($scope.postData)
+      var channelid = item.ChannelId
+      post.channelid = channelid
+      var url = '/api/download/getzeroorders?iscustomers=1&' + $.param(post);
+    } else {
+      var posttotal = {}
+      posttotal = angular.copy($scope.postData)
+      var url = '/api/download/getzeroorders?iscustomers=1&' + $.param(posttotal);
+    }
     window.open(url)
   }
   // $scope.rightAlign = [4, 5, 6, 7, 8, 9, 10, 11, 12];

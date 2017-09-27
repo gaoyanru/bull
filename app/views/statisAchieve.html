@@ -19,6 +19,14 @@
             </span>
           </div>
         </div>
+        <div class="form-group">
+          <span>代理商是否解约</span>
+          <select class="form-control" ng-model="params.status">
+              <option value="">全部</option>
+              <option value="0">是</option>
+              <option value="1">否</option>
+          </select>
+        </div>
         <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
         <button type="button" class="btn btn-primary" ng-click="toExcel()">导出</button>
       </form>
@@ -31,6 +39,7 @@
                 <th rowspan="2">市</th>
                 <th rowspan="2">一级代理商</th>
                 <th rowspan="2">二级代理商</th>
+                <th rowspan="2">代理商是否解约</th>
                 <th colspan="4" class="text-center">应收</th>
                 <th colspan="4" class="text-center">实收</th>
                 <th colspan="4" class="text-center">订单数量</th>
@@ -50,7 +59,7 @@
                 <th>小计</th>
               </tr>
               <tr>
-                <th colspan="4">合计</th>
+                <th colspan="5">合计</th>
                 <th class="text-right">{{aOrderNumZero}}</th>
                 <th class="text-right">{{aYSSmall}}</th>
                 <th class="text-right">{{aYSGeneral}}</th>
@@ -71,6 +80,7 @@
               <td style="text-align:center; width:120px">{{item.CityName}}</td>
               <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
               <td style="text-align:center; width:120px">{{item.ChannelName2}}</td>
+              <td style="text-align:center; width:120px">{{item.Status | filterStatus}}</td>
               <td style="text-align:center; width:200px">{{item.OrderNumZero}}</td>
               <td style="text-align:center; width:120px">{{item.YSSmall}}</td>
               <td style="text-align:center; width:120px">{{item.YSGeneral}}</td>
