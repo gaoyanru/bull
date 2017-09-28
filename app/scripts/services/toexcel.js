@@ -11,7 +11,10 @@ angular.module('channelApp').factory('Excel',function($window){
                 href=uri+base64(format(template,ctx));
             el.href = href
             el.download = worksheetName + '.xls'
+            el.setAttribute('style', 'display: none')
+            document.documentElement.append(el)
             el.click()
+            document.documentElement.removeChild(el)
         }
     };
 })

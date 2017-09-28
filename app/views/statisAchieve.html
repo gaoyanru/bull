@@ -1,4 +1,4 @@
-<div class="statis-achieve">
+<div class="statis-achieve o-list">
   <h2>业绩统计</h2>
   <div class="table-container">
     <div class="well well-sm u-search">
@@ -40,9 +40,9 @@
                 <th rowspan="2">一级代理商</th>
                 <th rowspan="2">二级代理商</th>
                 <th rowspan="2">代理商是否解约</th>
+                <th colspan="4" class="text-center">订单数量</th>
                 <th colspan="4" class="text-center">应收</th>
                 <th colspan="4" class="text-center">实收</th>
-                <th colspan="4" class="text-center">订单数量</th>
               </tr>
               <tr class="info">
                 <th>零申报</th>
@@ -60,6 +60,10 @@
               </tr>
               <tr>
                 <th colspan="5">合计</th>
+                <th class="text-right">{{aSSZero}}</th>
+                <th class="text-right">{{aOrderNumSmall}}</th>
+                <th class="text-right">{{aOrderNumGeneral}}</th>
+                <th class="text-right">{{aOrderNumHJ}}</th>
                 <th class="text-right">{{aOrderNumZero}}</th>
                 <th class="text-right">{{aYSSmall}}</th>
                 <th class="text-right">{{aYSGeneral}}</th>
@@ -68,10 +72,6 @@
                 <th class="text-right">{{aSSSmall}}</th>
                 <th class="text-right">{{aSSGeneral}}</th>
                 <th class="text-right">{{aSSHJ}}</th>
-                <th class="text-right">{{aSSZero}}</th>
-                <th class="text-right">{{aOrderNumSmall}}</th>
-                <th class="text-right">{{aOrderNumGeneral}}</th>
-                <th class="text-right">{{aOrderNumHJ}}</th>
               </tr>
           </thead>
           <tbody>
@@ -81,6 +81,10 @@
               <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
               <td style="text-align:center; width:120px">{{item.ChannelName2}}</td>
               <td style="text-align:center; width:120px">{{item.Status | filterStatus}}</td>
+              <td style="text-align:center; width:120px">{{item.SSZero}}</td>
+              <td style="text-align:center; width:120px">{{item.OrderNumSmall}}</td>
+              <td style="text-align:center; width:120px">{{item.OrderNumGeneral}}</td>
+              <td style="text-align:center; width:120px">{{item.OrderNumHJ}}</td>
               <td style="text-align:center; width:200px">{{item.OrderNumZero}}</td>
               <td style="text-align:center; width:120px">{{item.YSSmall}}</td>
               <td style="text-align:center; width:120px">{{item.YSGeneral}}</td>
@@ -89,10 +93,6 @@
               <td style="text-align:center; width:200px">{{item.SSSmall}}</td>
               <td style="text-align:center; width:120px">{{item.SSGeneral}}</td>
               <td style="text-align:center; width:120px">{{item.SSHJ}}</td>
-              <td style="text-align:center; width:120px">{{item.SSZero}}</td>
-              <td style="text-align:center; width:120px">{{item.OrderNumSmall}}</td>
-              <td style="text-align:center; width:120px">{{item.OrderNumGeneral}}</td>
-              <td style="text-align:center; width:120px">{{item.OrderNumHJ}}</td>
             </tr>
           </tbody>
       </table>

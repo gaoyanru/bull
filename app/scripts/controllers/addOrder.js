@@ -244,7 +244,9 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             if ((result.Category == 2 && result.Status == 2) || result.Category == 3) {
                 $scope.category = 3;
                 $scope.showProm = false;
-                $scope.isReadOnly = true;
+                if(result.Status == 2 && result.Category == 3) {
+                  $scope.isReadOnly = true;
+                }
             }
             if ($scope.postData.Status === 2 && $scope.category != 3) {
                 $scope.isReadOnly = true;
