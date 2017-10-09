@@ -291,10 +291,17 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             }
 
             $scope.setprice(true);
-            $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
-                priceList = data.data;
-                $scope.payTypes = data.data;
-            });
+            if ($scope.isReadOnly) {
+              $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode + '&ischeck=1').success(function (data) {
+                  priceList = data.data;
+                  $scope.payTypes = data.data;
+              });
+            } else {
+              $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
+                  priceList = data.data;
+                  $scope.payTypes = data.data;
+              });
+            }
         });
 
         $http.get("/api/orders/sales").success(function (data) {
