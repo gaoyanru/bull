@@ -62,14 +62,16 @@ angular.module('channelApp').controller('StatisNewCustomers', ['$scope', '$http'
   $scope.downloadColumn1 = function(item) {
     // console.log(item)
     if (item) {
-      var post = {}
+      var post = {iscustomers:1}
       post = angular.copy($scope.postData)
       var channelid = item.ChannelId
       post.channelid = channelid
+      // post.iscustomers = 1
       var url = '/api/download/getzeroorders?iscustomers=1&' + $.param(post);
     } else {
-      var posttotal = {}
+      var posttotal = {iscustomers:1}
       posttotal = angular.copy($scope.postData)
+      // posttotal.iscustomers = 1
       var url = '/api/download/getzeroorders?iscustomers=1&' + $.param(posttotal);
     }
     window.open(url)

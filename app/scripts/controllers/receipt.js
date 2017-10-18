@@ -122,7 +122,6 @@ angular.module('channelApp').controller('Receipt', ['$scope', '$http', '$filter'
     }
     $scope.rightAlign = [4, 5, 6, 7, 8, 9, 10, 11, 12];
     $scope.toExcel = function() {
-        $scope.exportHref = Excel.tableToExcel('div[js-height]>#dataTable', 'sheet name');
-        $timeout(function() { location.href = $scope.exportHref; }, 100); // trigger download
+        Excel.tableToExcel('div[js-height]>#dataTable', '传票数据统计');
     }
 }]);

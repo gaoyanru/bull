@@ -29,7 +29,7 @@ angular.module('channelApp').filter('filterRole', function() {
     return filterRole;
 });
 
-angular.module('channelApp').filter('filterStatus', function() {
+angular.module('channelApp').filter('filter1Status', function() {
     var filterStatus = function(status) {
         var statusMap = '';
         switch (status) {

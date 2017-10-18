@@ -2,7 +2,11 @@
 	padding: 12px;
 }
 .order .u-balance{
-    font-size: 20px;
+  font-size: 20px;
+}
+.order img {
+	max-width: 100px;
+	max-height: 75px;
 }
 .order .table{
 	border: 0;
@@ -10,8 +14,8 @@
 .order .table th{
 	border: 0;
 	padding: 0;
-    line-height: 28px;
-    border-bottom: 2px solid #a1bfd4;
+  line-height: 28px;
+  border-bottom: 2px solid #a1bfd4;
 }
 .order .table .t_header{
 	background-color: #a1bfd4;

@@ -96,7 +96,6 @@ angular.module('channelApp').controller('MakeAccount', ['$scope', '$http', '$fil
     }
     $scope.rightAlign = [4, 5, 6, 7, 8, 9, 10, 11, 12];
     $scope.toExcel = function() {
-        $scope.exportHref = Excel.tableToExcel('div[js-height]>#dataTable', 'sheet name');
-        $timeout(function() { location.href = $scope.exportHref; }, 100); // trigger download
+        Excel.tableToExcel('div[js-height]>#dataTable', '做账与报税数据统计');
     }
 }]);

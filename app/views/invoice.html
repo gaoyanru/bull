@@ -95,7 +95,7 @@
                         <td>{{::apply.Amount}}</td>
                         <td>{{::apply.Property | filterProp}}</td>
                         <td>{{apply.ApplyDate | date: 'yyyy-MM-dd' }}</td>
-                        <td>{{apply.Status | filterStatus}}</td>
+                        <td>{{apply.Status | filter1Status}}</td>
                         <td>{{::apply.AuditMsg}}</td>
                         <td><button class="btn btn-link" ng-if="apply.Status==2 || apply.IsCurr !== 1" ng-click="scan(apply)" type="button">查看</button>
                             <button class="btn btn-link" ng-if="apply.Status!=2 && apply.IsCurr == 1" ng-click="applyInvoice(apply)" type="button">修改</button>
