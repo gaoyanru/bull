@@ -230,6 +230,6 @@ angular.module('channelApp').filter('filterAddValue', function() {
     }
 }).filter('filterStatus', function() {
     return function(value) {
-        return value ? '否' : '是';
+        return value ? '正常' : '解约';
     }
 });

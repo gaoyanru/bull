@@ -18,11 +18,11 @@
           </select>
         </div>
         <div class="form-group">
-          <span>代理商是否解约</span>
+          <span>代理商状态</span>
           <select class="form-control" ng-model="params.status">
               <option value="">全部</option>
-              <option value="0">是</option>
-              <option value="1">否</option>
+              <option value="0">解约</option>
+              <option value="1">正常</option>
           </select>
         </div>
         <button type="button" class="btn btn-primary" ng-click="search()">查询</button>
@@ -37,7 +37,7 @@
                 <th>市</th>
                 <th>一级代理商</th>
                 <th>二级代理商</th>
-                <th>代理商是否解约</th>
+                <th>代理商状态</th>
                 <th>到期客户数</th>
                 <th>未续费客户数</th>
                 <th>已续费客户数</th>
