@@ -27,8 +27,11 @@
                     <td>{{::customer.Name}}</td>
                     <td>{{::customer.ContractDate|tDate}}</td>
                     <td>{{::customer.PriceName}}</td>
-                    <td class="table-opt">
+                    <td class="table-opt" ng-show="{{customer.IsChanging == 0}}">
                         <a href="javascript:;" ng-click="view(customer.OrderId)">变更</a>
+                    </td>
+                    <td class="table-opt" style="color:#ccc" ng-show="{{customer.IsChanging == 1}}">
+                        <span>变更</span>
                     </td>
                 </tr>
             </tbody>

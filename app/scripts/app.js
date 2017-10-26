@@ -254,6 +254,10 @@ channelApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'use
                 url: '/statis_companyType',
                 templateUrl: 'views/statisCompanyType.html',
                 controller: 'StatisCompanyType'
+            }).state('main.statis_outwork', {
+                url: '/statis_outwork',
+                templateUrl: 'views/statisOutwork.html',
+                controller: 'StatisOutworks'
             });
         $urlRouterProvider
             .when('/main/user', '/login')

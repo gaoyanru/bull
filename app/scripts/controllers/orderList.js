@@ -75,6 +75,7 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
 
     $scope.searchFn = function() {
         $scope.searchItem = getSearchItem();
+        console.log($scope.searchItem, '$scope.searchItem')
         refreshData($scope.searchItem);
     }
 
@@ -161,21 +162,47 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
         });
         return data;
     }
-
+    $scope.isChecked = false
+    $scope.IsExpireRenew = false
+    $scope.consoleValue = function(val) {
+      console.log(val, 'val')
+      // if (val) {
+      //   $scope.isChecked = true
+      //   // $scope.IsExpireRenew = 1
+      // } else {
+      //   $scope.isChecked = false
+      //   // $scope.IsExpireRenew = 0
+      // }
+      $scope.searchFn()
+    }
     function getSearchItem() {
+      if ($scope.IsExpireRenew) {
+        // $scope.IsExpireRenew = 1
+        $scope.isChecked = true
+      } else {
+        // $scope.IsExpireRenew = 0
+        $scope.isChecked = false
+      }
+      console.log($scope.IsExpireRenew ,'$scope.IsExpireRenew ')
         var searchItem = {
             cusname: $scope.cusname,
             start: $filter('date')($scope.startdate, 'yyyy-MM-dd'),
             end: $filter('date')($scope.enddate, 'yyyy-MM-dd'),
             status: $scope.status,
-            LegalPerson: $scope.LegalPerson
+            LegalPerson: $scope.LegalPerson,
+            IsExpireRenew: $scope.IsExpireRenew
         }
 
         return searchItem;
     }
 
     function refreshData(data) {
-
+        console.log(data, 'data')
+        if (!data.IsExpireRenew) {
+          data.IsExpireRenew = 0
+        } else {
+          data.IsExpireRenew = 1
+        }
         var data = angular.extend({
             offset: ($scope.paginator.currentPage - 1) * $scope.paginator.perPage,
             limit: $scope.paginator.perPage

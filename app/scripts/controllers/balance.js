@@ -62,15 +62,50 @@ angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filt
 
 
     $http.get('/api/finance/balance').success(function(result) {
-        
+
         $scope.balance = result.data;
     });
+
+
+    var tbOptions = [{
+        header: '帐单编号',
+        col: 'BillId',
+    }, {
+        header: '充值金额',
+        col: 'Amount',
+    }, {
+        header: '余额',
+        col: 'Balance',
+    },{
+        header: '类型',
+        col: 'CategoryStr',
+    }, {
+        header: '备注',
+        col: 'Description'
+    }, {
+        header: '订单时间',
+        col: 'BillTime'
+    }];
+
+    $scope.rightAlign = [1,2];
+    function getHeaders() {
+      console.log($scope.curType)
+        return tbOptions.map(function(item) {
+            return item.header
+        });
+    }
 
     var fetchUrl,   // 明细地址
         searchItem = {}; //缓存起止日期
     $scope.showDetail = function(type) {
         if ($scope.curType === type) return;
         $scope.curType = type;
+        if ($scope.curType == 1) {
+          tbOptions[1].header = '支付'
+        } else {
+          tbOptions[1].header = '充值金额'
+        }
+        $scope.headers = getHeaders();
         fetchUrl = "/api/finance/agent/details?type=" + type + "&";
         pageReset();
         fetchData();
@@ -106,39 +141,15 @@ angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filt
     $scope.showDetail(0);
     fetchData();
 
-
-    var tbOptions = [{
-        header: '帐单编号',
-        col: 'BillId',
-    }, {
-        header: '订单金额',
-        col: 'Amount',
-    }, {
-        header: '余额',
-        col: 'Balance',
-    },{
-        header: '类型',
-        col: 'CategoryStr',
-    }, {
-        header: '备注',
-        col: 'Description'
-    }, {
-        header: '订单时间',
-        col: 'BillTime'
-    }];
-    $scope.rightAlign = [1,2];
-    function getHeaders() {
-        return tbOptions.map(function(item) {
-            return item.header
-        });
-    }
-
     function formateData(data) {
         var CategoryList = {
-            2: "充值",
-            1: "支付",
-            3: "撤单",
-            4: "返佣"
+            2: "正常充值",
+            1: "支付订单",
+            3: "退单回充",
+            4: "返点",
+            5: "一代提成",
+            6: '二代提单,扣减一代提成',
+            7: '中心充值'
         }
         data.forEach(function(row) {
             var cols = [];
@@ -152,5 +163,4 @@ angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filt
         return data;
     }
 
-    $scope.headers = getHeaders();
 }]);

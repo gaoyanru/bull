@@ -9,60 +9,6 @@
  */
 angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$filter', '$state', '$stateParams', 'FileUploader', 'user', function ($scope, $http, $filter, $state, $stateParams, FileUploader, user) {
 
-
-    var promotionMap = {
-        1: {
-            priceFn: function (price) {
-                return price;
-            },
-            serviceFn: function (payType) {
-                var map = {
-                    6: 1,
-                    12: 2
-                };
-                return map[payType] || 0;
-            },
-            validPayType: [6, 12]
-        },
-        2: {
-            priceFn: function (price) {
-                return 0;
-            },
-            serviceFn: function (payType) {
-                return 0;
-            },
-            validPayType: [1, 7]
-        },
-        3: {
-            priceFn: function (price, payType) {
-                return price + -(price / 6);
-            },
-            serviceFn: function (payType) {
-                return 0;
-            },
-            validPayType: [6, 12]
-        },
-        4: {
-            priceFn: function (price, payType) {
-                return price;
-            },
-            serviceFn: function (payType) {
-                return 3;
-            },
-            validPayType: [12]
-        },
-        5: {
-            priceFn: function (price, payType) {
-                return price;
-            },
-            serviceFn: function (payType) {
-                return 2;
-            },
-            validPayType: [12]
-        }
-
-    }
-
     $scope.isCenter = user.get().IsCenter;
     $scope.showGift = false;
 
@@ -120,57 +66,99 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         orderId = $stateParams.orderId || $scope.$parent.orderId || false;
     }
 
-    $scope.IsPromotionValid = function () { //IsPromotionInValid
+    $scope.IsPromotionValid = function () { //活动复选框可选否
         var val = _.find(priceList, {
             "Id": +$scope.postData.PayType
         });
-        if (!val) return false;
+        if (!val) return true; // 没选择付款方式不能点
+        // console.log($scope.promotion) // 返回活动
+        // console.log($scope.postData.PayType, '付款方式选择的是不是活动')
         if ($scope.promotion) {
-            var p = promotionMap[$scope.promotion.PromoId];
-            if (p.validPayType.indexOf(+val.ServiceMonths) > -1) {
+            // 有活动的时候 判断付款方式是不是活动内的
+            // console.log(val.ServiceMonths, '付款方式对应的服务月份')
+            var p = $scope.promotion.PromotionDetailsEntityList
+            for (var i = 0; i < p.length; i++) {
+              // console.log(p[i].ServiceMonths)
+              p[i].ServiceMonths = p[i].ServiceMonths + ''
+              // console.log(p[i].ServiceMonths.indexOf(+val.ServiceMonths))
+              if (p[i].ServiceMonths.indexOf(val.ServiceMonths) > -1) {
                 return false;
+              }
             }
         }
         $scope.postData.IsPromotion = false;
         return true;
     }
-    $scope.setprice = function () {
+    $scope.setprice = function () { // 计算合同金额
         if ($scope.isReadOnly) {
             return $scope.postData.ContractAmount;
         }
-        var val = _.find(priceList, {
+        var val = _.find(priceList, { // 根据付款方式找到对应合同价格ID
             "Id": +$scope.postData.PayType
         });
 
 
-        if ($scope.postData.AddedValue && gifts.length > 0) {
+        if ($scope.postData.AddedValue && gifts.length > 0) { // 返回默认选择的付款方式 && 有礼物的时候
             $scope.showGift = true;
             filterGifts();
         }
 
-        if ($scope.postData.CityCode && priceList && $scope.postData.AddedValue && $scope.postData.PayType) {
-            $scope.postData.ContractAmount = setContractAmount();
+        if ($scope.postData.CityCode && priceList && $scope.postData.AddedValue && $scope.postData.PayType) { // 选择了城市付款方式时候
+            $scope.postData.ContractAmount = setContractAmount(); // 查看时候确定合同金额
             return $scope.postData.ContractAmount;
         }
         return '';
-
-        function setContractAmount() {
-            var val = _.find(priceList, {
-                "Id": +$scope.postData.PayType
-            });
-            if (val) {
-                if ($scope.promotion && $scope.postData.IsPromotion) {
-                    var p = promotionMap[$scope.promotion.PromoId];
-                    return p.priceFn(val.Price, val.ServiceMonths);
-                } else if ($scope.postData.IsPromotion && $scope.postData.PromotionId) {
-                    var p = promotionMap[$scope.postData.PromotionId];
-                    return p.priceFn(val.Price, val.ServiceMonths);
+    }
+    function setContractAmount() {
+        var val = _.find(priceList, {
+            "Id": +$scope.postData.PayType
+        });
+        if (val) { // 如果获取到支付方式 再根据活动筛选出对应的价格
+          // console.log(val, '筛选付款方式')
+            if (!$scope.postData.IsPromotion) { // 没有选择活动 根据选择付款方式返回价格
+              // console.log(val.Price, '价格只根据付款方式确认')
+              return val.Price
+            } else if ($scope.promotion && $scope.postData.IsPromotion) { // 如果有活动而且选择了 根据付款方式及活动方式确认价格
+              if ($scope.promotion.PromotionType == 1) { // 只增加服务时长
+                // console.log('只增加服务时长')
+                return val.Price
+              } else if ($scope.promotion.PromotionType == 2) { // 活动导致价格减少
+                // console.log('活动导致价格减少')
+                // 判断付款方式是不是可以选择当前活动, 如果选择了判断减几个月价格(需要判断小规模还是一般纳税人)
+                var p = $scope.promotion.PromotionDetailsEntityList
+                $scope.price = ''
+                for (var i = 0; i < p.length; i++) {
+                  // console.log(p[i].ServiceMonths == val.ServiceMonths, 'true')
+                  if (val.Id == 28) {
+                    var serveMoney = val.Price/6
+                  } else if (val.Id != 28 &&p[i].ServiceMonths == val.ServiceMonths){
+                    serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
+                  }
+                  console.log(serveMoney, 'serveMoney')
+                  $scope.price = val.Price - serveMoney * p[i].PromotionMonths
+                  if (($scope.price + '').indexOf(".") > -1) {
+                    $scope.price = $scope.price.toFixed(2)
+                  }
+                  break
+                  // if (p[i].ServiceMonths == val.ServiceMonths) {
+                  //   var serveMoney = ''
+                  //   if (p[i].ServiceMonths == 0) {
+                  //     serveMoney = val.Price/6
+                  //   } else {
+                  //     serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
+                  //   }
+                  //   console.log(serveMoney, 'serveMoney')
+                  //   // console.log(serveMoney, '获得当月小规模或者一般纳税人服务费')
+                  //   $scope.price = val.Price - serveMoney * p[i].PromotionMonths
+                  //   break
+                  // }
                 }
-                return val.Price;
+                // console.log($scope.price)
+                return $scope.price
+              }
             }
-            return '';
         }
-
+        return '';
     }
     $scope.setgift = function () {
         //console.log($scope.postData.gift);
@@ -183,16 +171,19 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         else
             $scope.category = 1;
     }
-    //获取当前渠道2016-11-16以后参加活动的个数
-    if (!$scope.isCenter) {
-        $http.get("/api/promotion/count").success(function (res) {
-            if (res.status) {
-                $scope.promotion = res.data;
-            }
-            setIsProm();
-        });
+    // 代理商提单时候可以享受的活动
+    $scope.channelUsePromotion = function() {
+      $http.get('/api/newpromotion/getchannelpromotionbyorder').success(function (res) {
+        // console.log(res, '代理商活动')
+        if (res.status) {
+          $scope.promotion = res.data
+        }
+        setIsProm()
+      })
     }
-    if (orderId) {
+    $scope.channelUsePromotion()
+     // 一开始执行 根据选择所在城市 获得不同城市的价格
+    if (orderId) { // 修改
         $http.get("/api/orders/" + orderId).success(function (result) {
             result = angular.extend(result.data, result.data.Customer);
             if (result.ContractDate.substr(0, 4) === '0001') {
@@ -224,8 +215,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                 result.BusnissDeadline = '';
             }
             if (result.IsPromotion) {
-                result.PromotionId = result.IsPromotion;
-                result.IsPromotion = !!result.IsPromotion;
+              // result.PromotionId = result.IsPromotion;
+              result.IsPromotion = !!result.IsPromotion;
             }
             result.BillLevel = "" + result.BillLevel;
             if ($scope.isChange || result.IsChange == 1) {
@@ -265,38 +256,36 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             $scope.isNewCompany = result.Category > 1;
             initDict();
         });
-    } else {
+    } else { // 新增
         initDict();
         getBanlance();
     }
 
-    function getBanlance() {
+    function getBanlance() { // 获得账户余额
         $scope.hasBalance = true;
         $http.get('api/agent/balance').success(function (result) {
             $scope.balance = result.data;
         })
     }
 
-
-
     function initDict() {
-        $http.get("/api/code/industry").success(function (data) {
+        $http.get("/api/code/industry").success(function (data) { // 行业
             $scope.industries = data.data;
             //$scope.postData.AddedValue = '1';
         });
-        $http.get("/api/citybychannel").success(function (data) {
+        $http.get("/api/citybychannel").success(function (data) { // 根据所在城市请求价格
             $scope.cities = data.data;
             if (!$scope.postData.CityCode) {
-                $scope.postData.CityCode = $scope.cities[0].CityCode;
+                $scope.postData.CityCode = $scope.cities[0].CityCode; // 默认选择第一个城市
             }
 
             $scope.setprice(true);
-            if ($scope.isReadOnly) {
+            if ($scope.isReadOnly) { // 查看和新增时请求的价格有区别 所以分开请求
               $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode + '&ischeck=1').success(function (data) {
                   priceList = data.data;
                   $scope.payTypes = data.data;
               });
-            } else {
+            } else { // 新增
               $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
                   priceList = data.data;
                   $scope.payTypes = data.data;
@@ -318,7 +307,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
 
     }
 
-    function setIsProm() {
+    function setIsProm() { // 判断只读还是可选--查看 记账准备Category == 3 返回$scope.promotion没有活动时候 审核通过  不显示选框
         if ($scope.postData.Category == 3) {
             $scope.showProm = false;
             return;
@@ -327,13 +316,12 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             $scope.showProm = true;
             return;
         }
-        if ((!$scope.promotion) || $scope.promotion.PromNum <= 0 || $scope.postData.Status == 2) {
+        if ((!$scope.promotion) || $scope.postData.Status == 2) {
             $scope.showProm = false;
             return false;
         } else {
             $scope.showProm = true;
         }
-
     }
 
     function filterGifts() {
@@ -381,18 +369,21 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         }
         $scope.submited = true;
         delete $scope.postData.Customer;
-        if ($scope.postData.IsPromotion)
-            if ($scope.promotion && !$scope.postData.PromotionId) {
-                $scope.postData.IsPromotion = $scope.promotion.PromoId;
-            } else {
-                $scope.postData.IsPromotion = $scope.postData.PromotionId;
-            }
-        else {
-            $scope.postData.IsPromotion = 0
-            delete $scope.postData.PromotionId;
+        // if ($scope.postData.IsPromotion) { // 选择活动时候过滤提交给后台活动id
+        //   if ($scope.promotion && !$scope.postData.PromotionId) {
+        //       $scope.postData.IsPromotion = $scope.promotion.PromoId;
+        //   } else {
+        //       $scope.postData.IsPromotion = $scope.postData.PromotionId;
+        //   }
+        // } else {
+        //     $scope.postData.IsPromotion = 0
+        //     delete $scope.postData.PromotionId;
+        // }
+        if ($scope.postData.IsPromotion) {
+          $scope.postData.IsPromotion = $scope.promotion.Id
+        } else {
+          $scope.postData.IsPromotion = 0
         }
-
-
         if (!$scope.postData.SalesId) {
             alert('请先选择销售人员！');
             errorStep();
@@ -415,6 +406,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             return;
         }
         var postData = angular.copy($scope.postData);
+        console.log(postData, '最后提交的信息')
         if ((!postData.NoDeadLine) && !postData.BusnissDeadline) {
             alert("请填写营业期限！");
             errorStep();
@@ -452,7 +444,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             method: "post"
         }
 
-        if ($scope.postData.OrderId) {
+        if ($scope.postData.OrderId) { // 修改
             params.method = "put";
             params.url = params.url + '/' + $scope.postData.OrderId;
             if (isSave) {
@@ -741,7 +733,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             "Id": +$scope.postData.PayType
         });
         if (!payType) return;
-        var addMonth = payType.ServiceMonths;
+        var addMonth = payType.ServiceMonths; // 正常合同的服务月份
+        console.log($scope.postData, '$scope.postData')
         if ($scope.postData.gift) {
             var gift = _.find($scope.gifts, function (item) {
                 return item.Id === +$scope.postData.gift;
@@ -750,9 +743,21 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         } else if ($scope.postData.GiftTypeId) {
             addMonth = addMonth + $scope.postData.GiftTypeId;
         }
-        if (($scope.promotion && $scope.postData.IsPromotion) || $scope.postData.PromotionId) {
-            var promId = $scope.postData.PromotionId || ($scope.promotion ? $scope.promotion.PromoId : $scope.postData.PromotionId);
-            addMonth += promotionMap[promId].serviceFn(payType.ServiceMonths);
+        // 活动影响服务结束时间
+        // if (($scope.promotion && $scope.postData.IsPromotion) || $scope.postData.PromotionId) {
+        //     var promId = $scope.postData.PromotionId || ($scope.promotion ? $scope.promotion.PromoId : $scope.postData.PromotionId);
+        //     addMonth += promotionMap[promId].serviceFn(payType.ServiceMonths);
+        // }
+        // 如果有可选择的活动 而且选择了 判断服务期限加优惠月份
+        console.log($scope.postData.IsPromotion, '是否选择活动且是增加服务时间的活动')
+        if ($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1) {
+          // 根据选择的付款方式就是addMonth 判断活动送几个月
+          var p = $scope.promotion.PromotionDetailsEntityList
+          for (var i = 0; i < p.length; i++) {
+            if (p[i].ServiceMonths == addMonth) {
+              addMonth += p[i].PromotionMonths
+            }
+          }
         }
         var date = new Date($scope.postData.ServiceStart);
         var enddate = new Date(date.setMonth(date.getMonth() + addMonth - 1));

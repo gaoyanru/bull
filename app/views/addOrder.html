@@ -155,7 +155,7 @@
                             <td class="required">付款方式</td>
                             <td>
                                 <div ng-if="!postData.FreChangeOrderId">
-                                    <select ng-model="postData.PayType" ng-disabled="isReadOnly" required >
+                                    <select ng-model="postData.PayType" ng-disabled="isReadOnly" required>
                                        <option ng-repeat="pt in payTypes" ng-if="postData.AddedValue == pt.AddedValue" value="{{pt.Id}}">{{pt.PriceName}}</option>
                                     </select>
                                     <select ng-model="postData.gift" ng-if="showGift && !isReadOnly" ng-change="setgift();">
@@ -164,8 +164,10 @@
                                     </select>
                                     <span ng-if="isReadOnly && postData.GiftStr">礼包:{{::postData.GiftStr}}</span>
                                     <label style="color: red" ng-if="showProm">
-                                        <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()||isReadOnly">{{::promotion.ProName}}:{{::promotion.Description}}<span ng-if="promotion.PromNum<20">(剩余{{::promotion.PromNum}})</span></label>
-                                    <label style="color: red" ng-if="postData.IsPromotion && !showProm">{{::postData.Promotion.PromotionName}}:{{::postData.Promotion.Description}}</label>
+                                        <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()||isReadOnly">{{::promotion.PromotionName}}<span ng-if="promotion.Num<20">
+                                          (剩余{{::promotion.Num}})</span>
+                                    </label>
+                                    <label style="color: red" ng-if="postData.IsPromotion && !showProm">{{::promotion.PromotionName}}</label>
                                     <br> <small style="color:red">注:零税指零报税并且零票据。</small>
                                 </div>
                                 <div ng-if="postData.FreChangeOrderId">企业性质变更</div>
@@ -299,8 +301,15 @@
                                 </select>
                                 <span ng-if="isReadOnly && postData.GiftStr">礼包:{{::postData.GiftStr}}</span>
                                 <label style="color: red" ng-if="showProm">
-                                    <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()||isReadOnly">{{::promotion.ProName}}:{{::promotion.Description}}<span ng-if="promotion.PromNum<20">(剩余{{::promotion.PromNum}})</span></label>
-                                <label style="color: red" ng-if="postData.IsPromotion && !showProm">{{::postData.Promotion.PromotionName}}:{{::postData.Promotion.Description}}</label>
+                                    <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()||isReadOnly">{{::promotion.PromotionName}}<span ng-if="promotion.Num<20">
+                                      (剩余{{::promotion.Num}})</span>
+                                </label>
+                                <label style="color: red" ng-if="postData.IsPromotion && !showProm">{{::promotion.PromotionName}}</label>
+                                <!-- <label style="color: red" ng-if="showProm">
+                                    <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()||isReadOnly">{{::promotion.ProName}}:{{::promotion.Description}}
+                                    <span ng-if="promotion.PromNum<20">(剩余{{::promotion.PromNum}})</span>
+                                  </label> -->
+                                <!-- <label style="color: red" ng-if="postData.IsPromotion && !showProm">{{::postData.Promotion.PromotionName}}:{{::postData.Promotion.Description}}</label> -->
                                 <br> <small style="color:red">注:零税指零报税并且零票据。</small>
                             </td>
                         </tr>
@@ -487,8 +496,15 @@
                                 </select>
                                 <span ng-if="postData.GiftTypeName">礼包:{{::postData.GiftTypeName}}</span>
                                 <label style="color: red" ng-if="showProm">
-                                    <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid() ||isReadOnly">{{::promotion.ProName}}:{{::promotion.Description}}<span ng-if="promotion.PromNum<20">(剩余{{::promotion.PromNum}})</span></label>
-                                <label style="color: red" ng-if="postData.IsPromotion && !showProm">{{::postData.Promotion.PromotionName}}:{{::postData.Promotion.Description}}</label>
+                                    <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()||isReadOnly">{{::promotion.PromotionName}}<span ng-if="promotion.Num<20">
+                                      (剩余{{::promotion.Num}})</span>
+                                </label>
+                                <label style="color: red" ng-if="postData.IsPromotion && !showProm">{{::promotion.PromotionName}}</label>
+                                <!-- <label style="color: red" ng-if="showProm">
+                                    <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid() ||isReadOnly">{{::promotion.ProName}}:{{::promotion.Description}}
+                                    <span ng-if="promotion.PromNum<20">(剩余{{::promotion.PromNum}})</span>
+                                  </label> -->
+                                <!-- <label style="color: red" ng-if="postData.IsPromotion && !showProm">{{::postData.Promotion.PromotionName}}:{{::postData.Promotion.Description}}</label> -->
                                 <br> <small style="color:red">注:零税指零报税并且零票据。</small>
                             </td>
                         </tr>
