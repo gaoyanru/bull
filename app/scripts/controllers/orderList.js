@@ -114,6 +114,11 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
         }else{
             $state.go('^.addOrder', { orderId: order.OrderId });
         }
+        modalInstance.result.then(function (result) {
+          $scope.searchFn()
+        }, function () {
+
+        })
     };
     $scope.delete = function(orderId) {
         if (confirm('确认删除订单？')) {
