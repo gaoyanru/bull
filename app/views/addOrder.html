@@ -160,7 +160,7 @@
                                     </select>
                                     <select ng-model="postData.gift" ng-if="showGift && !isReadOnly" ng-change="setgift();">
                                         <option value="">不使用礼包</option>
-                                        <option ng-repeat="item in gifts" value="{{item.Id}}" ng-disabled="{{item.Num ===0}}">{{::item.GiftTypeName}}(￥{{::item.Price}})</option>
+                                        <option ng-repeat="item in gifts" value="{{item.Id}}" ng-selected="postData.gift == item.Id" ng-disabled="{{item.Num ===0}}">{{::item.GiftTypeName}}(￥{{::item.Price}})</option>
                                     </select>
                                     <span ng-if="isReadOnly && postData.GiftStr">礼包:{{::postData.GiftStr}}</span>
                                     <label style="color: red" ng-if="showProm">
@@ -297,7 +297,7 @@
                                 </select>
                                 <select ng-model="postData.gift" ng-if="showGift && !isReadOnly" ng-change="setgift();">
                                     <option value="">不使用礼包</option>
-                                    <option ng-repeat="item in gifts" value="{{item.Id}}" ng-disabled="{{item.Num ===0}}">{{::item.GiftTypeName}}(￥{{::item.Price}})</option>
+                                    <option ng-repeat="item in gifts" value="{{item.Id}}" ng-disabled="{{item.Num ===0}}" ng-disabled="{{item.Num ===0}}">{{::item.GiftTypeName}}(￥{{::item.Price}})</option>
                                 </select>
                                 <span ng-if="isReadOnly && postData.GiftStr">礼包:{{::postData.GiftStr}}</span>
                                 <label style="color: red" ng-if="showProm">

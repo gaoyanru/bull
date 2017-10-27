@@ -114,7 +114,7 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
         }else{
             $state.go('^.addOrder', { orderId: order.OrderId });
         }
-        modalInstance.result.then(function (result) {
+        modalInstance.result.then(function () {
           $scope.searchFn()
         }, function () {
 
