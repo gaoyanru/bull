@@ -118,6 +118,10 @@ module.exports = function(grunt) {
                             connect.static('./bower_components')
                         ));
                         middlewares.push(connect().use(
+                            '/libs',
+                            connect.static('./libs')
+                        ));
+                        middlewares.push(connect().use(
                             '/app/styles',
                             connect.static('./app/styles')
                         ));
