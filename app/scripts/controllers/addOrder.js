@@ -79,9 +79,13 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             var p = $scope.promotion.PromotionDetailsEntityList
             for (var i = 0; i < p.length; i++) {
               // console.log(p[i].ServiceMonths)
-              p[i].ServiceMonths = p[i].ServiceMonths + ''
+              // p[i].ServiceMonths = p[i].ServiceMonths + ''
               // console.log(p[i].ServiceMonths.indexOf(+val.ServiceMonths))
-              if (p[i].ServiceMonths.indexOf(val.ServiceMonths) > -1) {
+              if (val.IsZero == 0 && p[i].ServiceMonths != 0) {
+               if (p[i].ServiceMonths == val.ServiceMonths) {
+                 return false;
+               }
+              } else if (val.IsZero == 1 && p[i].ServiceMonths == 0) {
                 return false;
               }
             }
@@ -135,12 +139,15 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                 $scope.price = ''
                 for (var i = 0; i < p.length; i++) {
                   // console.log(p[i].ServiceMonths == val.ServiceMonths, 'true')
-                  if (val.Id == 28) {
+                  if (val.IsZero == 1) {
                     var serveMoney = val.Price/6
-                  } else if (val.Id != 28 &&p[i].ServiceMonths == val.ServiceMonths){
+                  } else if (val.IsZero != 1 && p[i].ServiceMonths == val.ServiceMonths){
                     serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
                   }
                   // console.log(serveMoney, 'serveMoney')
+                  if (!serveMoney) {
+                    continue
+                  }
                   $scope.price = val.Price - serveMoney * p[i].PromotionMonths
                   if (($scope.price + '').indexOf(".") > -1) {
                     $scope.price = $scope.price.toFixed(2)
@@ -762,7 +769,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
     }
 
     $scope.setEndDate = function () {
-
+        console.log($scope.postData.gift, '$scope.postData.gift')
         if (!$scope.postData.ServiceStart) return;
         if (!$scope.postData.PayType) return;
         if ($scope.postData.FreChangeOrderId) return;
@@ -770,16 +777,21 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             "Id": +$scope.postData.PayType
         });
         if (!payType) return;
+        console.log(payType, 'payType')
         var addMonth = payType.ServiceMonths; // 正常合同的服务月份
+        var giftAndPromotionMonth = 0
         // console.log($scope.postData, '$scope.postData')
         if ($scope.postData.gift) {
             var gift = _.find($scope.gifts, function (item) {
                 return item.Id === +$scope.postData.gift;
             });
-            addMonth = addMonth + gift.MonthNum;
-        } else if ($scope.postData.GiftTypeId) {
-            addMonth = addMonth + $scope.postData.GiftTypeId;
+            console.log(gift.MonthNum, 'gift.MonthNum')
+            // addMonth = addMonth + gift.MonthNum;
+            giftAndPromotionMonth = giftAndPromotionMonth +  gift.MonthNum
         }
+        //  else if ($scope.postData.GiftTypeId) {
+        //     addMonth = addMonth + $scope.postData.GiftTypeId;
+        // }
         // 活动影响服务结束时间
         // if (($scope.promotion && $scope.postData.IsPromotion) || $scope.postData.PromotionId) {
         //     var promId = $scope.postData.PromotionId || ($scope.promotion ? $scope.promotion.PromoId : $scope.postData.PromotionId);
@@ -787,15 +799,24 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         // }
         // 如果有可选择的活动 而且选择了 判断服务期限加优惠月份
         // console.log($scope.postData.IsPromotion, '是否选择活动且是增加服务时间的活动')
+        console.log($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1)
         if ($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1) {
           // 根据选择的付款方式就是addMonth 判断活动送几个月
           var p = $scope.promotion.PromotionDetailsEntityList
           for (var i = 0; i < p.length; i++) {
-            if (p[i].ServiceMonths == addMonth) {
-              addMonth += p[i].PromotionMonths
+            console.log(p[i].ServiceMonths, 'p[i].ServiceMonths')
+            if (p[i].ServiceMonths == 0 && payType.IsZero == 1) {
+              giftAndPromotionMonth += p[i].PromotionMonths
+            }
+            if (p[i].ServiceMonths == addMonth && payType.IsZero != 1) {
+              // addMonth += p[i].PromotionMonths
+              giftAndPromotionMonth += p[i].PromotionMonths
             }
           }
         }
+        console.log(giftAndPromotionMonth, 'giftAndPromotionMonth')
+        addMonth += giftAndPromotionMonth
+        console.log(addMonth, 'addMonth')
         var date = new Date($scope.postData.ServiceStart);
         var enddate = new Date(date.setMonth(date.getMonth() + addMonth - 1));
 

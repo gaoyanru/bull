@@ -2,7 +2,8 @@
     <div>
         <h2>{{::title||"我提交的订单查询"}}</h2></div>
     <div class="o-search well well-sm">
-        <form ng-if="!title" class="form-inline" style="padding-right: 300px;">
+        <form class="form-inline" style="padding-right: 300px;">
+          <div ng-show="!title" >
             <div>
                 <div class="form-group">
                     <label> 公司名称：</label>
@@ -46,8 +47,8 @@
             </div>
             <button class="btn btn-primary" ng-click="searchFn()" style="position: absolute;left: 600px;top: 63px;">搜索</button>
             <!-- <button class="btn btn-default" ng-click="reset()">重置</button> -->
-        </form>
-        <form ng-if="title" class="form-inline">
+          </div>
+          <div ng-show="title">
             <div class="form-group">
                 <label> 公司名称：</label>
                 <input type="text" ng-model="cusname" class="form-control">
@@ -86,6 +87,7 @@
               </select>
             </div>
             <button class="btn btn-primary" ng-click="searchFn()">搜索</button>
+          </div>
         </form>
         <div ng-if="!title" style="position: absolute;top: 70px;right: 20px;font-size: 14px;color: #333;font-weight: bold;">
             <input type="checkbox" ng-model="IsExpireRenew" :checked="isChecked" ng-click="consoleValue(IsExpireRenew)"> 仅显示需要续费的订单

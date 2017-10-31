@@ -51,10 +51,10 @@
           </thead>
           <tbody>
             <tr ng-repeat="item in tableData">
-              <td style="text-align:center; width:200px">{{item.ProvinceName}}</td>
-              <td style="text-align:center; width:120px">{{item.CityName}}</td>
-              <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
-              <td style="text-align:center; width:120px">{{item.ChannelName2}}</td>
+              <td style="text-align:center; width:100px">{{item.ProvinceName}}</td>
+              <td style="text-align:center; width:100px">{{item.CityName}}</td>
+              <td style="text-align:center; width:200px">{{item.ChannelName1}}</td>
+              <td style="text-align:center; width:200px">{{item.ChannelName2}}</td>
               <td style="text-align:center; width:120px">{{item.Status | filterStatus}}</td>
               <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn1(item)">{{item.littlenum}}</td>
               <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn2(item)">{{item.formalnum}}</td>

@@ -71,15 +71,28 @@
                         <thead>
                             <tr class="info">
                                 <th>序号</th>
-                                <th ng-repeat="head in headers" ng-bind="head"></th>
+                                <!-- <th ng-repeat="head in headers" ng-bind="head"></th> -->
+                                <th>账单编号</th>
+                                <th ng-show="curType == 1">支付</th>
+                                <th ng-show="curType != 1">充值金额</th>
+                                <th>余额</th>
+                                <th>类型</th>
+                                <th>备注</th>
+                                <th>操作时间</th>
                                 <th>操作</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="row in data">
                                 <td ng-bind="$index+1"></td>
-                                <td ng-repeat="col in row.cols  track by $index" ng-class="{'text-right': rightAlign && rightAlign.indexOf($index)>-1}" ng-bind-html="col"></td>
-                                <td> <a href="#/main/addOrder/{{::row.OrderId}}" ng-if="row.Category ==1">查看订单</a></td>
+                                <td>{{row.BillId}}</td>
+                                <td>{{row.Amount}}</td>
+                                <td>{{row.Balance}}</td>
+                                <td>{{row.CategoryStr}}</td>
+                                <td>{{row.Description}}</td>
+                                <td style="width:150px">{{row.BillTime}}</td>
+                                <!-- <td ng-repeat="col in row.cols  track by $index" ng-class="{'text-right': rightAlign && rightAlign.indexOf($index)>-1}" ng-bind-html="col"></td> -->
+                                <td style="width:90px"> <a href="#/main/addOrder/{{::row.OrderId}}" ng-if="row.Category ==1">查看订单</a></td>
                             </tr>
                         </tbody>
                     </table>

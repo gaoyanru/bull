@@ -45,6 +45,7 @@ angular.module('channelApp')
             applyModal.result.then(function(result) {
                 $scope.selectedTab = 1;
                 $scope.pageChanged();
+                initBalance();
             }, function() {
 
             });

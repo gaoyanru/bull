@@ -12,6 +12,9 @@
                     },
                     isModify: function() {
                         return false;
+                    },
+                    isConchange: function() { // 是否企业变更 要求开始账期默认选中判断与当前月的关系
+                      return true
                     }
                 }
             });
@@ -62,8 +65,8 @@
         }
         $scope.limit = "1";
         refreshData();
-    }]).controller('Change', ['$scope', '$uibModal', '$http', '$uibModalInstance', 'orderId', '$filter', 'isModify', function($scope, $uibModal, $http, $uibModalInstance, orderId, $filter, isModify) {
-
+    }]).controller('Change', ['$scope', '$uibModal', '$http', '$uibModalInstance', 'orderId', '$filter', 'isModify', 'isConchange', function($scope, $uibModal, $http, $uibModalInstance, orderId, $filter, isModify, isConchange) {
+        console.log(isConchange)
         $scope.orderId = orderId;
         $scope.showClose = true;
         $scope.close = function() {
@@ -119,7 +122,17 @@
                         var now = new Date();
                         result.ServiceStart = now;
                     }else{
+                        var now = new Date()
+                        var nowTime = now.getTime()
+                        console.log(nowTime, 'nowTime')
                         result.ServiceStart = new Date(result.ServiceStart);
+                        var resultTime = result.ServiceStart.getTime()
+                        console.log(resultTime, 'result.ServiceStart')
+                        if (nowTime > resultTime) {
+                          result.ServiceStart = now
+                        } else {
+                          result.ServiceStart = result.ServiceStart
+                        }
                     }
 
                 }

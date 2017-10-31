@@ -74,6 +74,7 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
     $scope.searchItem = getSearchItem();
 
     $scope.searchFn = function() {
+      console.log('搜索')
         $scope.searchItem = getSearchItem();
         console.log($scope.searchItem, '$scope.searchItem')
         refreshData($scope.searchItem);
@@ -108,6 +109,9 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
                     },
                     isModify: function(){
                         return true;
+                    },
+                    isConchange: function() { // 是否企业变更 要求开始账期默认选中判断与当前月的关系
+                      return false
                     }
                 }
             });
@@ -170,32 +174,24 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
     $scope.isChecked = false
     $scope.IsExpireRenew = false
     $scope.consoleValue = function(val) {
-      console.log(val, 'val')
-      // if (val) {
-      //   $scope.isChecked = true
-      //   // $scope.IsExpireRenew = 1
-      // } else {
-      //   $scope.isChecked = false
-      //   // $scope.IsExpireRenew = 0
-      // }
+      // console.log(val, 'val')
+      $scope.isExpireRenew = 0
+      if (val) {
+        $scope.isExpireRenew = 1
+      } else {
+        $scope.isExpireRenew = 0
+      }
       $scope.searchFn()
     }
     function getSearchItem() {
-      if ($scope.IsExpireRenew) {
-        // $scope.IsExpireRenew = 1
-        $scope.isChecked = true
-      } else {
-        // $scope.IsExpireRenew = 0
-        $scope.isChecked = false
-      }
-      console.log($scope.IsExpireRenew ,'$scope.IsExpireRenew ')
+      console.log($scope.cusname, '$scope.cusname')
         var searchItem = {
             cusname: $scope.cusname,
             start: $filter('date')($scope.startdate, 'yyyy-MM-dd'),
             end: $filter('date')($scope.enddate, 'yyyy-MM-dd'),
             status: $scope.status,
             LegalPerson: $scope.LegalPerson,
-            IsExpireRenew: $scope.IsExpireRenew
+            IsExpireRenew: $scope.isExpireRenew
         }
 
         return searchItem;

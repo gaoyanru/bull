@@ -67,45 +67,45 @@ angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filt
     });
 
 
-    var tbOptions = [{
-        header: '帐单编号',
-        col: 'BillId',
-    }, {
-        header: '充值金额',
-        col: 'Amount',
-    }, {
-        header: '余额',
-        col: 'Balance',
-    },{
-        header: '类型',
-        col: 'CategoryStr',
-    }, {
-        header: '备注',
-        col: 'Description'
-    }, {
-        header: '订单时间',
-        col: 'BillTime'
-    }];
+    // var tbOptions = [{
+    //     header: '帐单编号',
+    //     col: 'BillId',
+    // }, {
+    //     header: '充值金额',
+    //     col: 'Amount',
+    // }, {
+    //     header: '余额',
+    //     col: 'Balance',
+    // },{
+    //     header: '类型',
+    //     col: 'CategoryStr',
+    // }, {
+    //     header: '备注',
+    //     col: 'Description'
+    // }, {
+    //     header: '操作时间',
+    //     col: 'BillTime'
+    // }];
 
     $scope.rightAlign = [1,2];
-    function getHeaders() {
-      console.log($scope.curType)
-        return tbOptions.map(function(item) {
-            return item.header
-        });
-    }
+    // function getHeaders() {
+    //   console.log($scope.curType)
+    //     return tbOptions.map(function(item) {
+    //         return item.header
+    //     });
+    // }
 
     var fetchUrl,   // 明细地址
         searchItem = {}; //缓存起止日期
     $scope.showDetail = function(type) {
         if ($scope.curType === type) return;
         $scope.curType = type;
-        if ($scope.curType == 1) {
-          tbOptions[1].header = '支付'
-        } else {
-          tbOptions[1].header = '充值金额'
-        }
-        $scope.headers = getHeaders();
+        // if ($scope.curType == 1) {
+        //   tbOptions[1].header = '支付'
+        // } else {
+        //   tbOptions[1].header = '充值金额'
+        // }
+        // $scope.headers = getHeaders();
         fetchUrl = "/api/finance/agent/details?type=" + type + "&";
         pageReset();
         fetchData();
@@ -118,7 +118,7 @@ angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filt
 
     function pageReset() {
         $scope.paginator.currentPage = 1;
-        $scope.paginator.perPage = 15;
+        $scope.paginator.perPage = 10;
     }
     function getDateRange(){
         searchItem.start = $filter('date')($scope.searchParams.startTime,'yyyy-MM-dd');
@@ -155,9 +155,9 @@ angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filt
             var cols = [];
             row.BillTime = row.BillTime.replace('T', ' ');
             row.CategoryStr = CategoryList[row.Category];
-            tbOptions.forEach(function(item) {
-                cols.push(row[item.col]);
-            });
+            // tbOptions.forEach(function(item) {
+            //     cols.push(row[item.col]);
+            // });
             row.cols = cols;
         });
         return data;
