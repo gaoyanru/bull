@@ -66,7 +66,7 @@
         $scope.limit = "1";
         refreshData();
     }]).controller('Change', ['$scope', '$uibModal', '$http', '$uibModalInstance', 'orderId', '$filter', 'isModify', 'isConchange', function($scope, $uibModal, $http, $uibModalInstance, orderId, $filter, isModify, isConchange) {
-        console.log(isConchange)
+        // console.log(orderId)
         $scope.orderId = orderId;
         $scope.showClose = true;
         $scope.close = function() {
@@ -117,17 +117,18 @@
                 if (result.ServiceStart.substr(0, 4) === '0001') {
                     result.ServiceStart = "";
                 } else {
-                  console.log(isModify, 'isModify')
+                  // console.log(isModify, 'isModify')
                     if (isModify) {
-                        var now = new Date();
-                        result.ServiceStart = now;
+                        // var now = new Date();
+                        // result.ServiceStart = now;
+                        result.ServiceStart = new Date(result.ServiceStart);
                     }else{
                         var now = new Date()
                         var nowTime = now.getTime()
-                        console.log(nowTime, 'nowTime')
+                        // console.log(nowTime, 'nowTime')
                         result.ServiceStart = new Date(result.ServiceStart);
                         var resultTime = result.ServiceStart.getTime()
-                        console.log(resultTime, 'result.ServiceStart')
+                        // console.log(resultTime, 'result.ServiceStart')
                         if (nowTime > resultTime) {
                           result.ServiceStart = now
                         } else {
@@ -150,10 +151,10 @@
                     result.BusnissDeadline = '';
                 }
                 $scope.dateOptions2.maxDate = new Date(result.ServiceEnd);
-                console.log(result, 'result')
-                console.log(result.ServiceStart, $scope.dateOptions2.minDate, 'minDate')
-                $scope.dateOptions2.minDate = new Date(result.ServiceStart) > $scope.dateOptions2.minDate ? new Date(result.ServiceStart) : $scope.dateOptions2.minDate;
-
+                // console.log(result, 'result')
+                // console.log(result.ServiceStart, $scope.dateOptions2.minDate, 'minDate')
+                // $scope.dateOptions2.minDate = new Date(result.ServiceStart) > $scope.dateOptions2.minDate ? new Date(result.ServiceStart) : $scope.dateOptions2.minDate;
+                $scope.dateOptions2.minDate = new Date()
                 // result.IsPromotion = !!result.IsPromotion;
                 // result.BillLevel = "" + result.BillLevel;
                 if (result.Status == 2 && result.FreChangeOrderId) $scope.readonly = true;

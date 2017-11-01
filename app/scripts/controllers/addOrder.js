@@ -71,21 +71,21 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             "Id": +$scope.postData.PayType
         });
         if (!val) return true; // 没选择付款方式不能点
-        // console.log($scope.promotion) // 返回活动
-        // console.log($scope.postData.PayType, '付款方式选择的是不是活动')
+        // // // console.log($scope.promotion) // 返回活动
+        // // // console.log($scope.postData.PayType, '付款方式选择的是不是活动')
         if ($scope.promotion) {
             // 有活动的时候 判断付款方式是不是活动内的
-            // console.log(val.ServiceMonths, '付款方式对应的服务月份')
+            // // // console.log(val.ServiceMonths, '付款方式对应的服务月份')
             var p = $scope.promotion.PromotionDetailsEntityList
             for (var i = 0; i < p.length; i++) {
-              // console.log(p[i].ServiceMonths)
+              // // // console.log(p[i].ServiceMonths)
               // p[i].ServiceMonths = p[i].ServiceMonths + ''
-              // console.log(p[i].ServiceMonths.indexOf(+val.ServiceMonths))
-              if (val.IsZero == 0 && p[i].ServiceMonths != 0) {
+              // // // console.log(p[i].ServiceMonths.indexOf(+val.ServiceMonths))
+              if (val.IsZero == 0 && p[i].ServiceMonths != 0 && $scope.promotion.Num !=0) {
                if (p[i].ServiceMonths == val.ServiceMonths) {
                  return false;
                }
-              } else if (val.IsZero == 1 && p[i].ServiceMonths == 0) {
+              } else if (val.IsZero == 1 && p[i].ServiceMonths == 0 && $scope.promotion.Num !=0) {
                 return false;
               }
             }
@@ -108,7 +108,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             // var giftval = _.find(gifts, {
             //  "Id": +$scope.postData.giftId
             // })
-            // console.log(giftval, 'giftval,')
+            // // // console.log(giftval, 'giftval,')
             // $scope.postData.ContractAmount = val.Price + giftval.Price
             // return $scope.postData.ContractAmount
         }
@@ -124,27 +124,27 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             "Id": +$scope.postData.PayType
         });
         if (val) { // 如果获取到支付方式 再根据活动筛选出对应的价格
-          // console.log(val, '筛选付款方式')
+          // // // console.log(val, '筛选付款方式')
             if (!$scope.postData.IsPromotion) { // 没有选择活动 根据选择付款方式返回价格
-              // console.log(val.Price, '价格只根据付款方式确认')
+              // // // console.log(val.Price, '价格只根据付款方式确认')
               return val.Price
             } else if ($scope.promotion && $scope.postData.IsPromotion) { // 如果有活动而且选择了 根据付款方式及活动方式确认价格
               if ($scope.promotion.PromotionType == 1) { // 只增加服务时长
-                // console.log('只增加服务时长')
+                // // // console.log('只增加服务时长')
                 return val.Price
               } else if ($scope.promotion.PromotionType == 2) { // 活动导致价格减少
-                // console.log('活动导致价格减少')
+                // // // console.log('活动导致价格减少')
                 // 判断付款方式是不是可以选择当前活动, 如果选择了判断减几个月价格(需要判断小规模还是一般纳税人)
                 var p = $scope.promotion.PromotionDetailsEntityList
                 $scope.price = ''
                 for (var i = 0; i < p.length; i++) {
-                  // console.log(p[i].ServiceMonths == val.ServiceMonths, 'true')
-                  if (val.IsZero == 1) {
+                  // // // console.log(p[i].ServiceMonths == val.ServiceMonths, 'true')
+                  if (val.IsZero == 1 && p[i].ServiceMonths == 0) {
                     var serveMoney = val.Price/6
                   } else if (val.IsZero != 1 && p[i].ServiceMonths == val.ServiceMonths){
                     serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
                   }
-                  // console.log(serveMoney, 'serveMoney')
+                  // // // console.log(serveMoney, 'serveMoney')
                   if (!serveMoney) {
                     continue
                   }
@@ -160,13 +160,13 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                   //   } else {
                   //     serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
                   //   }
-                  //   console.log(serveMoney, 'serveMoney')
-                  //   // console.log(serveMoney, '获得当月小规模或者一般纳税人服务费')
+                  //   // // console.log(serveMoney, 'serveMoney')
+                  //   // // // console.log(serveMoney, '获得当月小规模或者一般纳税人服务费')
                   //   $scope.price = val.Price - serveMoney * p[i].PromotionMonths
                   //   break
                   // }
                 }
-                // console.log($scope.price)
+                // // // console.log($scope.price)
                 return $scope.price
               }
             }
@@ -174,7 +174,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         return '';
     }
     $scope.setgift = function () {
-       console.log($scope.postData.gift, typeof($scope.postData.gift));
+       // // console.log($scope.postData.gift, typeof($scope.postData.gift));
        // filterGifts();
     }
     $scope.category = 1;
@@ -185,11 +185,12 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         else
             $scope.category = 1;
     }
-    // 代理商提单时候可以享受的活动
+    // 代理商提单时候可以享受的最新活动 但是在新增和修改的时候默认代理商显示的活动时已经参加了的活动
     $scope.channelUsePromotion = function() {
       $http.get('/api/newpromotion/getchannelpromotionbyorder').success(function (res) {
-        // console.log(res, '代理商活动')
-        if (res.status) {
+        // // // console.log(res, '代理商活动')
+        // console.log(orderId, 'orderId')
+        if (res.status && !orderId) {
           $scope.promotion = res.data
         }
         setIsProm()
@@ -200,6 +201,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
     if (orderId) { // 修改
         $http.get("/api/orders/" + orderId).success(function (result) {
             result = angular.extend(result.data, result.data.Customer);
+            $scope.promotion = result.Promotion
             if (result.ContractDate.substr(0, 4) === '0001') {
                 result.ContractDate = "";
             } else {
@@ -246,6 +248,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             if ($scope.IsReOrder) {
                 $scope.postData.Status = 1
             }
+            // Category 1新增修改正常订单 2预提单 3预提单转正式提单
             if ((result.Category == 2 && result.Status == 2) || result.Category == 3) {
                 $scope.category = 3;
                 $scope.showProm = false;
@@ -316,7 +319,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             gifts = res.data.filter(function (item) {
                 return item.Num > 0
             });
-            console.log(gifts, 'gifts')
+            // // console.log(gifts, 'gifts')
             filterGifts();
             $scope.filterGifts1()
         });
@@ -358,7 +361,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         //         return item.GiftTypeId === $scope.postData.GiftTypeId && item.AddedValue == $scope.postData.AddedValue && item.Price == $scope.postData.GiftPrice;
         //     });
         //     if (find) $scope.postData.gift = "" + find.Id;
-        //     console.log($scope.postData.gift, typeof($scope.postData.gift))
+        //     // // console.log($scope.postData.gift, typeof($scope.postData.gift))
         // } else if (!$scope.postData.gift) {
         //     $scope.postData.gift = "";
         // }
@@ -383,7 +386,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                 return item.GiftTypeId === $scope.postData.GiftTypeId && item.AddedValue == $scope.postData.AddedValue && item.Price == $scope.postData.GiftPrice;
             });
             if (find) $scope.postData.gift = "" + find.Id;
-            console.log($scope.postData.gift)
+            // // console.log($scope.postData.gift)
         } else if (!$scope.postData.gift) {
             $scope.postData.gift = "";
         }
@@ -405,7 +408,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
       $scope.postData.PayType = ''
     }
     $scope.save = function (isSave) {
-     console.log($scope.postData, '$scope.postData')
+     // // console.log($scope.postData, '$scope.postData')
         var h = (new Date()).getHours();
         if (h < 5 || h > 21) {
             alert('该时间段不允许提单，请在5:00-22:00之间提单!');
@@ -423,7 +426,10 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         //     $scope.postData.IsPromotion = 0
         //     delete $scope.postData.PromotionId;
         // }
-        if ($scope.postData.IsPromotion) {
+        // console.log($scope.postData.IsPromotion, '$scope.postData.IsPromotion')
+        if ($scope.postData.IsPromotion && $scope.postData.Promotion) {
+          $scope.postData.IsPromotion = $scope.postData.Promotion.Id
+        } else if ($scope.postData.IsPromotion && $scope.promotion.Id) {
           $scope.postData.IsPromotion = $scope.promotion.Id
         } else {
           $scope.postData.IsPromotion = 0
@@ -450,7 +456,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             return;
         }
         var postData = angular.copy($scope.postData);
-        console.log(postData, '最后提交的信息')
+        // // console.log(postData, '最后提交的信息')
         if ((!postData.NoDeadLine) && !postData.BusnissDeadline) {
             alert("请填写营业期限！");
             errorStep();
@@ -769,7 +775,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
     }
 
     $scope.setEndDate = function () {
-        console.log($scope.postData.gift, '$scope.postData.gift')
+        // // // console.log($scope.postData.gift, '$scope.postData.gift')
         if (!$scope.postData.ServiceStart) return;
         if (!$scope.postData.PayType) return;
         if ($scope.postData.FreChangeOrderId) return;
@@ -777,15 +783,15 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             "Id": +$scope.postData.PayType
         });
         if (!payType) return;
-        console.log(payType, 'payType')
+        // // console.log(payType, 'payType')
         var addMonth = payType.ServiceMonths; // 正常合同的服务月份
         var giftAndPromotionMonth = 0
-        // console.log($scope.postData, '$scope.postData')
+        // // // console.log($scope.postData, '$scope.postData')
         if ($scope.postData.gift) {
             var gift = _.find($scope.gifts, function (item) {
                 return item.Id === +$scope.postData.gift;
             });
-            console.log(gift.MonthNum, 'gift.MonthNum')
+            // // console.log(gift.MonthNum, 'gift.MonthNum')
             // addMonth = addMonth + gift.MonthNum;
             giftAndPromotionMonth = giftAndPromotionMonth +  gift.MonthNum
         }
@@ -798,13 +804,13 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         //     addMonth += promotionMap[promId].serviceFn(payType.ServiceMonths);
         // }
         // 如果有可选择的活动 而且选择了 判断服务期限加优惠月份
-        // console.log($scope.postData.IsPromotion, '是否选择活动且是增加服务时间的活动')
-        console.log($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1)
+        // // // console.log($scope.postData.IsPromotion, '是否选择活动且是增加服务时间的活动')
+        // // console.log($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1)
         if ($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1) {
           // 根据选择的付款方式就是addMonth 判断活动送几个月
           var p = $scope.promotion.PromotionDetailsEntityList
           for (var i = 0; i < p.length; i++) {
-            console.log(p[i].ServiceMonths, 'p[i].ServiceMonths')
+            // // console.log(p[i].ServiceMonths, 'p[i].ServiceMonths')
             if (p[i].ServiceMonths == 0 && payType.IsZero == 1) {
               giftAndPromotionMonth += p[i].PromotionMonths
             }
@@ -814,9 +820,9 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             }
           }
         }
-        console.log(giftAndPromotionMonth, 'giftAndPromotionMonth')
+        // // console.log(giftAndPromotionMonth, 'giftAndPromotionMonth')
         addMonth += giftAndPromotionMonth
-        console.log(addMonth, 'addMonth')
+        // // console.log(addMonth, 'addMonth')
         var date = new Date($scope.postData.ServiceStart);
         var enddate = new Date(date.setMonth(date.getMonth() + addMonth - 1));
 

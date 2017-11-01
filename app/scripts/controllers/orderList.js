@@ -74,9 +74,9 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
     $scope.searchItem = getSearchItem();
 
     $scope.searchFn = function() {
-      console.log('搜索')
+      // console.log('搜索')
         $scope.searchItem = getSearchItem();
-        console.log($scope.searchItem, '$scope.searchItem')
+        // console.log($scope.searchItem, '$scope.searchItem')
         refreshData($scope.searchItem);
     }
 
@@ -174,7 +174,7 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
     $scope.isChecked = false
     $scope.IsExpireRenew = false
     $scope.consoleValue = function(val) {
-      // console.log(val, 'val')
+      // // console.log(val, 'val')
       $scope.isExpireRenew = 0
       if (val) {
         $scope.isExpireRenew = 1
@@ -184,7 +184,7 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
       $scope.searchFn()
     }
     function getSearchItem() {
-      console.log($scope.cusname, '$scope.cusname')
+      // console.log($scope.cusname, '$scope.cusname')
         var searchItem = {
             cusname: $scope.cusname,
             start: $filter('date')($scope.startdate, 'yyyy-MM-dd'),
@@ -198,7 +198,7 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
     }
 
     function refreshData(data) {
-        console.log(data, 'data')
+        // console.log(data, 'data')
         if (!data.IsExpireRenew) {
           data.IsExpireRenew = 0
         } else {
