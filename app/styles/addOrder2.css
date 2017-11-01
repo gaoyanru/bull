@@ -114,10 +114,12 @@
     background: url('../images/u2051.png');
     position: relative;
 }
-
+.upload-area img {
+  width: 100%;
+  height: 100%;
+}
 .upload-area span {
     position: absolute;
-    height: 56px;
     line-height: 56px;
     background-color: rgba(51, 51, 51, .65);
     color: white;
@@ -126,13 +128,62 @@
     left: 0px;
     right: 0px;
     bottom: 0px;
+    height: 0px;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .img-upload-container p {
     margin-top: 10px;
     font-size: 16px;
     color: black;
+}
+
+@keyframes img-upload-enter {
+  0% {
+    height: 0px;
+  }
+  100%{
+    height: 56px;
+  }
+}
+
+@keyframes img-upload-leave {
+  0% {
+    height: 56px;
+  }
+  100%{
+    height: 0px;
+  }
+}
+
+.upload-area span.enter {
+  animation: img-upload-enter 100ms;
+  animation-fill-mode: both;
+}
+
+.upload-area span.leave {
+  animation: img-upload-leave 100ms;
+  animation-fill-mode: both;
+}
+
+.upload-area .upload-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0, .5);
+}
+.upload-area i {
+  font-size: 72px;
+  color: white;
+  position: absolute;
+  margin: 0 auto;
+  right: 0px;
+  left: 0px;
+  line-height: 226px;
+  cursor: pointer;
 }
 
 /* 营业执照 */
@@ -194,3 +245,5 @@
   color: white;
   font-weight: 500;
 }
+
+/*  */

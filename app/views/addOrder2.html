@@ -66,8 +66,8 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <custom-file-uploader ng-model="imgSrc1" class="ml-20" title="请上传清晰的身份证人像面，图片大小不要超过1M"></custom-file-uploader>
-        <custom-file-uploader class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过1M"></custom-file-uploader>
+        <custom-file-uploader class="ml-20" title="请上传清晰的身份证人像面，图片大小不要超过1M"></custom-file-uploader>
+        <custom-file-uploader ng-model="imgSrc2" class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过1M"></custom-file-uploader>
       </div>
       <div class="col-md-6">
         <ul class="business-license-right">
@@ -99,17 +99,11 @@
             <label class="col-md-4 control-label"><span class="required"></span>营业期限：</label>
             <div class="col-md-6">
               <div class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="sdateIsOpened" datepicker-options="sdateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="sdateIsOpened = !sdateIsOpened"
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="startDateIsOpened" datepicker-options="startDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
                  ng-change="setMinDate()" />
-                <!-- <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="sdateIsOpened = !sdateIsOpened"><i class="glyphicon glyphicon-calendar"></i></button>
-                  </span> -->
                 <span class="input-group-addon">-</span>
-                <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="sdateIsOpened" datepicker-options="sdateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="sdateIsOpened = !sdateIsOpened"
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="enddate" is-open="endDateIsOpened" datepicker-options="endDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="endDateIsOpened = !endDateIsOpened"
                  ng-change="setMinDate()" />
-                <!-- <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="sdateIsOpened = !sdateIsOpened"><i class="glyphicon glyphicon-calendar"></i></button>
-                  </span> -->
               </div>
             </div>
           </li>
@@ -201,7 +195,7 @@
     <div class="form-group">
       <div class="col-sm-offset-10 col-sm-2 text-right">
         <button type="button" class="btn btn-default">取消</button>
-        <button type="button" class="btn btn-warning">保存</button>
+        <button type="button" class="btn btn-warning" ng-click="save()">保存</button>
       </div>
     </div>
 </form>
