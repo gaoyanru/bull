@@ -249,6 +249,9 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                 $scope.postData.Status = 1
             }
             // Category 1新增修改正常订单 2预提单 3预提单转正式提单
+            if ($scope.category == 1 && result.Status != 2) {
+              $scope.showProm = true; // 新增修改时候编辑框可点
+            }
             if ((result.Category == 2 && result.Status == 2) || result.Category == 3) {
                 $scope.category = 3;
                 $scope.showProm = false;
@@ -336,13 +339,15 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             return;
         }
         if ((!$scope.promotion) || $scope.postData.Status == 2) {
+        // console.log($scope.postData, '$scope.postData.PromotionName')
+        // if ((!$scope.postData.PromotionName) || $scope.postData.Status == 2) {
             $scope.showProm = false;
             return false;
         } else {
             $scope.showProm = true;
         }
+        console.log($scope.showProm)
     }
-
     function filterGifts() {
         var _gifts = [];
         if (!$scope.postData.AddedValue) return;
@@ -410,10 +415,17 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
     $scope.save = function (isSave) {
      // // console.log($scope.postData, '$scope.postData')
         var h = (new Date()).getHours();
-        if (h < 5 || h > 21) {
-            alert('该时间段不允许提单，请在5:00-22:00之间提单!');
-            return;
+        var date = ((new Date()).getTime()) + 24*60*60*1000
+        console.log(h, date, '日期')
+        var m = (new Date(date)).getDate()
+        if (m == 1 && h > 21) {
+          alert('月末22:00之后不允许提单！')
+          return
         }
+        // if (h < 5 || h > 21) {
+        //     alert('该时间段不允许提单，请在5:00-22:00之间提单!');
+        //     return;
+        // }
         $scope.submited = true;
         delete $scope.postData.Customer;
         // if ($scope.postData.IsPromotion) { // 选择活动时候过滤提交给后台活动id
@@ -427,13 +439,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         //     delete $scope.postData.PromotionId;
         // }
         // console.log($scope.postData.IsPromotion, '$scope.postData.IsPromotion')
-        if ($scope.postData.IsPromotion && $scope.postData.Promotion) {
-          $scope.postData.IsPromotion = $scope.postData.Promotion.Id
-        } else if ($scope.postData.IsPromotion && $scope.promotion.Id) {
-          $scope.postData.IsPromotion = $scope.promotion.Id
-        } else {
-          $scope.postData.IsPromotion = 0
-        }
+
         if (!$scope.postData.SalesId) {
             alert('请先选择销售人员！');
             errorStep();
@@ -441,7 +447,19 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         }
         if ($scope.IsReOrder) $scope.postData.IsReOrder = 1;
         if ($scope.loading) return;
-
+        var postData = angular.copy($scope.postData);
+        // // console.log(postData, '最后提交的信息')
+        if (postData.IsPromotion && postData.Promotion) {
+          // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
+          postData.IsPromotion = postData.Promotion.Id
+        } else if (postData.IsPromotion && $scope.promotion.Id) {
+          // $scope.postData.IsPromotion = $scope.promotion.Id
+          postData.IsPromotion = $scope.promotion.Id
+        } else {
+          // $scope.postData.IsPromotion = 0
+          postData.IsPromotion = 0
+        }
+        // console.log(postData, 'postData')
         if ($scope.category == 2) {
             $scope.saveCus(isSave);
             return;
@@ -455,8 +473,18 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             errorStep();
             return;
         }
-        var postData = angular.copy($scope.postData);
-        // // console.log(postData, '最后提交的信息')
+        // var postData = angular.copy($scope.postData);
+        // // // console.log(postData, '最后提交的信息')
+        // if ($scope.postData.IsPromotion && $scope.postData.Promotion) {
+        //   // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
+        //   postData.IsPromotion = postData.Promotion.Id
+        // } else if ($scope.postData.IsPromotion && $scope.promotion.Id) {
+        //   // $scope.postData.IsPromotion = $scope.promotion.Id
+        //   postData.IsPromotion = $scope.promotion.Id
+        // } else {
+        //   // $scope.postData.IsPromotion = 0
+        //   postData.IsPromotion = 0
+        // }
         if ((!postData.NoDeadLine) && !postData.BusnissDeadline) {
             alert("请填写营业期限！");
             errorStep();
@@ -527,6 +555,16 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             return;
         }
         var postData = angular.copy($scope.postData);
+        if (postData.IsPromotion && postData.Promotion) {
+          // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
+          postData.IsPromotion = postData.Promotion.Id
+        } else if (postData.IsPromotion && $scope.promotion.Id) {
+          // $scope.postData.IsPromotion = $scope.promotion.Id
+          postData.IsPromotion = $scope.promotion.Id
+        } else {
+          // $scope.postData.IsPromotion = 0
+          postData.IsPromotion = 0
+        }
         postData.ContractDate = $filter('date')($scope.postData.ContractDate, 'yyyy-MM-dd');
         postData.ContractPath = postData.ContractPath.join(';');
         if (!postData.PersonCardPath) {
@@ -584,6 +622,16 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             return;
         }
         var postData = angular.copy($scope.postData);
+        if (postData.IsPromotion && postData.Promotion) {
+          // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
+          postData.IsPromotion = postData.Promotion.Id
+        } else if (postData.IsPromotion && $scope.promotion.Id) {
+          // $scope.postData.IsPromotion = $scope.promotion.Id
+          postData.IsPromotion = $scope.promotion.Id
+        } else {
+          // $scope.postData.IsPromotion = 0
+          postData.IsPromotion = 0
+        }
         if ((!postData.NoDeadLine) && !postData.BusnissDeadline) {
             alert("请填写营业期限！");
             errorStep();
@@ -775,7 +823,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
     }
 
     $scope.setEndDate = function () {
-        // // // console.log($scope.postData.gift, '$scope.postData.gift')
+        // console.log($scope.postData.gift, '$scope.postData.gift')
         if (!$scope.postData.ServiceStart) return;
         if (!$scope.postData.PayType) return;
         if ($scope.postData.FreChangeOrderId) return;
@@ -783,15 +831,15 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             "Id": +$scope.postData.PayType
         });
         if (!payType) return;
-        // // console.log(payType, 'payType')
+        // console.log(payType, 'payType')
         var addMonth = payType.ServiceMonths; // 正常合同的服务月份
         var giftAndPromotionMonth = 0
-        // // // console.log($scope.postData, '$scope.postData')
+        // console.log($scope.postData, '$scope.postData')
         if ($scope.postData.gift) {
             var gift = _.find($scope.gifts, function (item) {
                 return item.Id === +$scope.postData.gift;
             });
-            // // console.log(gift.MonthNum, 'gift.MonthNum')
+            // console.log(gift.MonthNum, 'gift.MonthNum')
             // addMonth = addMonth + gift.MonthNum;
             giftAndPromotionMonth = giftAndPromotionMonth +  gift.MonthNum
         }
@@ -804,8 +852,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         //     addMonth += promotionMap[promId].serviceFn(payType.ServiceMonths);
         // }
         // 如果有可选择的活动 而且选择了 判断服务期限加优惠月份
-        // // // console.log($scope.postData.IsPromotion, '是否选择活动且是增加服务时间的活动')
-        // // console.log($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1)
+        //  console.log($scope.postData.IsPromotion, '是否选择活动且是增加服务时间的活动')
+        // =console.log($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1)
         if ($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1) {
           // 根据选择的付款方式就是addMonth 判断活动送几个月
           var p = $scope.promotion.PromotionDetailsEntityList

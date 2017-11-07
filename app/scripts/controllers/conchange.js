@@ -70,9 +70,8 @@
         $scope.orderId = orderId;
         $scope.showClose = true;
         $scope.close = function() {
-            $uibModalInstance.dismiss('');
+          $uibModalInstance.dismiss('');
         }
-
         $scope.postData = {
             NoDeadLine: 0
         };

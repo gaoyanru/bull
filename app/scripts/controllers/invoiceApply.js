@@ -9,7 +9,7 @@
  */
 angular.module('channelApp')
     .controller('InvoiceApplyCtrl', ['$scope', '$filter', '$uibModalInstance', '$uibModal', 'Balance', 'InvoiceService', function ($scope, $filter, $uibModalInstance, $uibModal, Balance, InvoiceService) {
-
+        console.log(Balance, 'Balance')
         var initProperty = function () {
             $scope.propertyModel = [{
                 name: '公司',
@@ -54,7 +54,7 @@ angular.module('channelApp')
                         Id: $scope.applyParams.AddressId
                     });
                 } else {
-                    $scope.selectedAddress = $scope.addressModel && $scope.addressModel.length > 0 ? $scope.addressModel[0] : {};
+                    $scope.selectedAddress = $scope.addressModel && $scope.addressModel.length > 0 ? $scope.addressModel[0] : '';
                 }
 
             });
@@ -97,6 +97,8 @@ angular.module('channelApp')
         };
 
         $scope.apply = function () {
+          // console.log('提交')
+          //  console.log($scope.applyParams, '$scope.applyParams')
             $scope.applyParams = angular.extend($scope.applyParams, {
                 Property: $scope.selectedProp.property,
                 Category: $scope.selectedCate.category,
@@ -104,6 +106,7 @@ angular.module('channelApp')
                 AddressId: $scope.selectedAddress.Id,
                 ApplyType: $scope.selectedType.Key
             });
+            // console.log($scope.applyParams, '$scope.applyParams')
             if ($scope.applyParams.Amount == 0) {
                 alert('请选择未开发票订单！');
                 return;
@@ -155,7 +158,13 @@ angular.module('channelApp')
             });
 
             modalInstance.result.then(function (result) {
-                $scope.applyParams.Amount = result.amount;
+              // console.log(typeof(result.amount))
+                if (/\./.test(result.amount)) {
+                  $scope.applyParams.Amount = result.amount.toFixed(2)
+                } else {
+                  $scope.applyParams.Amount = result.amount;
+                }
+                // console.log($scope.applyParams.Amount, typeof($scope.applyParams.Amount), '$scope.applyParams.Amount')
                 $scope.applyParams.orderids = result.orderIds;
             }, function () {
 
@@ -194,6 +203,7 @@ angular.module('channelApp')
         $scope.searchParams = {
             invoiceId: InvoiceItem.invoiceId
         };
+        console.log(InvoiceItem.balance, 'InvoiceItem')
         //datepicker配置
         $scope.datepickerConfig = {
             clearText: '清空',
@@ -244,8 +254,8 @@ angular.module('channelApp')
                 r = r + t.BLAmount;
                 return r;
             }, 0);
-            if (amount > InvoiceItem.balace) {
-                alert('发票金额不允许超出' + InvoiceItem.balace + '！');
+            if (amount > InvoiceItem.balance) {
+                alert('发票金额不允许超出' + InvoiceItem.balance + '！');
                 return;
             }
             $uibModalInstance.close({

@@ -190,6 +190,7 @@ angular.module('channelApp')
             if(res.status){
               alert('删除成功！');
               $scope.pageChanged();
+              initBalance();
             }
           })
         }
