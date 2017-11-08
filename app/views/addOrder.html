@@ -155,7 +155,7 @@
                             <td class="required">付款方式</td>
                             <td>
                                 <div ng-if="!postData.FreChangeOrderId">
-                                    <select ng-model="postData.PayType" ng-disabled="isReadOnly" required>
+                                    <select ng-model="postData.PayType" ng-disabled="isReadOnly" required ng-change="getPayType()">
                                        <option ng-repeat="pt in payTypes" ng-if="postData.AddedValue == pt.AddedValue" value="{{pt.Id}}">{{pt.PriceName}}</option>
                                     </select>
                                     <select ng-model="postData.gift" ng-if="showGift && !isReadOnly" ng-change="setgift();">
@@ -292,7 +292,7 @@
                             </td>
                             <td class="required">付款方式</td>
                             <td>
-                                <select ng-model="postData.PayType" ng-disabled="isReadOnly" required>
+                                <select ng-model="postData.PayType" ng-disabled="isReadOnly" required ng-change="getPayType()">
                                     <option ng-repeat="pt in payTypes" ng-if="postData.AddedValue == pt.AddedValue" value="{{pt.Id}}">{{pt.PriceName}}</option>
                                 </select>
                                 <select ng-model="postData.gift" ng-if="showGift && !isReadOnly" ng-change="setgift();">

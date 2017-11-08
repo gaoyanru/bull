@@ -132,6 +132,7 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
             }).success(function(data) {
                 if(data.status){
                     alert('删除成功！');
+                    $scope.searchFn()
                  }
                  else{
                       // alert(data.message);

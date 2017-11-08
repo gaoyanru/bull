@@ -71,16 +71,16 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             "Id": +$scope.postData.PayType
         });
         if (!val) return true; // 没选择付款方式不能点
-        // // // console.log($scope.promotion) // 返回活动
-        // // // console.log($scope.postData.PayType, '付款方式选择的是不是活动')
+        // console.log($scope.promotion) // 返回活动
+        // console.log($scope.postData.PayType, '付款方式选择的是不是活动')
         if ($scope.promotion) {
             // 有活动的时候 判断付款方式是不是活动内的
-            // // // console.log(val.ServiceMonths, '付款方式对应的服务月份')
+            // console.log(val.ServiceMonths, '付款方式对应的服务月份')
             var p = $scope.promotion.PromotionDetailsEntityList
             for (var i = 0; i < p.length; i++) {
-              // // // console.log(p[i].ServiceMonths)
+              // console.log(p[i].ServiceMonths)
               // p[i].ServiceMonths = p[i].ServiceMonths + ''
-              // // // console.log(p[i].ServiceMonths.indexOf(+val.ServiceMonths))
+              // console.log(p[i].ServiceMonths.indexOf(+val.ServiceMonths))
               if (val.IsZero == 0 && p[i].ServiceMonths != 0 && $scope.promotion.Num !=0) {
                if (p[i].ServiceMonths == val.ServiceMonths) {
                  return false;
@@ -190,18 +190,24 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
       $http.get('/api/newpromotion/getchannelpromotionbyorder').success(function (res) {
         // // // console.log(res, '代理商活动')
         // console.log(orderId, 'orderId')
-        if (res.status && !orderId) {
+        if (res.status) {
           $scope.promotion = res.data
+          setIsProm()
         }
-        setIsProm()
       })
     }
     $scope.channelUsePromotion()
      // 一开始执行 根据选择所在城市 获得不同城市的价格
     if (orderId) { // 修改
         $http.get("/api/orders/" + orderId).success(function (result) {
+            $scope.result = angular.extend(result.data, result.data.Customer); // 修改默认是一年的付款方式活动默认选中
             result = angular.extend(result.data, result.data.Customer);
-            $scope.promotion = result.Promotion
+            if (result.IsPromotion) {
+              $scope.promotion = result.Promotion
+            } else {
+              $scope.channelUsePromotion()
+            }
+            console.log($scope.promotion, '$scope.promotion')
             if (result.ContractDate.substr(0, 4) === '0001') {
                 result.ContractDate = "";
             } else {
@@ -309,6 +315,16 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
               $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
                   priceList = data.data;
                   $scope.payTypes = data.data;
+                  if (orderId) {
+                    // console.log(priceList, 'priceList')
+                    var val = _.find(priceList, {
+                        "Id": +$scope.result.PayType
+                    });
+                    // console.log(val, 'val修改')
+                    if (val.ServiceMonths == 12) {
+                      $scope.result.IsPromotion = true
+                    }
+                  }
               });
             }
         });
@@ -338,7 +354,9 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             $scope.showProm = true;
             return;
         }
-        if ((!$scope.promotion) || $scope.postData.Status == 2) {
+        // console.log($scope.promotion)
+        // console.log($scope.postData, '$scope.postData')
+        if ((!$scope.promotion) || $scope.postData.Status == 2 && $scope.postData.OrderId) {
         // console.log($scope.postData, '$scope.postData.PromotionName')
         // if ((!$scope.postData.PromotionName) || $scope.postData.Status == 2) {
             $scope.showProm = false;
@@ -346,7 +364,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         } else {
             $scope.showProm = true;
         }
-        console.log($scope.showProm)
+        // console.log($scope.showProm)
     }
     function filterGifts() {
         var _gifts = [];
@@ -411,34 +429,30 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
     // 修改订单时候清除付款方式
     $scope.clearPaytype = function () {
       $scope.postData.PayType = ''
+      $scope.postData.IsPromotion = 0
+    }
+    $scope.getPayType = function() {
+      // console.log($scope.postData.PayType, 'PayType')
+      var val = _.find(priceList, {
+          "Id": +$scope.postData.PayType
+      });
+      // console.log(val, 'val')
+      if (val.ServiceMonths == 12 && $scope.promotion) { // 有活动时且是一年且是新增 && 修改之前选择了活动
+        $scope.postData.IsPromotion = true
+      }
     }
     $scope.save = function (isSave) {
      // // console.log($scope.postData, '$scope.postData')
         var h = (new Date()).getHours();
         var date = ((new Date()).getTime()) + 24*60*60*1000
-        console.log(h, date, '日期')
+        // console.log(h, date, '日期')
         var m = (new Date(date)).getDate()
         if (m == 1 && h > 21) {
           alert('月末22:00之后不允许提单！')
           return
         }
-        // if (h < 5 || h > 21) {
-        //     alert('该时间段不允许提单，请在5:00-22:00之间提单!');
-        //     return;
-        // }
         $scope.submited = true;
         delete $scope.postData.Customer;
-        // if ($scope.postData.IsPromotion) { // 选择活动时候过滤提交给后台活动id
-        //   if ($scope.promotion && !$scope.postData.PromotionId) {
-        //       $scope.postData.IsPromotion = $scope.promotion.PromoId;
-        //   } else {
-        //       $scope.postData.IsPromotion = $scope.postData.PromotionId;
-        //   }
-        // } else {
-        //     $scope.postData.IsPromotion = 0
-        //     delete $scope.postData.PromotionId;
-        // }
-        // console.log($scope.postData.IsPromotion, '$scope.postData.IsPromotion')
 
         if (!$scope.postData.SalesId) {
             alert('请先选择销售人员！');
@@ -448,8 +462,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         if ($scope.IsReOrder) $scope.postData.IsReOrder = 1;
         if ($scope.loading) return;
         var postData = angular.copy($scope.postData);
-        // // console.log(postData, '最后提交的信息')
-        if (postData.IsPromotion && postData.Promotion) {
+        // console.log(postData, '最后提交的信息')
+        if (postData.IsPromotion && postData.OrderId && postData.Promotion.PromotionDetailsEntityList.length) {
           // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
           postData.IsPromotion = postData.Promotion.Id
         } else if (postData.IsPromotion && $scope.promotion.Id) {
