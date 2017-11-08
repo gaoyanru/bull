@@ -1,0 +1,249 @@
+/* 通用 */
+
+.mt-5 {
+    margin-top: 5px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mt-40 {
+    margin-top: 40px;
+}
+
+.ml-20 {
+    margin-left: 20px;
+}
+
+.ml--115 {
+    margin-left: -115px;
+}
+
+.mr-20{
+  margin-right: 20px;
+}
+
+.red {
+    color: red;
+}
+
+.add-order-container {
+    margin: 10px 30px 40px;
+}
+
+.amount-balance {
+    color: red;
+    font-size: 18px;
+}
+
+.present-bill input {
+    float: left;
+    margin: 9px 8px 0px 0px;
+}
+
+.present-bill span {
+    color: red;
+    font-size: 20px;
+}
+
+.gray-line {
+    height: 1px;
+    width: 100%;
+    background-color: #ccc;
+}
+
+.add-order-title {
+    height: 22px;
+    line-height: 22px;
+    margin: 14px 0px;
+}
+
+.add-order-title:after {
+    float: left;
+    width: 5px;
+    height: 100%;
+    background-color: #1a9bfc;
+    content: '';
+    margin-right: 8px;
+}
+
+.add-order-title span {
+    font-size: 16px;
+    color: black;
+}
+
+/* 提示 */
+
+.custom-tips {
+    padding: 8px 0px;
+    line-height: 36px;
+    width: 100%;
+    background-color: #f3fafa;
+    color: #1b9bfc;
+    font-size: 14px;
+    padding: 0px 10px;
+}
+
+.input-group-addon-bg-blue {
+    background-color: #1a9bfc;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.required {
+    color: red;
+}
+
+/* 图品上传 */
+
+.img-upload-container {
+    width: 400px;
+    text-align: center;
+}
+
+.upload-area {
+    margin: 0px auto;
+    width: 369px;
+    height: 226px;
+    background: url('../images/u2051.png');
+    position: relative;
+}
+.upload-area img {
+  width: 100%;
+  height: 100%;
+}
+.upload-area span {
+    position: absolute;
+    line-height: 56px;
+    background-color: rgba(51, 51, 51, .65);
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 0px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.img-upload-container p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: black;
+}
+
+@keyframes img-upload-enter {
+  0% {
+    height: 0px;
+  }
+  100%{
+    height: 56px;
+  }
+}
+
+@keyframes img-upload-leave {
+  0% {
+    height: 56px;
+  }
+  100%{
+    height: 0px;
+  }
+}
+
+.upload-area span.enter {
+  animation: img-upload-enter 100ms;
+  animation-fill-mode: both;
+}
+
+.upload-area span.leave {
+  animation: img-upload-leave 100ms;
+  animation-fill-mode: both;
+}
+
+.upload-area .upload-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0, .5);
+}
+.upload-area i {
+  font-size: 72px;
+  color: white;
+  position: absolute;
+  margin: 0 auto;
+  right: 0px;
+  left: 0px;
+  line-height: 226px;
+  cursor: pointer;
+}
+
+/* 营业执照 */
+
+.business-license-right {
+    padding: 0px;
+    list-style: none;
+}
+
+.business-license-right li {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.business-license-right li:after {
+  content: '';
+  clear: both;
+  display: block;
+}
+/* 多选 */
+
+.custom-check {
+    padding: 6px 18px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    background: white;
+    color: black;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    user-select: none;
+}
+
+.custom-check i {
+    display: none;
+}
+
+.custom-check.checked {
+    border-color: #1a9bfc;
+    color: #1a9bfc;
+}
+
+.custom-check.checked i {
+    display: block;
+    position: absolute;
+    right: 3px;
+    top: 12px;
+}
+
+.upload-file-btn {
+  width: 130px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #1a9bfc;
+}
+.upload-file-btn span {
+  color: white;
+  font-weight: 500;
+}
+
+/*  */

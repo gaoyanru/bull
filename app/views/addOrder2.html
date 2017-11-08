@@ -1,0 +1,201 @@
+<form class="form-horizontal add-order-container" ng-controller="AddOrderCtrl2">
+    <div>
+        <p class="form-control-static">账户余额: <span class="amount-balance">￥{{amount}}</span></p>
+    </div>
+    <div>
+        <p class="form-control-static">销售：李轩 订单号：100134308234031 所属公司：长江一号 提单员：洛河</p>
+    </div>
+    <div>
+        <p class="form-control-static">
+            <label class="present-bill">
+        <input type="checkbox"> <span>预提单</span>
+      </label>
+        </p>
+    </div>
+    <div class="gray-line"></div>
+    <!-- 标题 -->
+    <div class="add-order-title">
+        <span>基本信息</span>
+    </div>
+    <div class="custom-tips">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span>【温馨提示】可根据公司名称快速检索国家权威网上的企业工商信息，帮助您快速的信息录入。</span>
+    </div>
+    <div class="row mt-20">
+        <div class="col-md-6">
+            <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                    <div class="input-group-addon input-group-addon-bg-blue">检索</div>
+                </div>
+            </div>
+            <div class="clearfix mb-20"></div>
+            <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+          <ul class="business-license-right">
+            <li>
+              <label class="col-md-4 control-label"><span class="required"></span>所在城市：</label>
+              <div class="col-md-3">
+                <select class="form-control">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  </select>
+              </div>
+            </li>
+            <li>
+              <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control">
+              </div>
+            </li>
+          </ul>
+        </div>
+    </div>
+
+    <div class="add-order-title">
+        <span>营业执照信息</span>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <custom-file-uploader class="ml-20" title="请上传清晰的身份证人像面，图片大小不要超过1M"></custom-file-uploader>
+        <custom-file-uploader ng-model="imgSrc2" class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过1M"></custom-file-uploader>
+      </div>
+      <div class="col-md-6">
+        <ul class="business-license-right">
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control">
+            </div>
+          </li>
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>法人身份证号：</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control">
+            </div>
+          </li>
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control">
+            </div>
+          </li>
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>社会统一信用代码：</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control">
+            </div>
+          </li>
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>营业期限：</label>
+            <div class="col-md-6">
+              <div class="input-group">
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="startDateIsOpened" datepicker-options="startDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
+                 ng-change="setMinDate()" />
+                <span class="input-group-addon">-</span>
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="enddate" is-open="endDateIsOpened" datepicker-options="endDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="endDateIsOpened = !endDateIsOpened"
+                 ng-change="setMinDate()" />
+              </div>
+            </div>
+          </li>
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>注册资金：</label>
+            <div class="col-md-6">
+              <input type="text" class="form-control">
+            </div>
+          </li>
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
+            <div class="col-md-6">
+              <textarea type="text" class="form-control" rows="9" />
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="add-order-title">
+        <span>合同信息</span>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="">
+        <span class="required"></span>合同编号:
+      </label>
+      <div class="col-sm-3">
+        <input type="email" class="form-control" placeholder="Email">
+      </div>
+      <label class="col-sm-2 control-label" for="">
+        <span class="required"></span>纳税人类别:
+      </label>
+      <div class="col-sm-5">
+        <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 小规模
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 一般纳税人
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="">
+        <span class="required"></span>套餐类型:
+      </label>
+      <div class="col-sm-10">
+        <custom-check-box title="零税半年"></custom-check-box>
+        <custom-check-box title="季度版"></custom-check-box>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label">
+        <span class="required"></span>合同金额:
+      </label>
+      <div class="col-sm-3">
+        <input type="number" class="form-control" placeholder="">
+      </div>
+      <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
+        <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label">
+        <span class="required"></span>合同照片:
+      </label>
+      <div class="col-sm-5">
+        <div class="upload-file-btn pull-left mr-20"><span>上传文件</span></div>
+        <input type="file" style="display: none;">
+        <div class="form-control-static pull-left">xxxx</div>
+      </div>
+      <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
+        <p>请上传清晰的合同照片，图片大小不要超过1M</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="" class="col-sm-2 control-label">
+        <span class="required"></span>备注:
+      </label>
+      <div class="col-sm-10">
+        <textarea class="form-control" id="" rows="4"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-10 col-sm-2 text-right">
+        <button type="button" class="btn btn-default">取消</button>
+        <button type="button" class="btn btn-warning" ng-click="save()">保存</button>
+      </div>
+    </div>
+</form>

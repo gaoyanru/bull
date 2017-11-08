@@ -48,9 +48,15 @@ channelApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'use
                 url: '/finance',
                 templateUrl: 'views/finance.html',
                 controller: 'FinanceCtrl'
-            }).state('main.addOrder', {
-                url: '/addOrder/:orderId',
-                templateUrl: 'views/addOrder.html',
+            })
+            // .state('main.addOrder', {
+            //     url: '/addOrder/:orderId',
+            //     templateUrl: 'views/addOrder.html',
+            //     controller: ''
+            // })
+            .state('main.addOrder', {
+                url: '/addOrder2/:orderId',
+                templateUrl: 'views/addOrder2.html',
                 controller: ''
             }).state('main.balance', { //余额（会员）
                 url: '/balance',
