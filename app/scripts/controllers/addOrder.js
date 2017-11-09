@@ -139,10 +139,13 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                 $scope.price = ''
                 for (var i = 0; i < p.length; i++) {
                   // // // console.log(p[i].ServiceMonths == val.ServiceMonths, 'true')
+                  console.log(val.Price, 'Price')
+                  console.log(val.ServiceMonths, 'val.ServiceMonths')
                   if (val.IsZero == 1 && p[i].ServiceMonths == 0) {
                     var serveMoney = val.Price/6
                   } else if (val.IsZero != 1 && p[i].ServiceMonths == val.ServiceMonths){
-                    serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
+                    // serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
+                    serveMoney = val.Price/val.ServiceMonths
                   }
                   // // // console.log(serveMoney, 'serveMoney')
                   if (!serveMoney) {
