@@ -31,6 +31,9 @@
 .red {
     color: red;
 }
+.c {
+  color: gray;
+}
 
 .add-order-container {
     margin: 10px 30px 40px;
@@ -76,7 +79,13 @@
     font-size: 16px;
     color: black;
 }
-
+/* 头部销售 */
+.select-style {
+  width: 150px;
+  height: 35px;
+  border-radius: 6px;
+  outline: none;
+}
 /* 提示 */
 
 .custom-tips {

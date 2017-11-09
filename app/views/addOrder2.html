@@ -1,19 +1,28 @@
 <form class="form-horizontal add-order-container" ng-controller="AddOrderCtrl2">
-    <div>
-        <p class="form-control-static">账户余额: <span class="amount-balance">￥{{amount}}</span></p>
-    </div>
-    <div>
-        <p class="form-control-static">销售：李轩 订单号：100134308234031 所属公司：长江一号 提单员：洛河</p>
-    </div>
-    <div>
-        <p class="form-control-static">
-            <label class="present-bill">
-        <input type="checkbox"> <span>预提单</span>
+  <div>
+    <p class="form-control-static">账户余额：<span class="amount-balance">￥{{balance}}</span></p>
+  </div>
+  <div>
+    <p ng-if="!postData.OrderId" class="form-control-static">
+      <span><span class="red">*</span>销售：</span>
+      <select class="select-style c" ng-model="postData.SalesId">
+        <option value="">请选择销售</option>
+        <option value="{{::sale.UserId}}" ng-repeat="sale in sales" ng-bind="sale.RealName"></option>
+      </select>
+    </p>
+    <p ng-if="postData.OrderId" class="form-control-static">销售：{{postData.SalerName}} 订单号：{{postData.OrderId}} 所属公司：{{postData.ChannelName}} 提单员：{{postData.BillName}}</p>
+  </div>
+  <div>
+    <p class="form-control-static">
+      <label class="present-bill">
+        <input type="checkbox" ng-model="isNewCompany" ng-disabled="postData.OrderId" ng-change="setCategory()"> <span>预提单</span>
       </label>
-        </p>
-    </div>
-    <div class="gray-line"></div>
-    <!-- 标题 -->
+    </p>
+  </div>
+  <div class="gray-line"></div>
+  <!-- 标题 -->
+  <!-- 新增 -->
+  <div ng-if="category==1">
     <div class="add-order-title">
         <span>基本信息</span>
     </div>
@@ -22,43 +31,43 @@
         <span>【温馨提示】可根据公司名称快速检索国家权威网上的企业工商信息，帮助您快速的信息录入。</span>
     </div>
     <div class="row mt-20">
+      <div class="col-md-6">
+        <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
         <div class="col-md-6">
-            <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
-                    <div class="input-group-addon input-group-addon-bg-blue">检索</div>
-                </div>
+          <div class="input-group">
+            <input type="text" class="form-control" id="exampleInputAmount" placeholder="请输入准确完整的公司名称">
+            <div class="input-group-addon input-group-addon-bg-blue">检索</div>
+          </div>
+        </div>
+        <div class="clearfix mb-20"></div>
+        <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
+        <div class="col-md-6">
+          <input type="text" class="form-control">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <ul class="business-license-right">
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>所在城市：</label>
+            <div class="col-md-3">
+              <select class="form-control">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
             </div>
-            <div class="clearfix mb-20"></div>
-            <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
+          </li>
+          <li>
+            <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
             <div class="col-md-6">
               <input type="text" class="form-control">
             </div>
-        </div>
-
-        <div class="col-md-6">
-          <ul class="business-license-right">
-            <li>
-              <label class="col-md-4 control-label"><span class="required"></span>所在城市：</label>
-              <div class="col-md-3">
-                <select class="form-control">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                  </select>
-              </div>
-            </li>
-            <li>
-              <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
-              <div class="col-md-6">
-                <input type="text" class="form-control">
-              </div>
-            </li>
-          </ul>
-        </div>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <div class="add-order-title">
@@ -124,7 +133,7 @@
     </div>
 
     <div class="add-order-title">
-        <span>合同信息</span>
+      <span>合同信息</span>
     </div>
 
     <div class="form-group">
@@ -198,4 +207,15 @@
         <button type="button" class="btn btn-warning" ng-click="save()">保存</button>
       </div>
     </div>
+  </div>
+  <!-- 预提单 -->
+  <div ng-if="category==2">
+    <div class="add-order-title">
+        <span>基本信息</span>
+    </div>
+    <div class="custom-tips">
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <span>【温馨提示】支持对二代居民身份证的关键字段识别。上传身份证后，即可自动读取并带出姓名、身份证号等信息。</span>
+    </div>
+  </div>
 </form>
