@@ -35,14 +35,15 @@
         <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
         <div class="col-md-6">
           <div class="input-group">
-            <input type="text" class="form-control" id="exampleInputAmount" placeholder="请输入准确完整的公司名称">
-            <div class="input-group-addon input-group-addon-bg-blue">检索</div>
+            <input type="text" class="form-control" id="exampleInputAmount" placeholder="请输入准确完整的公司名称" typeahead-min-length="3" ng-model="postData.Name" uib-typeahead="item.Name for item in getCompanyName($viewValue)" typeahead-loading="loadingLocations" required typeahead-on-select="companySelect($item, $model, $label, $event)">
+            <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+            <div class="input-group-addon input-group-addon-bg-blue" uib-dropdown>检索</div>
           </div>
         </div>
         <div class="clearfix mb-20"></div>
         <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
         <div class="col-md-6">
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" ng-model="postData.Contacts" maxlength="10" required>
         </div>
       </div>
 
@@ -63,7 +64,7 @@
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
             <div class="col-md-6">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" ng-model="postData.Mobile" maxlength="11" required>
             </div>
           </li>
         </ul>
@@ -83,35 +84,35 @@
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
             <div class="col-md-6">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>法人身份证号：</label>
             <div class="col-md-6">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" ng-model="postData.PersonCardID" maxlength="18" required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
             <div class="col-md-6">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>社会统一信用代码：</label>
             <div class="col-md-6">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>营业期限：</label>
             <div class="col-md-6">
               <div class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup ng-model="startdate" is-open="startDateIsOpened" datepicker-options="startDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="postData.RegisterDate" is-open="startDateIsOpened" datepicker-options="startDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
                  ng-change="setMinDate()" />
                 <span class="input-group-addon">-</span>
-                <input type="text" class="form-control" uib-datepicker-popup ng-model="enddate" is-open="endDateIsOpened" datepicker-options="endDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="endDateIsOpened = !endDateIsOpened"
+                <input type="text" class="form-control" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="endDateIsOpened = !endDateIsOpened"
                  ng-change="setMinDate()" />
               </div>
             </div>
@@ -119,13 +120,13 @@
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>注册资金：</label>
             <div class="col-md-6">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" ng-model="postData.RegisteredCapital" maxlength="15" required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
             <div class="col-md-6">
-              <textarea type="text" class="form-control" rows="9" />
+              <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" />
             </div>
           </li>
         </ul>

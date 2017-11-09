@@ -142,7 +142,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                   if (val.IsZero == 1 && p[i].ServiceMonths == 0) {
                     var serveMoney = val.Price/6
                   } else if (val.IsZero != 1 && p[i].ServiceMonths == val.ServiceMonths){
-                    serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
+                    // serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
+                    serveMoney = val.Price/val.ServiceMonths
                   }
                   // // // console.log(serveMoney, 'serveMoney')
                   if (!serveMoney) {
