@@ -18,13 +18,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.toCheck = function(){
     $scope.searchError = '';
     $scope.searchType = 2;
-
     if($scope.postData.Name.length < 3){
       $scope.searchError = "请输入准确完整的公司名称！";
       return;
     }
-
-
     $scope.getMoreCompanyName($scope.postData.Name, function(){
       $scope.searchError = $scope.companyList.length ? "" : "抱歉，没有检索到公司信息！";
       if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
@@ -62,25 +59,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     });
   })
-  // 初始化获取接口数据 销售
-  function initDict() {
-    $http.get("/api/orders/sales").success(function (data) {
-      $scope.sales = data.data;
-    })
-  }
-  initDict()
-  // 控制是否预提单 category==1新增 category==2预提单
-  $scope.category = 1
-  $scope.setCategory = function () {
-    if ($scope.postData.OrderId) return
-    if ($scope.isNewCompany) {
-      $scope.category = 2
-    } else {
-      $scope.category = 1
-    }
-  }
-  // 是否查看
-  // $scope.isReadOnly = false
   // 本地数据库存在客户模糊检索
   $scope.getCompanyName = function getCompanyName (val, cb) {
     return $http.get('/api/orders/companyname?name=' + encodeURI(val)).then(function (response) {
@@ -163,6 +141,24 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     }
   }
 
+
+  // 初始化获取接口数据 销售
+  function initDict() {
+    $http.get("/api/orders/sales").success(function (data) {
+      $scope.sales = data.data;
+    })
+  }
+  initDict()
+  // 控制是否预提单 category==1新增 category==2预提单
+  $scope.category = 1
+  $scope.setCategory = function () {
+    if ($scope.postData.OrderId) return
+    if ($scope.isNewCompany) {
+      $scope.category = 2
+    } else {
+      $scope.category = 1
+    }
+  }
 
   $scope.imgSrc1 = '';
   $scope.imgSrc2 = '';
