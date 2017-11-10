@@ -16,6 +16,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.searchError = "";
 
   $scope.toCheck = function(){
+    $scope.searchError = '';
     $scope.searchType = 2;
     $scope.getMoreCompanyName($scope.postData.Name, function(){
       if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
@@ -82,7 +83,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
   // 检索
   $scope.getMoreCompanyName = function getMoreCompanyName (val, cb) {
-    $http.get('/api/order/getcustomerlistbyty?size=5&word=' + encodeURI(val)).then(function (response) {
+    $http.get('/api/order/getcustomerlistbyty?size=10&word=' + encodeURI(val)).then(function (response) {
       var data = response.data;
       console.log(data)
       if(data.status){
@@ -126,6 +127,24 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       })
     } else {
       $http.get('/api/order/getcustomerbyty?code=' + id).success(function (res) {
+        var data = res.data
+        console.log(data, '$scope.postData')
+        if (data.BusnissDeadline) {
+          if (data.BusnissDeadline.substr(0, 4) === '0001') {
+            data.BusnissDeadline = ""
+          } else {
+            data.BusnissDeadline = new Date(data.BusnissDeadline)
+          }
+        } else {
+          data.BusnissDeadline = ""
+        }
+        data.Name = data.CompanyName.trim();
+        if (!data.RegisterDate) {
+          data.RegisterDate = ""
+        } else {
+          data.RegisterDate = new Date(data.RegisterDate)
+        }
+        $scope.postData = angular.extend($scope.postData, data);
         setTimeout(function(){
           $scope.companySelected = false;
         }, 0)
