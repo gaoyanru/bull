@@ -6,9 +6,39 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       $scope.balance = result.data;
     })
   }
-  getBanlance()
+  getBanlance();
+
   // 表单提交数据
-  $scope.postData = {}
+  $scope.postData = {};
+  $scope.postData.Name = '';
+  $scope.companyList = [];
+  $scope.searchType = 1;   // 1 本地搜索 , 2 检索搜出要查询的公司
+
+  $scope.toCheck = function(){
+    $scope.searchType = 2;
+    $scope.getMoreCompanyName($scope.postData.Name, function(){
+      if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
+        $('.dropdown-company-list').parent().removeClass('open');
+      }else{
+        $('.dropdown-company-list').parent().addClass('open');
+      }
+    })
+  }
+
+  $scope.$watch('postData.Name', function(){
+    if($scope.companySelected){
+      $('.dropdown-company-list').parent().removeClass('open');
+      return;
+    }
+    $scope.searchType = 1;
+    $scope.getCompanyName($scope.postData.Name, function(){
+      if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
+        $('.dropdown-company-list').parent().removeClass('open');
+      }else{
+        $('.dropdown-company-list').parent().addClass('open');
+      }
+    });
+  })
   // 初始化获取接口数据 销售
   function initDict() {
     $http.get("/api/orders/sales").success(function (data) {
@@ -29,44 +59,68 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   // 是否查看
   // $scope.isReadOnly = false
   // 本地数据库存在客户模糊检索
-  $scope.getCompanyName = function (val) {
-    console.log(val.length, 'val')
+  $scope.getCompanyName = function getCompanyName (val, cb) {
     return $http.get('/api/orders/companyname?name=' + encodeURI(val)).then(function (response) {
-      //if($scope.postData.CustomerId) $scope.postData.CustomerId = null;
-      return response.data.data.map(function (item) {
-          return {
-            Name: item.Name
-          }
-      })
+      var data = response.data;
+      if(data.status){
+        $scope.companyList = data.data;
+        cb && cb();
+      }
+    })
+  }
+
+  // 检索
+  $scope.getMoreCompanyName = function getMoreCompanyName (val, cb) {
+    $http.get('/api/order/getcustomerlistbyty?size=5&word=' + encodeURI(val)).then(function (response) {
+      var data = response.data;
+      console.log(data)
+      if(data.status){
+        for(var i in data.data){
+          data.data[i]['Name'] = data.data[i].name;
+        }
+        $scope.companyList = data.data;
+        cb && cb();
+      }
     })
   }
   // 本地数据库选择公司带出本地工商信息
-  $scope.companySelect = function ($item, $model, $label, $event) {
-    $http.get('/api/orders/company?name=' + encodeURI($label)).success(function (res) {
-      var data = res.data[0]
-      if (data.SalesId) delete data.SalesId
-      if (data.BusnissDeadline) {
-        if (data.BusnissDeadline.substr(0, 4) === '0001') {
-          data.BusnissDeadline = ""
+  $scope.companySelect = function (name, id) {
+    $scope.companySelected = true;
+    if($scope.searchType == 1){
+      $http.get('/api/orders/company?name=' + encodeURI(name)).success(function (res) {
+        var data = res.data[0]
+        console.log(data);
+        if (data.SalesId) delete data.SalesId
+        if (data.BusnissDeadline) {
+          if (data.BusnissDeadline.substr(0, 4) === '0001') {
+            data.BusnissDeadline = ""
+          } else {
+            data.BusnissDeadline = new Date(data.BusnissDeadline)
+          }
         } else {
-          data.BusnissDeadline = new Date(data.BusnissDeadline)
+          data.BusnissDeadline = ""
         }
-      } else {
-        data.BusnissDeadline = ""
-      }
 
-      data.Name = data.Name.trim();
-      data.AddedValue = "" + data.AddedValue
-      if (!data.RegisterDate) {
-        data.RegisterDate = ""
-      } else {
-        data.RegisterDate = new Date(data.RegisterDate)
-      }
-      $scope.postData = angular.extend($scope.postData, data)
-    })
+        data.Name = data.Name.trim();
+        data.AddedValue = "" + data.AddedValue
+        if (!data.RegisterDate) {
+          data.RegisterDate = ""
+        } else {
+          data.RegisterDate = new Date(data.RegisterDate)
+        }
+        $scope.postData = angular.extend($scope.postData, data);
+        setTimeout(function(){
+          $scope.companySelected = false;
+        }, 0)
+      })
+    } else {
+      $http.get('/api/order/getcustomerbyty?code=' + id).success(function (res) {
+
+      })
+    }
   }
-  // 点击检索搜出要查询的公司
-  
+
+
   $scope.imgSrc1 = '';
   $scope.imgSrc2 = '';
 
