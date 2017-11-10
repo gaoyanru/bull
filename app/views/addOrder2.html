@@ -42,6 +42,7 @@
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>
             </div>
+            <span style="color: red; font-size: 12px;" ng-if="searchError" ng-bind="searchError"></span>
           </div>
           <div class="clearfix mb-20"></div>
           <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>

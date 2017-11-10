@@ -13,6 +13,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.postData.Name = '';
   $scope.companyList = [];
   $scope.searchType = 1;   // 1 本地搜索 , 2 检索搜出要查询的公司
+  $scope.searchError = "";
 
   $scope.toCheck = function(){
     $scope.searchType = 2;
@@ -26,12 +27,22 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
 
   $scope.$watch('postData.Name', function(){
+    if($scope.postData.Name.length == ''){
+      $('.dropdown-company-list').parent().removeClass('open');
+      $scope.searchError = '';
+      return;
+    }
+    if($scope.postData.Name.length < 3){
+      $scope.searchError = "请输入准确完整的公司名称！";
+      return;
+    }
     if($scope.companySelected){
       $('.dropdown-company-list').parent().removeClass('open');
       return;
     }
     $scope.searchType = 1;
     $scope.getCompanyName($scope.postData.Name, function(){
+      $scope.searchError = $scope.companyList.length ? "" : "抱歉，没有检索到公司信息！";
       if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
         $('.dropdown-company-list').parent().removeClass('open');
       }else{
