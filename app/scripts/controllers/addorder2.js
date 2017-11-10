@@ -66,7 +66,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     })
   }
   // 点击检索搜出要查询的公司
-  
   $scope.imgSrc1 = '';
   $scope.imgSrc2 = '';
 

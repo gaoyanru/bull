@@ -37,7 +37,7 @@
           <div class="input-group">
             <input type="text" class="form-control" id="exampleInputAmount" placeholder="请输入准确完整的公司名称" typeahead-min-length="3" ng-model="postData.Name" uib-typeahead="item.Name for item in getCompanyName($viewValue)" typeahead-loading="loadingLocations" required typeahead-on-select="companySelect($item, $model, $label, $event)">
             <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
-            <div class="input-group-addon input-group-addon-bg-blue" uib-dropdown>检索</div>
+            <div class="input-group-addon input-group-addon-bg-blue" ng-click="searchCompanyName">检索</div>
           </div>
         </div>
         <div class="clearfix mb-20"></div>
