@@ -14,17 +14,15 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.companyList = [];
   $scope.searchType = 1;   // 1 本地搜索 , 2 检索搜出要查询的公司
   $scope.searchError = "";
+  $scope.isReadOnly = false // 是否只读
 
   $scope.toCheck = function(){
     $scope.searchError = '';
     $scope.searchType = 2;
-
     if($scope.postData.Name.length < 3){
       $scope.searchError = "请输入准确完整的公司名称！";
       return;
     }
-
-
     $scope.getMoreCompanyName($scope.postData.Name, function(){
       $scope.searchError = $scope.companyList.length ? "" : "抱歉，没有检索到公司信息！";
       if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
@@ -62,25 +60,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     });
   })
-  // 初始化获取接口数据 销售
-  function initDict() {
-    $http.get("/api/orders/sales").success(function (data) {
-      $scope.sales = data.data;
-    })
-  }
-  initDict()
-  // 控制是否预提单 category==1新增 category==2预提单
-  $scope.category = 1
-  $scope.setCategory = function () {
-    if ($scope.postData.OrderId) return
-    if ($scope.isNewCompany) {
-      $scope.category = 2
-    } else {
-      $scope.category = 1
-    }
-  }
-  // 是否查看
-  // $scope.isReadOnly = false
   // 本地数据库存在客户模糊检索
   $scope.getCompanyName = function getCompanyName (val, cb) {
     return $http.get('/api/orders/companyname?name=' + encodeURI(val)).then(function (response) {
@@ -164,6 +143,54 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
 
 
+  // 初始化页面加载数据 销售
+  function initDict() {
+    // 获取销售员信息
+    $http.get("/api/orders/sales").success(function (data) {
+      $scope.sales = data.data;
+    })
+    // 获取代理商所在城市信息  及根据所在城市获取服务费
+    $http.get('/api/citybychannel').success(function (data) {
+      $scope.cities = data.data;
+      if (!$scope.postData.CityCode) { // 默认选择第一个城市
+        $scope.postData.CityCode = $scope.cities[0].CityCode;
+      }
+      // 根据所在城市 获取服务费--查看跟修改获取的服务费参数不同需要分开
+      if ($scope.isReadOnly) {
+        $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode + '&ischeck=1').success(function (data) {
+          $scope.payTypes = data.data
+        });
+      } else {
+        $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
+          $scope.payTypes = data.data
+        })
+      }
+    })
+  }
+  initDict()
+  // 控制是否预提单 category==1新增 category==2预提单
+  $scope.category = 1
+  $scope.setCategory = function () {
+    if ($scope.postData.OrderId) return
+    if ($scope.isNewCompany) {
+      $scope.category = 2
+    } else {
+      $scope.category = 1
+    }
+  }
+  //图片上传
+  $scope.ImgUploader function() {
+    var uploadUrl = 'https://pilipa.oss-cn-beijing.aliyuncs.com';
+    $http.get('/api/signkey').success(function (res) {
+        delete res.data.Filename;
+        delete res.data.key;
+        delete res.data.callback;
+        delete res.data.expire;
+        delete res.data.Host;
+        $scope.signkey = res.data;
+    })
+    
+  }
   $scope.imgSrc1 = '';
   $scope.imgSrc2 = '';
 
