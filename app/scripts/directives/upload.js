@@ -3,13 +3,14 @@ angular.module('channelApp').directive('customFileUploader', function(){
   return {
     restrict: 'AE',
     scope: {
-      title: '@'
+      title: '@',
+      uploader: '='
     },
     require: '?ngModel',
     controller: function(){
     },
     link: function(scope, ele, attrs, ngModel){
-      
+      console.log(scope);
       if (!ngModel) {
         throw new Error('not set the model');
         return;
@@ -31,11 +32,14 @@ angular.module('channelApp').directive('customFileUploader', function(){
         var src = window.URL.createObjectURL(file);
 
         // XHR 请求
-        setTimeout(function(){
+        scope.uploader(file, function(){
           ele.find('.upload-area .upload-shadow, .upload-area i').remove();
-          appendImg(src);
-          ngModel.$setViewValue(src);
-        }, 1000);
+        });
+        // setTimeout(function(){
+        //
+        //   appendImg(src);
+        //   ngModel.$setViewValue(src);
+        // }, 1000);
       })
 
       ngModel.$render = function(){
