@@ -179,26 +179,11 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       // 根据所在城市 获取服务费--查看跟修改获取的服务费参数不同需要分开
       if ($scope.isReadOnly) {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode + '&ischeck=1').success(function (data) {
-          for(var i in data.data){
-            if(data.data[i].AddedValue === $scope.postData.AddedValue){
-              $scope.payTypes.push({
-                id: data.data[i].Id,
-                title: data.data[i].PriceName
-              })
-            }
-          }
-
+          $scope.payTypes = res.data
         });
       } else {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
-          for(var i in data.data){
-            if(data.data[i].AddedValue === $scope.postData.AddedValue){
-              $scope.payTypes.push({
-                id: data.data[i].Id,
-                title: data.data[i].PriceName
-              })
-            }
-          }
+          $scope.payTypes = res.data
         })
       }
 
@@ -221,10 +206,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.ImgUploader = function(file){
     return ossUploader(file).then(function(res){
       // 此处处理身份证识别
+      console.log(res, 'img')
       return res;
     })
   }
-
+  $scope.ImgUploader1 = function(file){
+    return ossUploader(file)
+  }
   $scope.startDateOptions = {
       formatYear: 'yyyy'
   };

@@ -78,7 +78,7 @@
       <div class="row">
         <div class="col-md-6">
           <custom-file-uploader class="ml-20" ng-model="postData.IdentityCardImg" uploader="ImgUploader" title="请上传清晰的身份证人像面，图片大小不要超过1M"></custom-file-uploader>
-          <custom-file-uploader ng-model="imgSrc2" class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过1M"></custom-file-uploader>
+          <custom-file-uploader ng-model="imgSrc2" uploader="ImgUploader1" class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过1M"></custom-file-uploader>
         </div>
         <div class="col-md-6">
           <ul class="business-license-right">
@@ -167,7 +167,7 @@
           <span class="required"></span>套餐类型:
         </label>
         <div class="col-sm-10">
-          <custom-radio ng-model="postData.payType" options="payTypes"></custom-radio>
+          <custom-radio ng-model="postData.payType" options="payTypes[postData.AddedValue]"></custom-radio>
         </div>
       </div>
 
