@@ -205,7 +205,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
   //身份证上传
   $scope.ImgUploader = function(file){
-    return ossUploader(file)
+    return ossUploader(file).then(function(res){
+      // 此处处理身份证识别
+      return res;
+    })
   }
 
   $scope.startDateOptions = {
@@ -216,7 +219,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   };
 
   $scope.save = function(){
-    console.log($scope)
+    console.log($scope.postData)
   }
 
 }]);

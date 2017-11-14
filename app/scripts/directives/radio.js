@@ -1,6 +1,7 @@
 'use strict';
 
 // ng-model="id" options=[{id: 1, title: 'xxx'}]
+// <custom-radio ng-model="postData.payType" options="payTypes"></custom-radio>
 
 angular.module('channelApp').directive('customRadio', function() {
     return {
