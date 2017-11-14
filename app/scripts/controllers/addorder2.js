@@ -1,9 +1,7 @@
 'use strict';
 angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$filter', '$state', '$stateParams', 'FileUploader', 'user', 'ossUploader', function ($scope, $http, $filter, $state, $stateParams, FileUploader, user, ossUploader) {
 
-  $scope.imgSrc1 = '';
-  $scope.imgSrc2 = '';
-
+  $scope.payTypes = {};
   // 获取代理商账户余额
   function getBanlance() {
     $http.get('api/agent/balance').success(function (result) {
@@ -14,9 +12,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
   // 表单提交数据
   $scope.postData = {
-    AddedValue: 1
-  };
-  $scope.postData.Name = '';
+    AddedValue: 1,
+    Name: '',
+    IdentityCardImg: '',
+    payType: 28
+  }
+  $scope.payTypes = [];
   $scope.companyList = [];
   $scope.searchType = 1;   // 1 本地搜索 , 2 检索搜出要查询的公司
   $scope.searchError = "";
@@ -164,13 +165,30 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       // 根据所在城市 获取服务费--查看跟修改获取的服务费参数不同需要分开
       if ($scope.isReadOnly) {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode + '&ischeck=1').success(function (data) {
-          $scope.payTypes = data.data
+          for(var i in data.data){
+            if(data.data[i].AddedValue === $scope.postData.AddedValue){
+              $scope.payTypes.push({
+                id: data.data[i].Id,
+                title: data.data[i].PriceName
+              })
+            }
+          }
+
         });
       } else {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
-          $scope.payTypes = data.data
+          for(var i in data.data){
+            if(data.data[i].AddedValue === $scope.postData.AddedValue){
+              $scope.payTypes.push({
+                id: data.data[i].Id,
+                title: data.data[i].PriceName
+              })
+            }
+          }
         })
       }
+
+      console.log($scope);
     })
   }
   initDict()
@@ -186,16 +204,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
 
   //身份证上传
-  console.log(ossUploader);
   $scope.ImgUploader = function(file){
     return ossUploader(file)
   }
 
-  // 合同套餐类型
-  $scope.toClick = function (payType, $event) {
-    console.log(payType)
-    console.log($event)
-  }
   $scope.startDateOptions = {
       formatYear: 'yyyy'
   };

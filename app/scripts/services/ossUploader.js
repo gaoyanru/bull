@@ -67,14 +67,4 @@ angular.module('channelApp').factory('ossUploader', ['$http', '$filter', functio
       return res;
     })
   }
-
-  // .then(function (res) {
-  //   console.log(url)
-  //   if(res.status == 200){
-  //     $scope.imgSrc1 = url;
-  //     cb && cb();
-  //   }
-  // }, function(){
-  //   $scope.imgSrc1 = '';
-  // })
 }])

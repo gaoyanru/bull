@@ -166,10 +166,7 @@
           <span class="required"></span>套餐类型:
         </label>
         <div class="col-sm-10">
-          <div class="custom-check" ng-model="postData.PayType" ng-repeat="pay in payTypes" ng-show="pay.AddedValue == 1 && postData.AddedValue == 1" ng-click="toClick(pay, $event)" ng-class="{checked: curIsChecked}"><i class="fa fa-check" aria-hidden="true"></i>{{pay.PriceName}}</div>
-          <div class="custom-check" ng-repeat="pay in payTypes" ng-show="pay.AddedValue == 2 && postData.AddedValue == 2" ng-click="toClick()"><i class="fa fa-check" aria-hidden="true"></i>{{pay.PriceName}}</div>
-          <!-- <custom-check-box title="零税半年"></custom-check-box>
-          <custom-check-box title="季度版"></custom-check-box> -->
+          <custom-radio ng-model="postData.payType" options="payTypes"></custom-radio>
         </div>
       </div>
 
