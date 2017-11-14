@@ -12,6 +12,7 @@ angular.module('channelApp').directive('customRadio', function() {
       require: '?ngModel',
       replace : true,
       controller: function($scope){
+        console.log($scope, 'xxx')
         $scope.value = '';
       },
       link: function($scope, ele, attr, ngModel){
@@ -21,10 +22,10 @@ angular.module('channelApp').directive('customRadio', function() {
         }
 
         $scope.toClick = function(item){
-          ngModel.$setViewValue(item.id);
-          $scope.value = item.id
+          ngModel.$setViewValue(item);
+          $scope.value = item
         }
       },
-      template : '<div><div ng-repeat="item in options" ng-class="{\'custom-check\': true, checked: value == item.id}" ng-click="toClick(item)"><i class="fa fa-check" aria-hidden="true"></i>{{item.title}}</div></div>'
+      template : '<div><div ng-repeat="item in options" ng-class="{\'custom-check\': true, checked: value.id == item.id}" ng-click="toClick(item)"><i class="fa fa-check" aria-hidden="true"></i>{{item.title}}</div></div>'
     };
 });
