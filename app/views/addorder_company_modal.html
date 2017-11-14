@@ -3,15 +3,17 @@
     <h3 class="modal-title">快速录入工商信息</h3>
 </div>
 <div class="modal-body form-inline addorder2-modal">
+  <form name="applyForm">
     <div class="row">
-      <input class="form-control" style="width:100%" type="text" ng-model="httpWord">
+      <input class="form-control" style="width:100%" type="text" ng-model="httpWord" required>
     </div>
-    <div class="row">
-      <span class="href-style">打开链接：</span>
-      <a  class="href-style" href="http://www.gsxt.gov.cn/index.html" target="view_window">http://www.gsxt.gov.cn/index.html</a>
-    </div>
+  </form>
+  <div class="row">
+    <span class="href-style">打开链接：</span>
+    <a  class="href-style" href="http://www.gsxt.gov.cn/index.html" target="view_window">http://www.gsxt.gov.cn/index.html</a>
+  </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="save()">确定</button>
+    <button class="btn btn-primary" type="button" ng-disabled="applyForm.$invalid" ng-click="save()">确定</button>
     <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
 </div>

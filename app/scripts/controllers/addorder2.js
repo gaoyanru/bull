@@ -33,6 +33,14 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     });
     modalInstance.result.then(function (result) {
         console.log(result, 'result')
+        $scope.postData.Address = result.Address
+        $scope.postData.BusinessScope = result.BusinessScope
+        $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
+        $scope.postData.Name = result.CompanyName
+        $scope.postData.LegalPerson = result.LegalPerson
+        $scope.postData.RegNO = result.RegNO
+        $scope.postData.RegisterDate = new Date(result.RegisterDate)
+        $scope.postData.RegisteredCapital = result.RegisteredCapital
     }, function () {
 
     });
@@ -179,14 +187,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       // 根据所在城市 获取服务费--查看跟修改获取的服务费参数不同需要分开
       if ($scope.isReadOnly) {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode + '&ischeck=1').success(function (data) {
-          $scope.payTypes = res.data
+          $scope.payTypes = data.data
         });
       } else {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
-          $scope.payTypes = res.data
+          $scope.payTypes = data.data
         })
       }
-
       console.log($scope);
     })
   }
@@ -207,6 +214,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     return ossUploader(file).then(function(res){
       // 此处处理身份证识别
       console.log(res, 'img')
+      $http.get('/api/order/getpersoncardbypath?path=' + res.sourceUrl).success(function (data) {
+        console.log(data, 'data')
+      })
       return res;
     })
   }
@@ -226,9 +236,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
 }]).controller('AddorderCompanyModal', ['$scope', '$http', '$uibModalInstance', function($scope, $http, $uibModalInstance) {
   $scope.save = function () {
-    var obj = { name: 'lili'}
-    $scope.httpWord
-    $uibModalInstance.close(obj);
+    $http.get('/api/order/getcustomerupdatebygs?word=' + $scope.httpWord).success(function (data) {
+      if (data.status) {
+        var companyData = data.data
+        $uibModalInstance.close(companyData);
+      }
+    })
   }
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
