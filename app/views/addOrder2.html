@@ -106,14 +106,18 @@
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>营业期限：</label>
+              <label class="col-md-4 control-label"><span class="required"></span>营业期限：{{postData.NoDeadLine}}</label>
               <div class="col-md-6">
-                <div class="input-group">
-                  <input type="text" class="form-control" uib-datepicker-popup ng-model="postData.RegisterDate" is-open="startDateIsOpened" datepicker-options="startDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
+                <div class="input-group" style="width:100%">
+                  <input type="text" class="date-input" uib-datepicker-popup ng-model="postData.RegisterDate" is-open="startDateIsOpened" datepicker-options="startDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
                    ng-change="setMinDate()" />
-                  <span class="input-group-addon">-</span>
-                  <input type="text" class="form-control" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="endDateIsOpened = !endDateIsOpened"
+                  <span class="input-group-date">-</span>
+                  <input ng-hide="isReadOnly && postData.NoDeadLine" type="text" class="date-input" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-disabled="postData.NoDeadLine" ng-click="endDateIsOpened = !endDateIsOpened"
                    ng-change="setMinDate()" />
+                  <label class="date-deadline"ng-hide="isReadOnly && !postData.NoDeadLine">
+                    <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1" />
+                    无期限
+                  </label>
                 </div>
               </div>
             </li>
@@ -142,17 +146,17 @@
           <span class="required"></span>合同编号:
         </label>
         <div class="col-sm-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" class="form-control" ng-model="postData.ContractNO">
         </div>
         <label class="col-sm-2 control-label" for="">
           <span class="required"></span>纳税人类别:
         </label>
         <div class="col-sm-5">
           <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 小规模
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1"> 小规模
           </label>
           <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 一般纳税人
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2"> 一般纳税人
           </label>
         </div>
       </div>
@@ -162,8 +166,10 @@
           <span class="required"></span>套餐类型:
         </label>
         <div class="col-sm-10">
-          <custom-check-box title="零税半年"></custom-check-box>
-          <custom-check-box title="季度版"></custom-check-box>
+          <div class="custom-check" ng-model="postData.PayType" ng-repeat="pay in payTypes" ng-show="pay.AddedValue == 1 && postData.AddedValue == 1" ng-click="toClick(pay, $event)" ng-class="{checked: curIsChecked}"><i class="fa fa-check" aria-hidden="true"></i>{{pay.PriceName}}</div>
+          <div class="custom-check" ng-repeat="pay in payTypes" ng-show="pay.AddedValue == 2 && postData.AddedValue == 2" ng-click="toClick()"><i class="fa fa-check" aria-hidden="true"></i>{{pay.PriceName}}</div>
+          <!-- <custom-check-box title="零税半年"></custom-check-box>
+          <custom-check-box title="季度版"></custom-check-box> -->
         </div>
       </div>
 

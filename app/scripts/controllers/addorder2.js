@@ -21,7 +21,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   getBanlance();
 
   // 表单提交数据
-  $scope.postData = {};
+  $scope.postData = {
+    AddedValue: 1
+  };
   $scope.postData.Name = '';
   $scope.companyList = [];
   $scope.searchType = 1;   // 1 本地搜索 , 2 检索搜出要查询的公司
@@ -228,6 +230,11 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     })
   }
 
+  // 合同套餐类型
+  $scope.toClick = function (payType, $event) {
+    console.log(payType)
+    console.log($event)
+  }
   $scope.startDateOptions = {
       formatYear: 'yyyy'
   };
