@@ -278,4 +278,10 @@
   font-weight: 500;
 }
 
-/*  */
+/* 快速录入弹框样式 */
+.addorder2-modal .row {
+  padding: 10px 20px;
+}
+.addorder2-modal .href-style {
+  color: #1b9bfc
+}

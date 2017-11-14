@@ -1,5 +1,5 @@
 'use strict';
-angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$filter', '$state', '$stateParams', 'FileUploader', 'user', 'ossUploader', function ($scope, $http, $filter, $state, $stateParams, FileUploader, user, ossUploader) {
+angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$filter', '$state', '$stateParams', '$uibModal', 'FileUploader', 'user', 'ossUploader', function ($scope, $http, $filter, $state, $stateParams, $uibModal, FileUploader, user, ossUploader) {
 
   $scope.imgSrc1 = '';
   $scope.imgSrc2 = '';
@@ -22,6 +22,20 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.searchError = "";
   $scope.isReadOnly = false // 是否只读
 
+  $scope.fastCheck = function() { // 快速录入
+    var modalInstance = $uibModal.open({
+        templateUrl: 'views/addorder_company_modal.html',
+        size: "md",
+        controller: 'AddorderCompanyModal',
+        resolve: {
+        }
+    });
+    modalInstance.result.then(function (result) {
+        console.log(result, 'result')
+    }, function () {
+
+    });
+  }
   $scope.toCheck = function(){
     $scope.searchError = '';
     $scope.searchType = 2;
@@ -207,4 +221,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     console.log($scope)
   }
 
+}]).controller('AddorderCompanyModal', ['$scope', '$http', '$uibModalInstance', function($scope, $http, $uibModalInstance) {
+  $scope.save = function () {
+    var obj = { name: 'lili'}
+    $scope.httpWord
+    $uibModalInstance.close(obj);
+  }
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
 }]);
