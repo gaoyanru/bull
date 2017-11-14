@@ -32,14 +32,19 @@ angular.module('channelApp').directive('customFileUploader', function(){
         var src = window.URL.createObjectURL(file);
 
         // XHR 请求
-        scope.uploader(file, function(){
-          ele.find('.upload-area .upload-shadow, .upload-area i').remove();
+        scope.uploader(file).then(function(res){
+          console.log(res);
+          if(res.status == 200){
+            console.log(res.config.data instanceof FormData)
+            ele.find('.upload-area .upload-shadow, .upload-area i').remove();
+            appendImg(res.sourceUrl);
+            ngModel.$setViewValue(res.sourceUrl);
+          }else{
+            alert('上传失败');
+          }
+        }, function(){
+          alert('上传失败');
         });
-        // setTimeout(function(){
-        //
-        //   appendImg(src);
-        //   ngModel.$setViewValue(src);
-        // }, 1000);
       })
 
       ngModel.$render = function(){
