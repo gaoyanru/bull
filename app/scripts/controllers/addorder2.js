@@ -1,7 +1,6 @@
 'use strict';
 angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$filter', '$state', '$stateParams', '$uibModal', 'FileUploader', 'user', 'ossUploader', function ($scope, $http, $filter, $state, $stateParams, $uibModal, FileUploader, user, ossUploader) {
 
-  $scope.payTypes = {};
   // 获取代理商账户余额
   function getBanlance() {
     $http.get('api/agent/balance').success(function (result) {
@@ -15,7 +14,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     AddedValue: 1,
     Name: '',
     IdentityCardImg: '',
-    payType: 28
   }
   $scope.payTypes = [];
   $scope.companyList = [];
@@ -89,6 +87,11 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     });
   })
+
+  $scope.$watch('postData.payType', function() {
+    console.log($scope.postData.payType)
+  })
+
   // 本地数据库存在客户模糊检索
   $scope.getCompanyName = function getCompanyName (val, cb) {
     return $http.get('/api/orders/companyname?name=' + encodeURI(val)).then(function (response) {
@@ -187,17 +190,32 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       // 根据所在城市 获取服务费--查看跟修改获取的服务费参数不同需要分开
       if ($scope.isReadOnly) {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode + '&ischeck=1').success(function (data) {
-          $scope.payTypes = data.data
+          for(var i in data.data){
+            if(!$scope.payTypes[data.data[i].AddedValue]){
+              $scope.payTypes[data.data[i].AddedValue] = []
+            }
+            data.data[i]['id'] = data.data[i].Id;
+            data.data[i]['title'] = data.data[i].PriceName
+            $scope.payTypes[data.data[i].AddedValue].push(data.data[i])
+          }
         });
       } else {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
-          $scope.payTypes = data.data
+          for(var i in data.data){
+            if(!$scope.payTypes[data.data[i].AddedValue]){
+              $scope.payTypes[data.data[i].AddedValue] = []
+            }
+            data.data[i]['id'] = data.data[i].Id;
+            data.data[i]['title'] = data.data[i].PriceName
+            $scope.payTypes[data.data[i].AddedValue].push(data.data[i])
+          }
         })
       }
       console.log($scope);
     })
   }
-  initDict()
+  initDict();
+
   // 控制是否预提单 category==1新增 category==2预提单
   $scope.category = 1
   $scope.setCategory = function () {
@@ -229,6 +247,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.endDateOptions = {
       formatYear: 'yyyy'
   };
+  // 套餐类型选择
 
   $scope.save = function(){
     console.log($scope.postData)
