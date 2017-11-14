@@ -29,7 +29,7 @@
       </div>
       <div class="custom-tips">
           <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-          <span>【温馨提示】可根据公司名称快速检索国家权威网上的企业工商信息，帮助您快速的信息录入。</span>
+          <span>【温馨提示】可根据客户在国家企业信息公示系统的链接地址，快速完成工商信息的录入。</span>
       </div>
       <div class="row mt-20">
         <div class="col-md-6">
@@ -73,7 +73,7 @@
       </div>
 
       <div class="add-order-title">
-          <span>营业执照信息</span>
+          <span>工商信息</span>
       </div>
       <div class="row">
         <div class="col-md-6">
@@ -85,7 +85,7 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" required/>
+                <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" required ng-disabled="isCompanyReadonly"/>
               </div>
             </li>
             <li>
@@ -97,26 +97,26 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" required/>
+                <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" required ng-disabled="isCompanyReadonly"/>
               </div>
             </li>
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>社会统一信用代码：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" required/>
+                <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" required ng-disabled="isCompanyReadonly"/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>营业期限：{{postData.NoDeadLine}}</label>
+              <label class="col-md-4 control-label"><span class="required"></span>营业期限：</label>
               <div class="col-md-6">
                 <div class="input-group" style="width:100%">
                   <input type="text" class="date-input" uib-datepicker-popup ng-model="postData.RegisterDate" is-open="startDateIsOpened" datepicker-options="startDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
-                   ng-change="setMinDate()" />
+                   ng-change="setMinDate()" ng-disabled="isCompanyReadonly"/>
                   <span class="input-group-date">-</span>
-                  <input ng-hide="isReadOnly && postData.NoDeadLine" type="text" class="date-input" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-disabled="postData.NoDeadLine" ng-click="endDateIsOpened = !endDateIsOpened"
+                  <input ng-hide="isReadOnly && postData.NoDeadLine" type="text" class="date-input" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" ng-required="true" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-disabled="postData.NoDeadLine || isCompanyReadonly" ng-click="endDateIsOpened = !endDateIsOpened"
                    ng-change="setMinDate()" />
                   <label class="date-deadline"ng-hide="isReadOnly && !postData.NoDeadLine">
-                    <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1" />
+                    <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1" ng-disabled="isCompanyReadonly"/>
                     无期限
                   </label>
                 </div>
@@ -125,13 +125,13 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>注册资金：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.RegisteredCapital" maxlength="15" required/>
+                <input type="text" class="form-control" ng-model="postData.RegisteredCapital" maxlength="15" required ng-disabled="isCompanyReadonly"/>
               </div>
             </li>
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
               <div class="col-md-6">
-                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" />
+                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isCompanyReadonly"/>
               </div>
             </li>
           </ul>

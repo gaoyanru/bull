@@ -17,9 +17,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
   $scope.payTypes = [];
   $scope.companyList = [];
-  $scope.searchType = 1;   // 1 本地搜索 , 2 检索搜出要查询的公司
+  $scope.searchType = 1;   // 1 本地搜索 , 2 检索搜出要查询的公司 3 快速录入公司信息
   $scope.searchError = "";
   $scope.isReadOnly = false // 是否只读
+  $scope.isCompanyReadonly = false // 检索出来的公司信息不能修改
 
   $scope.fastCheck = function() { // 快速录入
     var modalInstance = $uibModal.open({
@@ -31,14 +32,24 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     });
     modalInstance.result.then(function (result) {
         console.log(result, 'result')
-        $scope.postData.Address = result.Address
-        $scope.postData.BusinessScope = result.BusinessScope
-        $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
-        $scope.postData.Name = result.CompanyName
-        $scope.postData.LegalPerson = result.LegalPerson
-        $scope.postData.RegNO = result.RegNO
-        $scope.postData.RegisterDate = new Date(result.RegisterDate)
-        $scope.postData.RegisteredCapital = result.RegisteredCapital
+        if (result.CompanyName) {
+          $scope.searchType = 3 // 标记是快速录入获取到的信息
+          $scope.isCompanyReadonly = true
+          $scope.postData.Address = result.Address
+          $scope.postData.BusinessScope = result.BusinessScope
+          $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
+          $scope.postData.Name = result.CompanyName
+          if ($scope.postData.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
+            $scope.postData.LegalPerson = result.LegalPerson
+            $scope.postData.PersonCardID = ''
+          } else {
+            $scope.postData.LegalPerson = result.LegalPerson
+          }
+          $scope.postData.LegalPerson = result.LegalPerson
+          $scope.postData.RegNO = result.RegNO
+          $scope.postData.RegisterDate = new Date(result.RegisterDate)
+          $scope.postData.RegisteredCapital = result.RegisteredCapital
+        }
     }, function () {
 
     });
@@ -61,6 +72,17 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
 
   $scope.$watch('postData.Name', function(){
+    console.log($scope.postData.Name)
+    if ($scope.searchType == 3) { // 快速录入检索出来的信息 如果公司名称改变则清空信息
+      $scope.postData.Address = ''
+      $scope.postData.BusinessScope = ''
+      $scope.postData.BusnissDeadline = ''
+      $scope.postData.Name = ''
+      $scope.postData.LegalPerson = ''
+      $scope.postData.RegNO = ''
+      $scope.postData.RegisterDate = ''
+      $scope.postData.RegisteredCapital = ''
+    }
     $scope.searchType = 1;
     if($scope.postData.Name.length == ''){
       $('.dropdown-company-list').parent().removeClass('open');
@@ -234,6 +256,15 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       console.log(res, 'img')
       $http.get('/api/order/getpersoncardbypath?path=' + res.sourceUrl).success(function (data) {
         console.log(data, 'data')
+        if (data.status) {
+          if ($scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson) {
+            $scope.postData.LegalPerson = data.data.LegalPerson
+            $scope.postData.PersonCardID = data.data.PersonCardID
+          } else {
+            $scope.postData.LegalPerson = data.data.LegalPerson
+            $scope.postData.PersonCardID = data.data.PersonCardID
+          }
+        }
       })
       return res;
     })
