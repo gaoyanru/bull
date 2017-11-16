@@ -497,8 +497,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       // $scope.postData.IsPromotion = 0
       postData.IsPromotion = 0
     }
+
+    if ($scope.category == 2) {
+        $scope.saveCus(isSave);
+        return;
+    }
     // console.log($scope.myForm)
-    if ($scope.myForm.$invalid || !$scope.postData.BusinessLicense || !$scope.postData.PersonCardPath) {
+    if ($scope.myForm.$invalid || !$scope.postData.BusinessLicense || !$scope.postData.PersonCardPath || !postData.payType.Id) {
         alert("请补充必填项！");
         return;
     }
@@ -534,6 +539,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     postData.PayType = postData.payType.Id
     delete postData.payType
     console.log(postData, '最终提交数据')
+
     var params = {
         url: '/api/orders',
         data: postData,
@@ -547,6 +553,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         }
     }
     $scope.loading = true;
+    // 判断是否存在预提单初审通过但是未复审的情况 && 判断账期是否连续
     $http(params).success(function (result) {
         if (result.status) {
             alert('操作成功！');
@@ -558,14 +565,78 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.postData = {};
         } else {
             $scope.postData.IsPromotion = !!$scope.postData.IsPromotion;
-            // alert(result.message);
         }
         $scope.loading = false;
     }).error(function () {
         $scope.loading = false;
     });
   }
-
+  // 预提单保存的时候
+  $scope.saveCus = function () {
+    var postData = angular.copy($scope.postData);
+    var imgs = angular.copy($scope.imgs)
+    if ($scope.myForm.$invalid || !postData.payType.Id) {
+      alert("请补充必填项！");
+      return;
+    }
+    if (postData.IsPromotion && postData.Promotion) {
+      // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
+      postData.IsPromotion = postData.Promotion.Id
+    } else if (postData.IsPromotion && $scope.promotion.Id) {
+      // $scope.postData.IsPromotion = $scope.promotion.Id
+      postData.IsPromotion = $scope.promotion.Id
+    } else {
+      // $scope.postData.IsPromotion = 0
+      postData.IsPromotion = 0
+    }
+    postData.ContractPath = imgs.join(';');
+    if (!postData.PersonCardPath) {
+        alert('请上传法人身份证照片！');
+        return;
+    }
+    if (postData.gift) {
+      var gift = _.find($scope.giftList, function (item) {
+          return item.Id === +$scope.postData.gift;
+      });
+      postData.GiftTypeId = gift.GiftTypeId;
+      postData.GiftTypeName = gift.GiftTypeName;
+      postData.GiftPrice = gift.Price;
+      delete postData.gift;
+    } else {
+      delete postData.GiftTypeId;
+      delete postData.GiftTypeName;
+      delete postData.GiftPrice;
+    }
+    postData.PayType = postData.payType.Id
+    delete postData.payType
+    console.log(postData, '最终提交数据')
+    var params = {
+        url: '/api/orderszj',
+        data: postData,
+        method: "post"
+    }
+    if ($scope.postData.OrderId) {
+        params.url = "api/Reorders/" + $scope.postData.OrderId;
+        params.method = "put";
+    }
+    $scope.loading = true;
+    $http(params).success(function (result) {
+        if (result.status) {
+            alert('操作成功！');
+            if ($scope.isModal) {
+                $scope.closeModal();
+            } else {
+                $state.go('^.orderList');
+            }
+            $scope.postData = {};
+        } else {
+            $scope.postData.IsPromotion = !!$scope.postData.IsPromotion;
+        }
+        $scope.loading = false;
+    }).error(function () {
+        $scope.loading = false;
+    });
+  }
   // 多张图片上传
   var uploadUrl = 'https://pilipa.oss-cn-beijing.aliyuncs.com';
   $http.get('/api/signkey').success(function (res) {
