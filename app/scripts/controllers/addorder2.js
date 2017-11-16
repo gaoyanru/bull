@@ -1,5 +1,5 @@
 'use strict';
-angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$filter', '$state', '$stateParams', '$uibModal', 'FileUploader', 'user', 'ossUploader', function ($scope, $http, $filter, $state, $stateParams, $uibModal, FileUploader, user, ossUploader) {
+angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$filter', '$state', '$stateParams', '$uibModal', 'FileUploader', 'user', 'ossUploader', 'promisesHandle', function ($scope, $http, $filter, $state, $stateParams, $uibModal, FileUploader, user, ossUploader, promisesHandle) {
 
   // 获取代理商账户余额
   function getBanlance() {
@@ -227,11 +227,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
 
   // 初始化页面加载数据 销售
-  function initDict() {
+  function initDict(cb) {
     // 获取销售员信息
     $http.get("/api/orders/sales").success(function (data) {
       $scope.sales = data.data;
     })
+
     // 获取代理商所在城市信息  及根据所在城市获取服务费
     $http.get('/api/citybychannel').success(function (data) {
       $scope.cities = data.data;
@@ -241,7 +242,8 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       // 根据所在城市 获取服务费--查看跟修改获取的服务费参数不同需要分开
       if ($scope.isReadOnly) {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode + '&ischeck=1').success(function (data) {
-          $scope.priceList = data.data 
+          $scope.priceList = data.data
+          cb && cb(1)
           for(var i in data.data){
             if(!$scope.payTypes[data.data[i].AddedValue]){
               $scope.payTypes[data.data[i].AddedValue] = []
@@ -254,6 +256,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       } else {
         $http.get("api/cityprice?cityCode=" + $scope.postData.CityCode).success(function (data) {
           $scope.priceList = data.data // 用于选择套餐后价格及服务时间判断所用数据
+          cb && cb(1)
           for(var i in data.data){
             if(!$scope.payTypes[data.data[i].AddedValue]){
               $scope.payTypes[data.data[i].AddedValue] = []
@@ -269,6 +272,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     $http.get('/api/gift?ChannelId=').success(function (res) {
       if (res.status) {
         $scope.giftList = res.data // 用于选择礼包后计算结束账期所用数据
+        cb && cb(2)
         for (var i  in res.data) {
           res.data[i].GiftTypeName = res.data[i].GiftTypeName + '￥' + res.data[i].Price
           if (!$scope.gifts[res.data[i].AddedValue]) {
@@ -295,7 +299,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.IsPromotionValid = function () {
     // console.log($scope.postData.payType)
     if (!$scope.postData.payType) {
-      $scope.postData.IsPromotion = false
+      // $scope.postData.IsPromotion = false
       return true
     }
     var val = _.find($scope.priceList, {
@@ -316,7 +320,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         }
       }
     }
-    $scope.postData.IsPromotion = false;
+    // $scope.postData.IsPromotion = false;
     return true;
   }
 
@@ -503,18 +507,46 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       orderId = $stateParams.orderId || $scope.$parent.orderId || false;
   }
   // 修改(预提单未审核前或者修改 和正式提单未审核 或者拒审修改)
+
+
   if (orderId) {
+
     $http.get("/api/orders/" + orderId).success(function (result) {
       // 加载初始需要的数据
-      initDict();
+
+      initDict(function(type){
+        switch(type){
+          case 1:
+            var val = _.filter($scope.priceList, {
+              "Id": + result.PayType
+            });
+            $scope.postData.payType = val[0]
+            break;
+          case 2:
+            var res = _.filter($scope.giftList, {
+              "Price": result.GiftPrice,
+              "GiftTypeId": result.GiftTypeId
+            });
+            if(res && res[0]){
+              $scope.postData.gift = res[0].Id.toString() || '';
+              console.log($scope.postData.gift)
+            }
+            break;
+          defalut:
+            break;
+        }
+
+      }, );
       getBanlance();
+
+
       $scope.result = angular.extend(result.data, result.data.Customer) // 修改默认是一年的付款方式活动默认选中?？
       result = angular.extend(result.data, result.data.Customer)
       // 如果之前选择了活动 就默认显示之前已经选择了的活动 而不是现在能享受的最新活动 否则就显示现在最新能享受的活动
       if (result.IsPromotion) {
         $scope.promotion = result.Promotion
       } else {
-        $scope.channelUsePromotion()
+        channelUsePromotion()
       }
       // 处理当时检索出的信息时候 工商信息不能修改
       if (result.IsSync) {
@@ -547,21 +579,15 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           result.BusnissDeadline = '';
       }
       // 处理活动是不是默认选中
-      if (result.IsPromotion) {
-        result.IsPromotion = !!result.IsPromotion;
-      }
+      result.IsPromotion = !!result.IsPromotion;
+
       // 处理合同照片
       result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
       $scope.imgs = result.ContractPath
       // 处理套餐类型 根据返回的PayType 找到整条数据赋值给postData.payType
-      setTimeout(function () {
-        console.log($scope.priceList)
-      }, 0)
-      var val = _.filter($scope.priceList, {
-          "Id": +result.PayType
-      });
-      console.log(val)
+
       $scope.postData = result
+      console.log($scope.postData.IsPromotion, 'data');
       // 判断正式订单1 还是 预提单2
       $scope.category = result.Category;
       // 判断是否是续费订单
@@ -574,6 +600,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     initDict();
     getBanlance();
   }
+
+
+
 
 
   $scope.save = function(isSave){
