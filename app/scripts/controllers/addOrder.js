@@ -139,6 +139,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                 $scope.price = ''
                 for (var i = 0; i < p.length; i++) {
                   // // // console.log(p[i].ServiceMonths == val.ServiceMonths, 'true')
+                  console.log(val.Price, 'Price')
+                  console.log(val.ServiceMonths, 'val.ServiceMonths')
                   if (val.IsZero == 1 && p[i].ServiceMonths == 0) {
                     var serveMoney = val.Price/6
                   } else if (val.IsZero != 1 && p[i].ServiceMonths == val.ServiceMonths){
@@ -154,6 +156,18 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                     $scope.price = $scope.price.toFixed(2)
                   }
                   break
+                  // if (p[i].ServiceMonths == val.ServiceMonths) {
+                  //   var serveMoney = ''
+                  //   if (p[i].ServiceMonths == 0) {
+                  //     serveMoney = val.Price/6
+                  //   } else {
+                  //     serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
+                  //   }
+                  //   // // console.log(serveMoney, 'serveMoney')
+                  //   // // // console.log(serveMoney, '获得当月小规模或者一般纳税人服务费')
+                  //   $scope.price = val.Price - serveMoney * p[i].PromotionMonths
+                  //   break
+                  // }
                 }
                 // // // console.log($scope.price)
                 return $scope.price
@@ -267,7 +281,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                 result.GiftStr = result.GiftTypeName + '(￥' + result.GiftPrice + ')'
             }
             $scope.filterGifts1()
-
+            console.log($scope.isReadOnly, '$scope.isReadOnly')
+            setIsProm()
             $scope.isNewCompany = result.Category > 1;
             initDict();
         });
@@ -345,17 +360,18 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         }
         // console.log($scope.promotion)
         // console.log($scope.postData, '$scope.postData')
+        console.log($scope.isReadOnly)
         if ((!$scope.promotion) || $scope.postData.Status == 2 && $scope.postData.OrderId) {
         // console.log($scope.postData, '$scope.postData.PromotionName')
         // if ((!$scope.postData.PromotionName) || $scope.postData.Status == 2) {
             $scope.showProm = false;
             return false;
         } else {
-          if ($scope.promotion && $scope.isReadOnly) {
-            $scope.showProm = false;
-          } else {
-            $scope.showProm = true;
-          }    
+            if ($scope.promotion && $scope.isReadOnly) {
+              $scope.showProm = false;
+            } else {
+              $scope.showProm = true;
+            }
         }
         // console.log($scope.showProm)
     }
@@ -435,7 +451,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
       }
     }
     $scope.save = function (isSave) {
-     console.log($scope.postData, '$scope.postData')
+     // // console.log($scope.postData, '$scope.postData')
         var h = (new Date()).getHours();
         var date = ((new Date()).getTime()) + 24*60*60*1000
         // console.log(h, date, '日期')
@@ -699,8 +715,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         $scope.signkey = res.data;
     })
     $scope.uploader1 = new FileUploader({
-      autoUpload: true,
-      url: uploadUrl
+        url: uploadUrl,
+        autoUpload: true
     });
 
     var priceList;
