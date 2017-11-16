@@ -123,13 +123,17 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     });
   })
 
-  // $scope.$watch('postData.payType', function() {
-  //   // console.log($scope.postData.payType)
-  //   if (!$scope.postData.payType) return
-  //   if ($scope.postData.payType.Id) { // 只选选择套餐对应价格
-  //     $scope.postData.ContractAmount = $scope.postData.payType.Price
-  //   }
-  // })
+  $scope.$watch('postData.payType', function() {
+    console.log($scope.postData.payType)
+    if ($scope.postData.payType && $scope.postData.payType.Id) {
+      var val = $scope.postData.payType
+      if (val.ServiceMonths == 12 && $scope.promotion) { // 有活动时且是一年且是新增 && 修改之前选择了活动
+        $scope.postData.IsPromotion = true
+      } else {
+        $scope.postData.IsPromotion = false
+      }
+    }
+  })
 
   $scope.$watch('postData.AddedValue',function() { // 公司新址改变则合同价格清空
     $scope.postData.ContractAmount = ''
