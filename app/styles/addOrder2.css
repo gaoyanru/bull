@@ -244,11 +244,11 @@
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 6px 12px;
+  /*padding: 6px 12px;*/
 }
 .input-group-date {
   float: left;
-  padding: 6px 12px;
+  padding: 6px 2px;
 }
 .date-deadline {
   padding: 6px 12px;
