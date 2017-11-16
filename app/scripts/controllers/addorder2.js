@@ -466,7 +466,57 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     formatYear: 'yyyy',
     minMode: 'month'
   }
-  // 套餐类型选择
+
+  // 修改(预提单未审核前或者修改 和正式提单未审核 或者拒审修改)
+  if (orderId) {
+    $http.get('"/api/orders/" + orderId').success(function (result) {
+      $scope.result = angular.extend(result.data, result.data.Customer) // 修改默认是一年的付款方式活动默认选中?？
+      result = angular.extend(result.data, result.data.Customer)
+      // 如果之前选择了活动 就默认显示之前已经选择了的活动 而不是现在能享受的最新活动 否则就显示现在最新能享受的活动
+      if (result.IsPromotion) {
+        $scope.promotion = result.Promotion
+      } else {
+        $scope.channelUsePromotion()
+      }
+      // 处理返回的时间
+      if (result.BusnissDeadline.substr(0, 4) === '0001') {
+          result.BusnissDeadline = "";
+      } else {
+          result.BusnissDeadline = new Date(result.BusnissDeadline);
+      }
+      if (result.ServiceStart.substr(0, 4) === '0001') {
+          result.ServiceStart = "";
+      } else {
+          result.ServiceStart = new Date(result.ServiceStart);
+      }
+      if (result.RegisterDate.substr(0, 4) === '0001') {
+          result.RegisterDate = "";
+      } else {
+          result.RegisterDate = new Date(result.RegisterDate);
+      }
+      if (result.ServiceEnd.substr(0, 4) === '0001') {
+          result.ServiceEnd = "";
+      } else {
+          result.ServiceEnd = result.ServiceEnd.substr(0, 7);
+      }
+      if (result.NoDeadLine) {
+          result.BusnissDeadline = '';
+      }
+      // 处理活动是不是默认选中
+      if (result.IsPromotion) {
+        result.IsPromotion = !!result.IsPromotion;
+      }
+      // 处理合同照片
+      result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
+      $scope.imgs = result.ContractPath
+
+      $scope.postData = result
+      // 判断正式订单1 还是 预提单2
+      $scope.category = result.Category;
+      // 判断是否是续费订单
+      
+    })
+  }
 
   $scope.save = function(isSave){
     // console.log($scope.postData)
