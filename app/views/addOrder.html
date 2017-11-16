@@ -193,11 +193,11 @@
                         <tr>
                             <td class="required">结束账期</td>
                             <td>
-                                <span class="date_sel" ng-show="!isReadOnly">
-                                    <input type="text" ng-model="postData.ServiceEnd" disabled ng-value="setEndDate()"/>
+                                <span class="date_sel" ng-if="!isReadOnly">
+                                    <input type="text" ng-if="!isReadOnly" ng-model="postData.ServiceEnd" disabled ng-value="setEndDate()"/>
                                     <button type="button"  ng-click="dateIsOpened4 = !dateIsOpened4" ng-show="!isReadOnly"><i class="glyphicon glyphicon-calendar"></i></button>
                                 </span>
-                                <span ng-show="isReadOnly">{{postData.ServiceEnd}}</span>
+                                <span ng-if="isReadOnly">{{postData.ServiceEnd}}</span>
                                 <small style="color:red">注:以实际账期为准。</small>
                             </td>
                             <td class="required">合同金额</td>
