@@ -281,7 +281,8 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                 result.GiftStr = result.GiftTypeName + '(￥' + result.GiftPrice + ')'
             }
             $scope.filterGifts1()
-
+            console.log($scope.isReadOnly, '$scope.isReadOnly')
+            setIsProm()
             $scope.isNewCompany = result.Category > 1;
             initDict();
         });
@@ -359,6 +360,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         }
         // console.log($scope.promotion)
         // console.log($scope.postData, '$scope.postData')
+        console.log($scope.isReadOnly)
         if ((!$scope.promotion) || $scope.postData.Status == 2 && $scope.postData.OrderId) {
         // console.log($scope.postData, '$scope.postData.PromotionName')
         // if ((!$scope.postData.PromotionName) || $scope.postData.Status == 2) {
@@ -369,7 +371,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
               $scope.showProm = false;
             } else {
               $scope.showProm = true;
-            }  
+            }
         }
         // console.log($scope.showProm)
     }
