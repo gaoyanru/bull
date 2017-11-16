@@ -367,8 +367,9 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         } else {
             if ($scope.promotion && $scope.isReadOnly) {
               $scope.showProm = false;
-            }
-            $scope.showProm = true;
+            } else {
+              $scope.showProm = true;
+            }  
         }
         // console.log($scope.showProm)
     }
