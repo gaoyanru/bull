@@ -1,6 +1,5 @@
 'use strict';
 angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$filter', '$state', '$stateParams', '$uibModal', 'FileUploader', 'user', 'ossUploader', 'promisesHandle', function ($scope, $http, $filter, $state, $stateParams, $uibModal, FileUploader, user, ossUploader, promisesHandle) {
-
   // 获取代理商账户余额
   function getBanlance() {
     $http.get('api/agent/balance').success(function (result) {
@@ -11,7 +10,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   // 表单提交数据
   $scope.postData = {
     AddedValue: 1,
-    Name: '',
+    Name: null,
     PersonCardPath: '',
   }
   $scope.payTypes = [];
@@ -97,7 +96,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
   $scope.$watch('postData.Name', function(){
     // $scope.searchType = 1;
-    if($scope.postData.Name.length == ''){
+    if(!$scope.postData.Name){
       $('.dropdown-company-list').parent().removeClass('open');
       $scope.searchError = '';
       return;
@@ -123,26 +122,16 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     });
   })
 
-  $scope.$watch('postData.payType', function() {
-    console.log($scope.postData.payType)
-    if ($scope.postData.payType && $scope.postData.payType.Id) {
-      var val = $scope.postData.payType
-      if (val.ServiceMonths == 12 && $scope.promotion) { // 有活动时且是一年且是新增 && 修改之前选择了活动
-        $scope.postData.IsPromotion = true
-      } else {
-        $scope.postData.IsPromotion = false
-      }
+  $scope.$watch('postData.AddedValue',function() { // 公司新址改变则合同价格清空
+    if (arguments[1] !== 1) {
+      $scope.postData.payType = ''
+      $scope.postData.gift = ''
     }
   })
-
-  $scope.$watch('postData.AddedValue',function() { // 公司新址改变则合同价格清空
-    $scope.postData.ContractAmount = ''
-    $scope.postData.payType = ''
-    $scope.postData.ServiceStart = ''
-    $scope.postData.ServiceEnd = ''
-    $scope.postData.gift = ''
+  $scope.$watch('postData.IsPromotion', function() {
+    $scope.setprice()
+    $scope.setEndDate()
   })
-
   // 本地数据库存在客户模糊检索
   $scope.getCompanyName = function getCompanyName (val, cb) {
     // console.log(val)
@@ -176,6 +165,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     // // console.log($scope.searchType, '$scope.searchType')
     if($scope.searchType == 1){
       $http.get('/api/orders/company?name=' + encodeURI(name)).success(function (res) {
+        $scope.companyInfo = res.data[0]
         var data = res.data[0]
         // console.log(data);
         $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
@@ -287,29 +277,25 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         // // console.log($scope.gifts)
       }
     })
-    channelUsePromotion()
   }
   // 活动(新增时) 修改需要调已经选择了的活动
   function channelUsePromotion() {
     $http.get('/api/newpromotion/getchannelpromotionbyorder').success(function (res) {
-      if (res.status) {
+      if (res.status && !orderId) {
         $scope.promotion = res.data
         // setIsProm()
       }
     })
   }
-
+  channelUsePromotion()
   // 判断活动可不可选择
   $scope.IsPromotionValid = function () {
-    // console.log($scope.postData.payType)
     if (!$scope.postData.payType) {
-      // $scope.postData.IsPromotion = false
       return true
     }
     var val = _.find($scope.priceList, {
         "Id": +$scope.postData.payType.Id
     });
-    // console.log(val, 'val')
     if (!val) return true;
     // 选择套餐类型 且活动存在
     if ($scope.promotion) {
@@ -324,8 +310,23 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         }
       }
     }
-    // $scope.postData.IsPromotion = false;
     return true;
+  }
+
+  // 套餐类型改变时候 活动清空
+  $scope.promitionCanChoose = function () {
+    if ($scope.postData.payType && $scope.postData.payType.Id) {
+      var val = $scope.postData.payType
+      if (val.ServiceMonths == 12 && $scope.promotion) { // 有活动时且是一年且是新增 && 修改之前选择了活动
+        $scope.postData.IsPromotion = true
+        $scope.setprice() // 因为切换价格程序会先执行计算价格 此时活动还没清空导致计算出的价格不正确 所以需要再次执行计算价格的方法
+        $scope.setEndDate()
+      } else {
+        $scope.postData.IsPromotion = false
+        $scope.setprice()
+        $scope.setEndDate()
+      }
+    }
   }
 
   // 计算服务结束日期
@@ -337,7 +338,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     var payType = _.find($scope.priceList, {
         "Id": +$scope.postData.payType.Id
     });
-    // console.log(payType, 'payType')
+    console.log(payType, 'payType')
     if (!payType) return
     var addMonth = payType.ServiceMonths; // 正常合同的服务月份
     var giftAndPromotionMonth = 0
@@ -346,25 +347,24 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       var gift = _.find($scope.giftList, function (item) {
           return item.Id === +$scope.postData.gift;
       });
-      // console.log(gift, 'gift')
+      console.log(gift, 'gift')
       giftAndPromotionMonth = giftAndPromotionMonth +  gift.MonthNum
     }
     if ($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1) {
       // 根据选择的付款方式就是addMonth 判断活动送几个月
       var p = $scope.promotion.PromotionDetailsEntityList
       for (var i = 0; i < p.length; i++) {
-        // // // console.log(p[i].ServiceMonths, 'p[i].ServiceMonths')
+        // console.log(p[i].ServiceMonths, 'p[i].ServiceMonths')
         if (p[i].ServiceMonths == 0 && payType.IsZero == 1) {
           giftAndPromotionMonth += p[i].PromotionMonths
         }
         if (p[i].ServiceMonths == addMonth && payType.IsZero != 1) {
-          // addMonth += p[i].PromotionMonths
           giftAndPromotionMonth += p[i].PromotionMonths
         }
       }
     }
     addMonth += giftAndPromotionMonth
-    // console.log(addMonth, 'addMonth')
+    console.log(addMonth, 'addMonth')
     var date = new Date($scope.postData.ServiceStart);
     var enddate = new Date(date.setMonth(date.getMonth() + addMonth - 1));
 
@@ -376,40 +376,42 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     if ($scope.isReadOnly) {
       return $scope.postData.ContractAmount;
     }
-    if (orderId) { // 修改时候套餐类型
-      var val = _.find($scope.priceList, {
-          "Id": +$scope.postData.PayType
-      });
-    } else {
+    if ($scope.postData.payType && $scope.postData.payType.Id) {
       var val = _.find($scope.priceList, {
           "Id": +$scope.postData.payType.Id
       });
+    } else {
+      val = _.find($scope.priceList, { // 修改时候套餐类型
+         "Id": +$scope.postData.PayType
+     });
     }
     // console.log(val, '计算价格val')
+    $scope.postData.ContractAmount = setContractAmount();
+    return $scope.postData.ContractAmount;
     // 有活动时候的付款方式
-    if (orderId) { // 修改时候套餐类型-->活动金额
-      if ($scope.postData.PayType) {
-        $scope.postData.ContractAmount = setContractAmount();
-        return $scope.postData.ContractAmount;
-      }
-    } else {
-      if ($scope.postData.payType.Id) {
-          $scope.postData.ContractAmount = setContractAmount();
-          return $scope.postData.ContractAmount;
-      }
-    }
+    // if (orderId) { // 修改时候套餐类型-->活动金额
+    //   if ($scope.postData.PayType) {
+    //     $scope.postData.ContractAmount = setContractAmount();
+    //     return $scope.postData.ContractAmount;
+    //   }
+    // } else {
+    //   if ($scope.postData.payType.Id) {
+    //       $scope.postData.ContractAmount = setContractAmount();
+    //       return $scope.postData.ContractAmount;
+    //   }
+    // }
     return '';
   }
   // 处理选择活动后的价格
   function setContractAmount() {
-    if (orderId) { // 修改时候套餐类型
-      var val = _.find($scope.priceList, {
-          "Id": +$scope.postData.PayType
-      });
-    } else {
+    if ($scope.postData.payType && $scope.postData.payType.Id) {
       var val = _.find($scope.priceList, {
           "Id": +$scope.postData.payType.Id
       });
+    } else {
+      val = _.find($scope.priceList, { // 修改时候套餐类型
+         "Id": +$scope.postData.PayType
+     });
     }
     // console.log(val, 'val')
     if (val) {
@@ -448,10 +450,21 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.category = 1
   $scope.setCategory = function () {
     if ($scope.postData.OrderId) return
+    $scope.postData = {
+      AddedValue: 1,
+      Name: null,
+      PersonCardPath: '',
+    }
     if ($scope.isNewCompany) {
       $scope.category = 2
+      if (!$scope.postData.CityCode) {
+        $scope.postData.CityCode = $scope.cities[0].CityCode;
+      }
     } else {
       $scope.category = 1
+      if (!$scope.postData.CityCode) {
+        $scope.postData.CityCode = $scope.cities[0].CityCode;
+      }
     }
   }
 
@@ -475,6 +488,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.postData.PersonCardID = data.data.PersonCardID
           }
         } else if (data.status && !data.data) {
+          $scope.postData.PersonCardPath = ''
           alert('请上传清晰的身份证人像面')
         }
       })
@@ -517,13 +531,14 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
     $http.get("/api/orders/" + orderId).success(function (result) {
       // 加载初始需要的数据
-
+      console.log(result.data, 'res')
       initDict(function(type){
         switch(type){
           case 1:
             var val = _.filter($scope.priceList, {
               "Id": + result.PayType
             });
+            $scope.payTypeReadonly = val // 用于查看时候只显示一条已经选中的
             $scope.postData.payType = val[0]
             break;
           case 2:
@@ -541,9 +556,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         }
 
       }, );
-      getBanlance();
-
-
+       getBanlance();
       $scope.result = angular.extend(result.data, result.data.Customer) // 修改默认是一年的付款方式活动默认选中?？
       result = angular.extend(result.data, result.data.Customer)
       // 如果之前选择了活动 就默认显示之前已经选择了的活动 而不是现在能享受的最新活动 否则就显示现在最新能享受的活动
@@ -588,26 +601,43 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       // 处理合同照片
       result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
       $scope.imgs = result.ContractPath
-      // 处理套餐类型 根据返回的PayType 找到整条数据赋值给postData.payType
 
       $scope.postData = result
-      console.log($scope.postData.IsPromotion, 'data');
-      // 判断正式订单1 还是 预提单2
+
+      console.log($scope.postData, 'data');
+      // 判断正式订单1 还是 预提单2 记账准备3
       $scope.category = result.Category;
       // 判断是否是续费订单
-      // 处理套餐类型
-
-      // 处理礼包
-      // $scope.giftList
+      if ($scope.IsReOrder) {
+        $scope.postData.Status = 1
+      }
+      // 根据category判断1是查看修改正式订单2预提单查看修改3预提单转正式订单查看修改
+      if ($scope.category == 1 && result.Status != 2) { // 正常订单未审核和拒审修改查看时候 活动可以选择
+        // $scope.showProm = true;
+        if (result.IsSync) {
+          $scope.isCompanyReadonly = true // 检索出的信息不能修改
+        } else {
+          $scope.isCompanyReadonly = false
+        }
+      }
+      if ((result.Category == 2 && result.Status == 2) || result.Category == 3) { // 预提单初审通过 || 记账准备时候 之前填的基本信息和合同信息都不允许修改 只需要补充公司资料即可
+          $scope.category = 3;
+          $scope.isNewCompany = true
+          $scope.complementCompanyInfo = true // 补全公司信息的时候 其他两项不允许修改
+          if(result.Status == 2 && result.Category == 3) { // 如果复审也通过 就全部不许修改
+            $scope.isReadOnly = true;
+          }
+      }
+      if ($scope.postData.Status === 2 && $scope.category != 3) { // 审核通过的正式订单和预提单只能只读状态
+          $scope.isReadOnly = true;
+      } else {
+          if ($scope.category != 3 && !$scope.isCenter) getBanlance();
+      }
     })
   } else {
     initDict();
     getBanlance();
   }
-
-
-
-
 
   $scope.save = function(isSave){
     // console.log($scope.postData)
@@ -629,21 +659,22 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     var postData = angular.copy($scope.postData);
     var imgs = angular.copy($scope.imgs)
     if (postData.IsPromotion && postData.OrderId && postData.Promotion.PromotionDetailsEntityList.length) {
-      // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
-      postData.IsPromotion = postData.Promotion.Id
+      postData.IsPromotion = postData.Promotion.Id // 已经参加的活动
     } else if (postData.IsPromotion && $scope.promotion.Id) {
-      // $scope.postData.IsPromotion = $scope.promotion.Id
-      postData.IsPromotion = $scope.promotion.Id
+      postData.IsPromotion = $scope.promotion.Id // 新活动
     } else {
-      // $scope.postData.IsPromotion = 0
       postData.IsPromotion = 0
     }
 
     if ($scope.category == 2) {
-        $scope.saveCus(isSave);
+        $scope.saveCus(isSave, postData);
         return;
     }
-    // console.log($scope.myForm)
+    if ($scope.category == 3) {
+        $scope.saveTob(isSave, postData);
+        return;
+    }
+
     if ($scope.myForm.$invalid || !$scope.postData.BusinessLicense || !$scope.postData.PersonCardPath || !postData.payType.Id) {
         alert("请补充必填项！");
         return;
@@ -652,6 +683,8 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         alert("请填写营业期限！");
         return;
     }
+    console.log($scope.myForm)
+
     postData.RegisterDate = $filter('date')($scope.postData.RegisterDate, 'yyyy-MM-dd');
     postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
     postData.ServiceStart = $filter('date')($scope.postData.ServiceStart, 'yyyy-MM-dd');
@@ -668,7 +701,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           return item.Id === +$scope.postData.gift;
       });
       postData.GiftTypeId = gift.GiftTypeId;
-      postData.GiftTypeName = gift.GiftTypeName;
+      postData.GiftTypeName = gift.GiftTypeName.slice(0,3);
       postData.GiftPrice = gift.Price;
       delete postData.gift;
     } else {
@@ -685,7 +718,18 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       postData.IsSync = 0
     }
     console.log(postData, '最终提交数据')
+    // 判断是否存在预提单初审通过但是未复审的情况 && 判断账期是否连续
+    // 提交订单验证是否存在预提单
+    var PersonCardID = postData.PersonCardID
+    console.log(PersonCardID, 'PersonCardID')
 
+    var servicestart = postData.ServiceStart
+    console.log($scope.companyInfo)
+    if ($scope.companyInfo && $scope.companyInfo.CustomerId) {
+      var companyId = $scope.companyInfo.CustomerId
+    } else {
+      companyId = ''
+    }
     var params = {
         url: '/api/orders',
         data: postData,
@@ -699,7 +743,47 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         }
     }
     $scope.loading = true;
-    // 判断是否存在预提单初审通过但是未复审的情况 && 判断账期是否连续
+
+    $http.get('api/order/CheckStatusByPersonalCard?personancard=' + PersonCardID ).success(function (res) {
+      console.log(res)
+      if (res.status) {
+        if (res.data > 0) {
+          alert('该法人存在未完成的预提单，请先完成预提单')
+          return
+        } else if (res.data == 0){
+          // 提交验证账期是否连续
+          $http.get('api/order/CheckIsConnectDate?servicestart=' + servicestart + '&customerid=' + companyId).success(function (res) {
+            if (res.status) {
+              if (!res.data) { // 证明账期连续的
+                submitOrder(params)
+              } else { // 账期不连续
+                var errorMsg = res.data
+                var modalInstance = $uibModal.open({
+                    templateUrl: 'views/summit_modal.html',
+                    size: "md",
+                    controller: 'SummitModal',
+                    resolve: {
+                      errorMsg: errorMsg
+                    }
+                });
+                modalInstance.result.then(function (result) {
+                    console.log(result, 'result')
+                    if (result) {
+                      submitOrder(params)
+                    }
+                }, function () {
+
+                });
+              }
+            }
+          })
+        }
+      }
+    })
+
+  }
+  // 提交订单
+  function submitOrder(params) {
     $http(params).success(function (result) {
         if (result.status) {
             alert('操作成功！');
@@ -718,34 +802,38 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     });
   }
   // 预提单保存的时候
-  $scope.saveCus = function () {
-    var postData = angular.copy($scope.postData);
-    var imgs = angular.copy($scope.imgs)
-    if ($scope.myForm.$invalid || !postData.payType.Id) {
-      alert("请补充必填项！");
-      return;
-    }
-    if (postData.IsPromotion && postData.Promotion) {
-      // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
-      postData.IsPromotion = postData.Promotion.Id
-    } else if (postData.IsPromotion && $scope.promotion.Id) {
-      // $scope.postData.IsPromotion = $scope.promotion.Id
-      postData.IsPromotion = $scope.promotion.Id
-    } else {
-      // $scope.postData.IsPromotion = 0
-      postData.IsPromotion = 0
-    }
-    postData.ContractPath = imgs.join(';');
-    if (!postData.PersonCardPath) {
-        alert('请上传法人身份证照片！');
+  $scope.saveCus = function (isSave, postData) {
+    if ($scope.myForm.$invalid) {
+        alert("请补充必填项！");
         return;
+    }
+    if (!$scope.postData.PersonCardPath) {
+        alert("请上传法人身份证");
+        return;
+    }
+    if (postData.payType) {
+      if (!postData.payType.Id) {
+        alert("请选择套餐类型");
+        return;
+      }
+    }
+    postData.RegisterDate = $filter('date')($scope.postData.RegisterDate, 'yyyy-MM-dd');
+    postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
+    postData.ServiceStart = $filter('date')($scope.postData.ServiceStart, 'yyyy-MM-dd');
+    postData.ServiceEnd = $filter('date')($scope.postData.ServiceEnd, 'yyyy-MM-dd');
+    postData.ContractPath = $scope.imgs.join(';');
+    if (postData.NoDeadLine) {
+        postData.BusnissDeadline = '';
+        postData.NoDeadLine = 1;
+    } else {
+        postData.NoDeadLine = 0;
     }
     if (postData.gift) {
       var gift = _.find($scope.giftList, function (item) {
           return item.Id === +$scope.postData.gift;
       });
       postData.GiftTypeId = gift.GiftTypeId;
-      postData.GiftTypeName = gift.GiftTypeName;
+      postData.GiftTypeName = gift.GiftTypeName.slice(0,3);
       postData.GiftPrice = gift.Price;
       delete postData.gift;
     } else {
@@ -755,6 +843,11 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     }
     postData.PayType = postData.payType.Id
     delete postData.payType
+    if ($scope.searchType != 1) {
+      postData.IsSync = 1
+    } else {
+      postData.IsSync = 0
+    }
     console.log(postData, '最终提交数据')
     var params = {
         url: '/api/orderszj',
@@ -777,6 +870,75 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.postData = {};
         } else {
             $scope.postData.IsPromotion = !!$scope.postData.IsPromotion;
+        }
+        $scope.loading = false;
+    }).error(function () {
+        $scope.loading = false;
+    });
+  }
+
+  // 预提单转正式订单
+  $scope.saveTob = function (isSave, postData) {
+    if ($scope.myForm.$invalid) {
+        alert("请补充必填项！");
+        return;
+    }
+    if ((!postData.NoDeadLine) && !postData.BusnissDeadline) {
+        alert("请填写营业期限！");
+        return;
+    }
+    postData.RegisterDate = $filter('date')($scope.postData.RegisterDate, 'yyyy-MM-dd');
+    postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
+    postData.ServiceStart = $filter('date')($scope.postData.ServiceStart, 'yyyy-MM-dd');
+    postData.ServiceEnd = $filter('date')($scope.postData.ServiceEnd, 'yyyy-MM-dd');
+    postData.ContractPath = $scope.imgs.join(';');
+    if (postData.NoDeadLine) {
+        postData.BusnissDeadline = '';
+        postData.NoDeadLine = 1;
+    } else {
+        postData.NoDeadLine = 0;
+    }
+    if (postData.gift) {
+      var gift = _.find($scope.giftList, function (item) {
+          return item.Id === +$scope.postData.gift;
+      });
+      postData.GiftTypeId = gift.GiftTypeId;
+      postData.GiftTypeName = gift.GiftTypeName.slice(0,3);
+      postData.GiftPrice = gift.Price;
+      delete postData.gift;
+    } else {
+      delete postData.GiftTypeId;
+      delete postData.GiftTypeName;
+      delete postData.GiftPrice;
+    }
+    postData.PayType = postData.payType.Id
+    // postData.payTypeObj = postData.payType
+    delete postData.payType
+    if ($scope.searchType != 1) {
+      postData.IsSync = 1
+    } else {
+      postData.IsSync = 0
+    }
+    console.log(postData, '最终提交数据')
+    var params = {
+        url: '/api/supplementaryinfo',
+        data: postData,
+        method: "put"
+    }
+
+    $scope.loading = true;
+    $http(params).success(function (result) {
+        if (result.status) {
+            alert('操作成功！');
+            if ($scope.isModal) {
+                $scope.closeModal();
+            } else {
+                $state.go('^.orderList');
+            }
+            $scope.postData = {};
+        } else {
+            $scope.postData.IsPromotion = !!$scope.postData.IsPromotion;
+            // alert(result.message);
         }
         $scope.loading = false;
     }).error(function () {
@@ -864,6 +1026,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   function uploadError(item) {
       alert('上传失败!');
   }
+  $scope.close = function () {
+    $state.go('^.orderList');
+  }
 }]).controller('AddorderCompanyModal', ['$scope', '$http', '$uibModalInstance', function($scope, $http, $uibModalInstance) {
   $scope.save = function () {
     $http.get('/api/order/getcustomerupdatebygs?word=' + $scope.httpWord).success(function (data) {
@@ -872,6 +1037,16 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         $uibModalInstance.close(companyData);
       }
     })
+  }
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+}]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'errorMsg', function($scope, $http, $uibModalInstance, errorMsg) {
+  console.log(errorMsg, 'errorMsg')
+  $scope.alertMsg = errorMsg
+  $scope.submit = function () {
+    var canSubmit = true
+    $uibModalInstance.close(canSubmit);
   }
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');

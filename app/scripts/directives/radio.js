@@ -17,15 +17,18 @@ angular.module('channelApp').directive('customRadio', function() {
       },
       link: function($scope, ele, attr, ngModel){
         if(!ngModel) return;
+
         ngModel.$render = function(){
+          $scope.disabled = ele.attr('disabled');
           $scope.value = ngModel.$viewValue;
         }
 
         $scope.toClick = function(item){
+          if(ele.attr('disabled')) return;
           ngModel.$setViewValue(item);
           $scope.value = item
         }
       },
-      template : '<div><div ng-repeat="item in options" ng-class="{\'custom-check\': true, checked: value.id == item.id}" ng-click="toClick(item)"><i class="fa fa-check" aria-hidden="true"></i>{{item.title}}</div></div>'
+      template : '<div style="outline:none"><div ng-repeat="item in options" ng-class="{\'custom-check\': true, checked: value.id == item.id, \'custom-disabled\': disabled}" ng-click="toClick(item)"><i class="fa fa-check" aria-hidden="true"></i>{{item.title}}</div></div>'
     };
 });

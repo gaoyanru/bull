@@ -1,0 +1,12 @@
+<div class="modal-header">
+    <span class="close" ng-click="cancel()">&times;</span>
+</div>
+<div class="modal-body form-inline addorder2-modal">
+  <div class="row">
+    <span class="href-style">{{alertMsg}}</span>
+  </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-disabled="applyForm.$invalid" ng-click="submit()">确定提交</button>
+    <button class="btn btn-primary" type="button" ng-click="cancel()">返回修改</button>
+</div>

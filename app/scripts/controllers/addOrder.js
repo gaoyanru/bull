@@ -254,6 +254,7 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
             result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
             $scope.postData = result;
             $scope.category = result.Category;
+
             if ($scope.IsReOrder) {
                 $scope.postData.Status = 1
             }

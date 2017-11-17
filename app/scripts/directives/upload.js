@@ -48,6 +48,7 @@ angular.module('channelApp').directive('customFileUploader', function(){
       })
 
       ngModel.$render = function(){
+        scope.disabled = ele.attr('disabled');
         if(ngModel.$viewValue){
           appendImg(ngModel.$viewValue);
           // ele.find('.upload-area').css({'background': 'url(' + ngModel.$viewValue + ') 0 0 / 100% 100% no-repeat'});
@@ -68,6 +69,7 @@ angular.module('channelApp').directive('customFileUploader', function(){
 
 
       ele.hover(function(){
+        if(ele.attr('disabled')) return;
         if(ngModel.$viewValue){
           ele.find('.upload-area span').show()
           ele.find('.upload-area span').removeClass().addClass('enter');
