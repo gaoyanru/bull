@@ -16,7 +16,7 @@
     <div>
       <p class="form-control-static">
         <label class="present-bill">
-          <input type="checkbox" ng-model="isNewCompany" ng-disabled="postData.OrderId" ng-change="setCategory()"> <span>预提单</span>
+          <input type="checkbox" ng-model="isNewCompany" ng-disabled="postData.OrderId || xfReadonly" ng-change="setCategory()"> <span>预提单</span>
         </label>
       </p>
     </div>
@@ -347,8 +347,8 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly || isReadOnly" required>
               <!-- <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">检索</div> -->
-              <div ng-if="!orderId" ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
-              <div ng-if="orderId" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
+              <div ng-if="!isReadOnly" ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入1</div>
+              <div ng-if="isReadOnly" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
               <ul ng-if="!orderId" class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>

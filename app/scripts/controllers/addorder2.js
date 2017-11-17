@@ -167,7 +167,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       $http.get('/api/orders/company?name=' + encodeURI(name)).success(function (res) {
         $scope.companyInfo = res.data[0]
         var data = res.data[0]
-        // console.log(data);
+        console.log(data);
         $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
         if (data.SalesId) delete data.SalesId
         if (data.BusnissDeadline) {
@@ -219,7 +219,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     }
   }
 
-
   // 初始化页面加载数据 销售
   function initDict(cb) {
     // 获取销售员信息
@@ -230,6 +229,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     // 获取代理商所在城市信息  及根据所在城市获取服务费
     $http.get('/api/citybychannel').success(function (data) {
       $scope.cities = data.data;
+      console.log($scope.postData.CityCode, '$scope.postData.CityCode')
       if (!$scope.postData.CityCode) { // 默认选择第一个城市
         $scope.postData.CityCode = $scope.cities[0].CityCode;
       }
@@ -388,18 +388,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     // console.log(val, '计算价格val')
     $scope.postData.ContractAmount = setContractAmount();
     return $scope.postData.ContractAmount;
-    // 有活动时候的付款方式
-    // if (orderId) { // 修改时候套餐类型-->活动金额
-    //   if ($scope.postData.PayType) {
-    //     $scope.postData.ContractAmount = setContractAmount();
-    //     return $scope.postData.ContractAmount;
-    //   }
-    // } else {
-    //   if ($scope.postData.payType.Id) {
-    //       $scope.postData.ContractAmount = setContractAmount();
-    //       return $scope.postData.ContractAmount;
-    //   }
-    // }
     return '';
   }
   // 处理选择活动后的价格
@@ -444,6 +432,24 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     }
     return ''
+  }
+  $scope.serviceStartOptions = {
+    formatYear: 'yyyy',
+    minMode: 'month'
+  }
+  var orderId = $stateParams.orderId;
+  if (orderId && orderId.charAt(0) === 'C') {
+      var tmp = orderId.split('&');
+      $scope.companySelect(tmp[0].substr(1));
+      var tt = new Date(tmp[1]);
+      tt.setDate(1);
+      tt.setMonth(tt.getMonth() + 1);
+      $scope.serviceStartOptions.minDate = tt;
+      $scope.IsReOrder = true;
+      $scope.xfReadonly = true; // 续费时候预提单不能点击
+      orderId = null;
+  } else {
+      orderId = $stateParams.orderId || $scope.$parent.orderId || false;
   }
 
   // 控制是否预提单 category==1新增 category==2预提单
@@ -492,6 +498,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           alert('请上传清晰的身份证人像面')
         }
       })
+
       return res;
     })
   }
@@ -504,28 +511,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.endDateOptions = {
     formatYear: 'yyyy'
   };
-  $scope.serviceStartOptions = {
-    formatYear: 'yyyy',
-    minMode: 'month'
-  }
-
-  var orderId = $stateParams.orderId;
-  $scope.orderId = $stateParams.orderId;
-  console.log($scope.orderId, '$scope.orderId')
-  if (orderId && orderId.charAt(0) === 'C') {
-      var tmp = orderId.split('&');
-      $scope.companySelect(null, null, tmp[0].substr(1));
-      var tt = new Date(tmp[1]);
-      tt.setDate(1);
-      tt.setMonth(tt.getMonth() + 1);
-      $scope.dateOptions2.minDate = tt;
-      $scope.IsReOrder = true;
-      orderId = null;
-  } else {
-      orderId = $stateParams.orderId || $scope.$parent.orderId || false;
-  }
-  // 修改(预提单未审核前或者修改 和正式提单未审核 或者拒审修改)
-
 
   if (orderId) {
 
@@ -640,6 +625,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
 
   $scope.save = function(isSave){
+    var arr = ["https://pilipa.oss-cn-beijing.aliyuncs.com/FileUploads/Order/CardID/201711/HY3bJ7sNdz.png", "https://pilipa.oss-cn-beijing.aliyuncs.com/FileUploads/Order/CardID/201711/CjrKyaEmTB.png", "https://pilipa.oss-cn-beijing.aliyuncs.com/FileUploads/Order/CardID/201711/2DTwjfxPax.png"];
+
+    $scope.postData.PersonCardPath = arr[parseInt(Math.random()*3)]
     // console.log($scope.postData)
     // console.log($scope.imgs, 'imgs')
     var h = (new Date()).getHours();
@@ -654,7 +642,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         alert('请先选择销售人员！');
         return;
     }
-    // if ($scope.IsReOrder) $scope.postData.IsReOrder = 1; // 再次提交订单时
+    if ($scope.IsReOrder) $scope.postData.IsReOrder = 1; // 再次提交订单时
     // if ($scope.loading) return;
     var postData = angular.copy($scope.postData);
     var imgs = angular.copy($scope.imgs)
@@ -763,14 +751,16 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
                     size: "md",
                     controller: 'SummitModal',
                     resolve: {
-                      errorMsg: errorMsg
+                      error: function () {
+                         return errorMsg;
+                     }
                     }
                 });
                 modalInstance.result.then(function (result) {
-                    console.log(result, 'result')
-                    if (result) {
-                      submitOrder(params)
-                    }
+                  console.log(result, 'result')
+                  if (result) {
+                    submitOrder(params)
+                  }
                 }, function () {
 
                 });
@@ -1041,9 +1031,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-}]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'errorMsg', function($scope, $http, $uibModalInstance, errorMsg) {
-  console.log(errorMsg, 'errorMsg')
-  $scope.alertMsg = errorMsg
+}]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'error', function($scope, $http, $uibModalInstance, error) {
+  console.log(error, 'error')
+  $scope.alertMsg = error
   $scope.submit = function () {
     var canSubmit = true
     $uibModalInstance.close(canSubmit);

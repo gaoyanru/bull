@@ -156,30 +156,14 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
                     $scope.price = $scope.price.toFixed(2)
                   }
                   break
-                  // if (p[i].ServiceMonths == val.ServiceMonths) {
-                  //   var serveMoney = ''
-                  //   if (p[i].ServiceMonths == 0) {
-                  //     serveMoney = val.Price/6
-                  //   } else {
-                  //     serveMoney = $scope.postData.AddedValue == 1 ? 200 : 400
-                  //   }
-                  //   // // console.log(serveMoney, 'serveMoney')
-                  //   // // // console.log(serveMoney, '获得当月小规模或者一般纳税人服务费')
-                  //   $scope.price = val.Price - serveMoney * p[i].PromotionMonths
-                  //   break
-                  // }
                 }
-                // // // console.log($scope.price)
                 return $scope.price
               }
             }
         }
         return '';
     }
-    $scope.setgift = function () {
-       // // console.log($scope.postData.gift, typeof($scope.postData.gift));
-       // filterGifts();
-    }
+
     $scope.category = 1;
     $scope.setCategory = function () {
         if (orderId) return;

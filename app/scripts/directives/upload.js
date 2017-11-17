@@ -7,8 +7,6 @@ angular.module('channelApp').directive('customFileUploader', function(){
       uploader: '='
     },
     require: '?ngModel',
-    controller: function(){
-    },
     link: function(scope, ele, attrs, ngModel){
       console.log(scope);
       if (!ngModel) {
@@ -21,7 +19,7 @@ angular.module('channelApp').directive('customFileUploader', function(){
 
         if(file.size > 1024*1024){
           alert('图片大小超过1M!');
-          retun;
+          return;
         }
         if(/^(?!image)./.test(file.type)){
           alert('上传格式不正确！')
@@ -51,9 +49,10 @@ angular.module('channelApp').directive('customFileUploader', function(){
         scope.disabled = ele.attr('disabled');
         if(ngModel.$viewValue){
           appendImg(ngModel.$viewValue);
-          // ele.find('.upload-area').css({'background': 'url(' + ngModel.$viewValue + ') 0 0 / 100% 100% no-repeat'});
         }else{
-          ele.find('.upload-area span').hide()
+          ele.find('input[type=file]')[0].value = '';
+          ele.find('.upload-area img').remove();
+          ele.find('.upload-area span').hide();
         }
       }
 
