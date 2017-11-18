@@ -35,14 +35,16 @@
         <div class="col-md-6">
           <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
           <div class="col-md-6">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly || orderId" required>
+            <div ng-if="!orderId" class="input-group">
+              <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly" required>
               <!-- <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">检索</div> -->
-              <div ng-if="!orderId" ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
-              <div ng-if="orderId" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
-              <ul ng-if="!orderId" class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
+              <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
+              <ul class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>
+            </div>
+            <div ng-if="orderId" class="input-group" style="width:100%">
+              <input type="text" class="form-control" ng-model="postData.Name" disabled required>
             </div>
             <span style="color: red; font-size: 12px;" ng-if="searchError" ng-bind="searchError"></span>
           </div>
@@ -344,14 +346,16 @@
         <div class="col-md-6">
           <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
           <div class="col-md-6">
-            <div class="input-group">
+            <div ng-if="!isReadOnly" class="input-group">
               <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly || isReadOnly" required>
               <!-- <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">检索</div> -->
-              <div ng-if="!isReadOnly" ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入1</div>
-              <div ng-if="isReadOnly" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
-              <ul ng-if="!orderId" class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
+              <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入1</div>
+              <ul class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>
+            </div>
+            <div ng-if="isReadOnly" class="input-group" style="width:100%">
+              <input type="text" class="form-control" ng-model="postData.Name" disabled required>
             </div>
             <span style="color: red; font-size: 12px;" ng-if="searchError" ng-bind="searchError"></span>
           </div>

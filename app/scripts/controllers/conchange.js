@@ -2,25 +2,26 @@
     angular.module('channelApp').controller('ConChange', ['$scope', '$uibModal', 'CustomerService', 'user', '$state', function($scope, $uibModal, server, user, $state) {
         $scope.user = user.get();
         $scope.view = function(orderId) {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'views/change.html',
-                controller: 'Change',
-                size: "lg",
-                resolve: {
-                    orderId: function() {
-                        return orderId;
-                    },
-                    isModify: function() {
-                        return false;
-                    },
-                    isConchange: function() { // 是否企业变更 要求开始账期默认选中判断与当前月的关系
-                      return true
-                    }
-                }
-            });
-            modalInstance.result.then(function() {
-                refreshData();
-            });
+            // var modalInstance = $uibModal.open({
+            //     templateUrl: 'views/change.html',
+            //     controller: 'Change',
+            //     size: "lg",
+            //     resolve: {
+            //         orderId: function() {
+            //             return orderId;
+            //         },
+            //         isModify: function() {
+            //             return false;
+            //         },
+            //         isConchange: function() { // 是否企业变更 要求开始账期默认选中判断与当前月的关系
+            //           return true
+            //         }
+            //     }
+            // });
+            // modalInstance.result.then(function() {
+            //     refreshData();
+            // });
+            $state.go('^.addOrder', { orderId: orderId, changeAddedValue: 1 });
         };
 
 

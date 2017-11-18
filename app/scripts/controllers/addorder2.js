@@ -96,30 +96,32 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
   $scope.$watch('postData.Name', function(){
     // $scope.searchType = 1;
-    if(!$scope.postData.Name){
-      $('.dropdown-company-list').parent().removeClass('open');
-      $scope.searchError = '';
-      return;
-    }
-    if($scope.postData.Name.length < 3){
-      $('.dropdown-company-list').parent().removeClass('open');
-      return;
-    }
-
-    $scope.searchError = ''
-
-    if($scope.companySelected){
-      $('.dropdown-company-list').parent().removeClass('open');
-      return;
-    }
-
-    $scope.getCompanyName($scope.postData.Name, function(){
-      if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
+    if (!orderId) {
+      if(!$scope.postData.Name){
         $('.dropdown-company-list').parent().removeClass('open');
-      }else{
-        $('.dropdown-company-list').parent().addClass('open');
+        $scope.searchError = '';
+        return;
       }
-    });
+      if($scope.postData.Name.length < 3){
+        $('.dropdown-company-list').parent().removeClass('open');
+        return;
+      }
+
+      $scope.searchError = ''
+
+      if($scope.companySelected){
+        $('.dropdown-company-list').parent().removeClass('open');
+        return;
+      }
+
+      $scope.getCompanyName($scope.postData.Name, function(){
+        if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
+          $('.dropdown-company-list').parent().removeClass('open');
+        }else{
+          $('.dropdown-company-list').parent().addClass('open');
+        }
+      });
+    }
   })
 
   $scope.$watch('postData.AddedValue',function() { // 公司新址改变则合同价格清空
@@ -281,7 +283,8 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   // 活动(新增时) 修改需要调已经选择了的活动
   function channelUsePromotion() {
     $http.get('/api/newpromotion/getchannelpromotionbyorder').success(function (res) {
-      if (res.status && !orderId) {
+      console.log(res, 'res')
+      if (res.status) {
         $scope.promotion = res.data
         // setIsProm()
       }
@@ -437,6 +440,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     formatYear: 'yyyy',
     minMode: 'month'
   }
+  $scope.orderId = $stateParams.orderId;
   var orderId = $stateParams.orderId;
   if (orderId && orderId.charAt(0) === 'C') {
       var tmp = orderId.split('&');
@@ -445,13 +449,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       tt.setDate(1);
       tt.setMonth(tt.getMonth() + 1);
       $scope.serviceStartOptions.minDate = tt;
-      $scope.IsReOrder = true;
       $scope.xfReadonly = true; // 续费时候预提单不能点击
       orderId = null;
+      $scope.IsReOrder = true;
   } else {
       orderId = $stateParams.orderId || $scope.$parent.orderId || false;
   }
-
   // 控制是否预提单 category==1新增 category==2预提单
   $scope.category = 1
   $scope.setCategory = function () {
@@ -616,7 +619,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       if ($scope.postData.Status === 2 && $scope.category != 3) { // 审核通过的正式订单和预提单只能只读状态
           $scope.isReadOnly = true;
       } else {
-          if ($scope.category != 3 && !$scope.isCenter) getBanlance();
+          if ($scope.category != 3) { // 订单未审核修改或者拒审修改
+            if ($scope.category == 2 && result.Status != 2) {
+              $scope.isNewCompany = true
+            }
+             getBanlance();
+          }
       }
     })
   } else {
@@ -625,9 +633,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
 
   $scope.save = function(isSave){
-    var arr = ["https://pilipa.oss-cn-beijing.aliyuncs.com/FileUploads/Order/CardID/201711/HY3bJ7sNdz.png", "https://pilipa.oss-cn-beijing.aliyuncs.com/FileUploads/Order/CardID/201711/CjrKyaEmTB.png", "https://pilipa.oss-cn-beijing.aliyuncs.com/FileUploads/Order/CardID/201711/2DTwjfxPax.png"];
-
-    $scope.postData.PersonCardPath = arr[parseInt(Math.random()*3)]
     // console.log($scope.postData)
     // console.log($scope.imgs, 'imgs')
     var h = (new Date()).getHours();
