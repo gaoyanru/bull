@@ -100,9 +100,10 @@ angular.module('channelApp').controller('OrderListCtrl', ['$scope', '$http', '$f
     $scope.modify = function(order) {
         if(order.FreChangeOrderId){
             var modalInstance = $uibModal.open({
-                templateUrl: 'views/change.html',
+                templateUrl: 'views/change2.html',
                 controller: 'Change',
                 size: "lg",
+                windowClass: "add-order-modal-container",
                 resolve: {
                     orderId: function() {
                         return order.OrderId;

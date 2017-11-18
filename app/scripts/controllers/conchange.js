@@ -2,26 +2,26 @@
     angular.module('channelApp').controller('ConChange', ['$scope', '$uibModal', 'CustomerService', 'user', '$state', function($scope, $uibModal, server, user, $state) {
         $scope.user = user.get();
         $scope.view = function(orderId) {
-            // var modalInstance = $uibModal.open({
-            //     templateUrl: 'views/change.html',
-            //     controller: 'Change',
-            //     size: "lg",
-            //     resolve: {
-            //         orderId: function() {
-            //             return orderId;
-            //         },
-            //         isModify: function() {
-            //             return false;
-            //         },
-            //         isConchange: function() { // 是否企业变更 要求开始账期默认选中判断与当前月的关系
-            //           return true
-            //         }
-            //     }
-            // });
-            // modalInstance.result.then(function() {
-            //     refreshData();
-            // });
-            $state.go('^.addOrder', { orderId: orderId, changeAddedValue: 1 });
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/change2.html',
+                controller: 'Change',
+                size: "lg",
+                windowClass: "add-order-modal-container",
+                resolve: {
+                    orderId: function() {
+                        return orderId;
+                    },
+                    isModify: function() {
+                        return false;
+                    },
+                    isConchange: function() { // 是否企业变更 要求开始账期默认选中判断与当前月的关系
+                      return true
+                    }
+                }
+            });
+            modalInstance.result.then(function() {
+                refreshData();
+            });
         };
 
 
@@ -66,8 +66,9 @@
         }
         $scope.limit = "1";
         refreshData();
-    }]).controller('Change', ['$scope', '$uibModal', '$http', '$uibModalInstance', 'orderId', '$filter', 'isModify', 'isConchange', function($scope, $uibModal, $http, $uibModalInstance, orderId, $filter, isModify, isConchange) {
+    }]).controller('Change', ['$scope', '$uibModal', '$http', '$uibModalInstance', 'FileUploader', 'orderId', '$filter', 'isModify', 'isConchange', function($scope, $uibModal, $http, $uibModalInstance, FileUploader, orderId, $filter, isModify, isConchange) {
         // console.log(orderId)
+
         $scope.orderId = orderId;
         $scope.showClose = true;
         $scope.close = function() {
@@ -99,16 +100,9 @@
             }
 
         }
-
-
         if (orderId) {
             $http.get("/api/orders/" + orderId).success(function(result) {
                 result = angular.extend(result.data, result.data.Customer);
-                if (result.ContractDate.substr(0, 4) === '0001') {
-                    result.ContractDate = "";
-                } else {
-                    result.ContractDate = new Date(result.ContractDate);
-                }
                 if (result.BusnissDeadline.substr(0, 4) === '0001') {
                     result.BusnissDeadline = "";
                 } else {
@@ -117,10 +111,7 @@
                 if (result.ServiceStart.substr(0, 4) === '0001') {
                     result.ServiceStart = "";
                 } else {
-                  // console.log(isModify, 'isModify')
                     if (isModify) {
-                        // var now = new Date();
-                        // result.ServiceStart = now;
                         result.ServiceStart = new Date(result.ServiceStart);
                     }else{
                         var now = new Date()
@@ -150,19 +141,16 @@
                 if (result.NoDeadLine) {
                     result.BusnissDeadline = '';
                 }
-                $scope.dateOptions2.maxDate = new Date(result.ServiceEnd);
+                $scope.serviceStartOptions.maxDate = new Date(result.ServiceEnd);
                 // console.log(result, 'result')
                 // console.log(result.ServiceStart, $scope.dateOptions2.minDate, 'minDate')
                 // $scope.dateOptions2.minDate = new Date(result.ServiceStart) > $scope.dateOptions2.minDate ? new Date(result.ServiceStart) : $scope.dateOptions2.minDate;
-                $scope.dateOptions2.minDate = new Date()
+                $scope.serviceStartOptions.minDate = new Date()
                 // result.IsPromotion = !!result.IsPromotion;
                 // result.BillLevel = "" + result.BillLevel;
                 if (result.Status == 2 && result.FreChangeOrderId) $scope.readonly = true;
                 result.AddedValue = "2";
-                result.Industry = "" + result.Industry;
                 $scope.postData = result;
-                $scope.isReadOnly = true;
-
                 initDict();
                 getBanlance();
 
@@ -180,10 +168,6 @@
         }
 
         function initDict() {
-            $http.get("/api/code/industry").success(function(data) {
-                $scope.industries = data.data;
-                //$scope.postData.AddedValue = '1';
-            });
             $http.get("/api/citybychannel").success(function(data) {
                 $scope.cities = data.data;
                 if ($scope.cities.length === 1) {
@@ -198,13 +182,7 @@
             });
         }
 
-
-
-
         $scope.save = function(isSave) {
-            $scope.submited = true;
-
-
             if ($scope.loading) return;
 
             if (!confirm("您确定企业性质变更日期为：" + $filter('date')($scope.postData.ServiceStart, 'yyyy-MM') + "?")) return;
@@ -212,7 +190,6 @@
             var postData = angular.copy($scope.postData);
             delete postData.Customer;
             delete postData.Promotion;
-            postData.ContractDate = $filter('date')($scope.postData.ContractDate, 'yyyy-MM-dd');
             postData.RegisterDate = $filter('date')($scope.postData.RegisterDate, 'yyyy-MM-dd');
             postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
             postData.ServiceStart = $filter('date')($scope.postData.ServiceStart, 'yyyy-MM-dd');
@@ -261,18 +238,18 @@
         var now = new Date();
         now.setMonth(now.getMonth() -1);
 
-        $scope.dateOptions2 = {
+        $scope.serviceStartOptions = {
             formatYear: 'yyyy',
             minMode: 'month',
             maxDate: new Date($scope.postData.ServiceEnd),
             minDate: now
         }
-        $scope.dateOptions = {
-            formatYear: 'yyyy',
-            maxDate: new Date($scope.postData.ServiceEnd)
+        $scope.startDateOptions = {
+          formatYear: 'yyyy'
         };
-
-
+        $scope.endDateOptions = {
+          formatYear: 'yyyy'
+        };
 
     }]);
 })(angular);

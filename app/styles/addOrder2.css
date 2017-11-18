@@ -327,3 +327,8 @@
 .custom-disabled {
     cursor: not-allowed;
 }
+
+/* modal */
+.add-order-modal-container .modal-dialog{
+  width: 1100px;
+}

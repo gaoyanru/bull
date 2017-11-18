@@ -575,7 +575,7 @@
 
     <div class="form-group">
       <div class="col-sm-offset-10 col-sm-2 text-right">
-        <button ng-if="isReadOnly" type="button" class="btn btn-default" ng-click="close()">关闭</button>
+        <button ng-if="showClose" type="button" class="btn btn-warning" ng-click="close()">关闭</button>
         <button ng-show="!isReadOnly" type="submit" class="btn btn-warning">保存</button>
         <button ng-if="postData.Status === 3 && !isReadOnly" type="button" class="btn btn-warning" ng-click="save(true)">提交</button>
       </div>
