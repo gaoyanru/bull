@@ -543,7 +543,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             break;
         }
 
-      }, );
+      });
        getBanlance();
       $scope.result = angular.extend(result.data, result.data.Customer) // 修改默认是一年的付款方式活动默认选中?？
       result = angular.extend(result.data, result.data.Customer)

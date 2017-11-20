@@ -134,7 +134,7 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
               <div class="col-md-6">
-                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isCompanyReadonly || isReadOnly" required></textarea>
               </div>
             </li>
           </ul>
@@ -144,80 +144,80 @@
       <div class="add-order-title">
         <span>合同信息</span>
       </div>
-
-      <div class="form-group">
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>合同编号:
-        </label>
-        <div class="col-sm-3">
-          <input type="text" class="form-control" ng-model="postData.ContractNO" ng-disabled="isReadOnly" required>
-        </div>
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>纳税人类别:
-        </label>
-        <div class="col-sm-5">
-          <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" ng-disabled="isReadOnly" value="1"> 小规模
+      <div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>合同编号:
           </label>
-          <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" ng-disabled="isReadOnly" value="2"> 一般纳税人
-          </label>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>套餐类型:
-        </label>
-        <div class="col-sm-10">
-          <custom-radio ng-show="!isReadOnly" ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
-          <custom-radio ng-show="isReadOnly" ng-model="payTypeReadonly[0]" options="payTypeReadonly" ng-disabled="isReadOnly"></custom-radio>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">
-          <select class="form-control gift-select" ng-model="postData.gift"  ng-disabled="isReadOnly">
-            <option value="">不使用礼包</option>
-            <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
-          </select>
-          <div ng-if="!isReadOnly" class="promition-style">
-            <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()">
-            <span>{{promotion.PromotionName}}</span>
-            <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" ng-model="postData.ContractNO" ng-disabled="isReadOnly" required>
           </div>
-          <div ng-if="isReadOnly" class="promition-style">
-            <span>{{promotion.PromotionName}}</span>
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>纳税人类别:
+          </label>
+          <div class="col-sm-5">
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" ng-disabled="isReadOnly" value="1"> 小规模
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" ng-disabled="isReadOnly" value="2"> 一般纳税人
+            </label>
           </div>
         </div>
-      </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>套餐类型:
+          </label>
+          <div class="col-sm-10">
+            <custom-radio ng-show="!isReadOnly" ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
+            <custom-radio ng-show="isReadOnly" ng-model="payTypeReadonly[0]" options="payTypeReadonly" ng-disabled="isReadOnly"></custom-radio>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>开始账期:
-        </label>
-        <div class="col-sm-3">
-          <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened"  ng-disabled="isReadOnly" required/>
+        <div class="form-group">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-10">
+            <select class="form-control gift-select" ng-model="postData.gift"  ng-disabled="isReadOnly">
+              <option value="">不使用礼包</option>
+              <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
+            </select>
+            <div ng-if="!isReadOnly" class="promition-style">
+              <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()">
+              <span>{{promotion.PromotionName}}</span>
+              <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+            </div>
+            <div ng-if="isReadOnly" class="promition-style">
+              <span>{{promotion.PromotionName}}</span>
+            </div>
+          </div>
         </div>
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>结束账期:
-        </label>
-        <div class="col-sm-3">
-          <input ng-if="!isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" ng-value="setEndDate()" disabled/>
-          <input ng-if="isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" disabled>
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label for="" class="col-sm-2 control-label">
-          <span class="required"></span>合同金额:
-        </label>
-        <div class="col-sm-3">
-          <input type="number" class="form-control" ng-model="postData.ContractAmount" ng-value="setprice()" ng-disabled="true">
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>开始账期:
+          </label>
+          <div class="col-sm-3">
+            <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened"  ng-disabled="isReadOnly" required/>
+          </div>
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>结束账期:
+          </label>
+          <div class="col-sm-3">
+            <input ng-if="!isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" ng-value="setEndDate()" disabled/>
+            <input ng-if="isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" disabled>
+          </div>
         </div>
-        <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
-          <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
+
+        <div class="form-group">
+          <label for="" class="col-sm-2 control-label">
+            <span class="required"></span>合同金额:
+          </label>
+          <div class="col-sm-3">
+            <input type="number" class="form-control" ng-model="postData.ContractAmount" ng-value="setprice()" ng-disabled="true">
+          </div>
+          <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
+            <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
+          </div>
         </div>
       </div>
     </div>
@@ -272,56 +272,56 @@
           </ul>
         </div>
       </div>
-
-      <div class="add-order-title">
-        <span>合同信息</span>
-      </div>
-
-      <div class="form-group">
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>合同编号:
-        </label>
-        <div class="col-sm-3">
-          <input type="text" class="form-control" ng-model="postData.ContractNO" required>
+      <div>
+        <div class="add-order-title">
+          <span>合同信息</span>
         </div>
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>纳税人类别:
-        </label>
-        <div class="col-sm-5">
-          <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1"> 小规模
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>合同编号:
           </label>
-          <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2"> 一般纳税人
+          <div class="col-sm-3">
+            <input type="text" class="form-control" ng-model="postData.ContractNO" required>
+          </div>
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>纳税人类别:
           </label>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>套餐类型:
-        </label>
-        <div class="col-sm-10">
-          <custom-radio ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">
-          <select class="form-control gift-select" ng-model="postData.gift">
-            <option value="">不使用礼包</option>
-            <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
-          </select>
-          <div class="promition-style">
-            <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()" ng-change="getChoosePromiton()">
-            <span>{{promotion.PromotionName}}</span>
-            <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+          <div class="col-sm-5">
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1"> 小规模
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2"> 一般纳税人
+            </label>
           </div>
         </div>
-      </div>
 
-      <div class="form-group">
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>套餐类型:
+          </label>
+          <div class="col-sm-10">
+            <custom-radio ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-10">
+            <select class="form-control gift-select" ng-model="postData.gift">
+              <option value="">不使用礼包</option>
+              <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
+            </select>
+            <div class="promition-style">
+              <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()" ng-change="getChoosePromiton()">
+              <span>{{promotion.PromotionName}}</span>
+              <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
         <label for="" class="col-sm-2 control-label">
           <span class="required"></span>合同金额:
         </label>
@@ -331,6 +331,7 @@
         <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
           <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
         </div>
+      </div>
       </div>
     </div>
 
@@ -445,79 +446,79 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
               <div class="col-md-6">
-                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isCompanyReadonly || isReadOnly" required></textarea>
               </div>
             </li>
           </ul>
         </div>
       </div>
-
-      <div class="add-order-title">
-        <span>合同信息</span>
-      </div>
-
-      <div class="form-group">
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>合同编号:
-        </label>
-        <div class="col-sm-3">
-          <input type="text" class="form-control" ng-model="postData.ContractNO" ng-disabled="complementCompanyInfo" required>
+      <div>
+        <div class="add-order-title">
+          <span>合同信息</span>
         </div>
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>纳税人类别:
-        </label>
-        <div class="col-sm-5">
-          <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1" ng-disabled="complementCompanyInfo"> 小规模
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>合同编号:
           </label>
-          <label class="radio-inline">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2" ng-disabled="complementCompanyInfo"> 一般纳税人
+          <div class="col-sm-3">
+            <input type="text" class="form-control" ng-model="postData.ContractNO" ng-disabled="complementCompanyInfo" required>
+          </div>
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>纳税人类别:
           </label>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>套餐类型:
-        </label>
-        <div class="col-sm-10">
-          <custom-radio ng-show="!isReadOnly" ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()" ng-disabled="complementCompanyInfo"></custom-radio>
-          <custom-radio ng-show="isReadOnly" ng-model="payTypeReadonly[0]" options="payTypeReadonly" ng-disabled="isReadOnly"></custom-radio>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-10">
-          <select class="form-control gift-select" ng-model="postData.gift" ng-disabled="complementCompanyInfo">
-            <option value="">不使用礼包</option>
-            <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
-          </select>
-          <div class="promition-style">
-            <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="complementCompanyInfo">
-            <span>{{promotion.PromotionName}}</span>
-            <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+          <div class="col-sm-5">
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1" ng-disabled="complementCompanyInfo"> 小规模
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2" ng-disabled="complementCompanyInfo"> 一般纳税人
+            </label>
           </div>
         </div>
-      </div>
 
-      <div class="form-group">
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>开始账期:
-        </label>
-        <div class="col-sm-3">
-          <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened" required ng-disabled="isReadOnly"/>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>套餐类型:
+          </label>
+          <div class="col-sm-10">
+            <custom-radio ng-show="!isReadOnly" ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()" ng-disabled="complementCompanyInfo"></custom-radio>
+            <custom-radio ng-show="isReadOnly" ng-model="payTypeReadonly[0]" options="payTypeReadonly" ng-disabled="isReadOnly"></custom-radio>
+          </div>
         </div>
-        <label class="col-sm-2 control-label" for="">
-          <span class="required"></span>结束账期:
-        </label>
-        <div class="col-sm-3">
-          <input ng-if="!isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" ng-value="setEndDate()" disabled/>
-          <input ng-if="isReadOnly" type="text"class="date-input" ng-model="postData.ServiceEnd" disabled>
-        </div>
-      </div>
 
-      <div class="form-group">
+        <div class="form-group">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-10">
+            <select class="form-control gift-select" ng-model="postData.gift" ng-disabled="complementCompanyInfo">
+              <option value="">不使用礼包</option>
+              <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
+            </select>
+            <div class="promition-style">
+              <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="complementCompanyInfo">
+              <span>{{promotion.PromotionName}}</span>
+              <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>开始账期:
+          </label>
+          <div class="col-sm-3">
+            <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened" required ng-disabled="isReadOnly"/>
+          </div>
+          <label class="col-sm-2 control-label" for="">
+            <span class="required"></span>结束账期:
+          </label>
+          <div class="col-sm-3">
+            <input ng-if="!isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" ng-value="setEndDate()" disabled/>
+            <input ng-if="isReadOnly" type="text"class="date-input" ng-model="postData.ServiceEnd" disabled>
+          </div>
+        </div>
+
+        <div class="form-group">
         <label for="" class="col-sm-2 control-label">
           <span class="required"></span>合同金额:
         </label>
@@ -527,6 +528,7 @@
         <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
           <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
         </div>
+      </div>
       </div>
     </div>
 
