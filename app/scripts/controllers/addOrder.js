@@ -475,9 +475,12 @@ angular.module('channelApp').controller('AddOrderCtrl', ['$scope', '$http', '$fi
         if (postData.IsPromotion && postData.OrderId && postData.Promotion.PromotionDetailsEntityList.length) {
           // $scope.postData.IsPromotion = $scope.postData.Promotion.Id
           postData.IsPromotion = postData.Promotion.Id
-        } else if (postData.IsPromotion && $scope.promotion.Id) {
-          // $scope.postData.IsPromotion = $scope.promotion.Id
-          postData.IsPromotion = $scope.promotion.Id
+        } else if (postData.IsPromotion && $scope.promotion) {
+          if ($scope.promotion.Id) {
+            postData.IsPromotion = $scope.promotion.Id
+          } else {
+            postData.IsPromotion = 0
+          }
         } else {
           // $scope.postData.IsPromotion = 0
           postData.IsPromotion = 0
