@@ -88,7 +88,7 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" ng-disabled="isLegalPersonReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
@@ -100,13 +100,13 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" ng-disabled="isAddressReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>社会统一信用代码：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" ng-disabled="isRegNOReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
@@ -128,13 +128,13 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>注册资金：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.RegisteredCapital" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <input type="text" class="form-control" ng-model="postData.RegisteredCapital" ng-disabled="isRegisteredCapitalReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
               <div class="col-md-6">
-                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isCompanyReadonly || isReadOnly" required></textarea>
+                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isBusinessScopeReadonly || isReadOnly" required></textarea>
               </div>
             </li>
           </ul>
@@ -157,10 +157,10 @@
           </label>
           <div class="col-sm-5">
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" ng-disabled="isReadOnly" value="1"> 小规模
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" ng-disabled="isReadOnly" ng-click="clearPaytype()" value="1"> 小规模
             </label>
             <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" ng-disabled="isReadOnly" value="2"> 一般纳税人
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" ng-disabled="isReadOnly" ng-click="clearPaytype()"  value="2"> 一般纳税人
             </label>
           </div>
         </div>
@@ -186,7 +186,7 @@
               <span>{{promotion.PromotionName}}</span>
               <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
             </div>
-            <div ng-if="isReadOnly" class="promition-style">
+            <div ng-if="isReadOnly && !promotionShow" class="promition-style">
               <span>{{promotion.PromotionName}}</span>
             </div>
           </div>
@@ -350,7 +350,7 @@
             <div ng-if="!isReadOnly" class="input-group">
               <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly || isReadOnly" required>
               <!-- <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">检索</div> -->
-              <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入1</div>
+              <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
               <ul class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>
@@ -400,7 +400,7 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" ng-disabled="isLegalPersonReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
@@ -412,13 +412,13 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" ng-disabled="isAddressReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>社会统一信用代码：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" ng-disabled="isRegNOReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
@@ -440,13 +440,13 @@
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>注册资金：</label>
               <div class="col-md-6">
-                <input type="text" class="form-control" ng-model="postData.RegisteredCapital" ng-disabled="isCompanyReadonly || isReadOnly" required/>
+                <input type="text" class="form-control" ng-model="postData.RegisteredCapital" ng-disabled="isRegisteredCapitalReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
               <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
               <div class="col-md-6">
-                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isCompanyReadonly || isReadOnly" required></textarea>
+                <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isBusinessScopeReadonly || isReadOnly" required></textarea>
               </div>
             </li>
           </ul>
@@ -578,8 +578,8 @@
     <div class="form-group">
       <div class="col-sm-offset-10 col-sm-2 text-right">
         <button ng-if="showClose" type="button" class="btn btn-warning" ng-click="close()">关闭</button>
-        <button ng-show="!isReadOnly" type="submit" class="btn btn-warning">保存</button>
-        <button ng-if="postData.Status === 3 && !isReadOnly" type="button" class="btn btn-warning" ng-click="save(true)">提交</button>
+        <button ng-show="postData.Status != 3 && !isReadOnly" type="submit" class="btn btn-warning">保存</button>
+        <button ng-if="postData.Status === 3 && !isReadOnly" type="button" class="btn btn-warning" ng-click="save(true)">保存</button>
       </div>
     </div>
   </div>
