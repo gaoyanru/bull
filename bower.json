@@ -44,6 +44,11 @@
         "dist/echarts.js"
       ]
     },
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css"
+      ]
+    },
     "angular-material": {
       "main": [
         "angular-material.css",

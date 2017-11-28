@@ -49,7 +49,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.isBusinessScopeReadonly = true
           }
           $scope.postData.BusinessScope = result.BusinessScope
-          if (!result.BusnissDeadline) {
+          if (!result.BusnissDeadline || result.BusnissDeadline.substr(0, 4) === '9999' || result.BusnissDeadline.substr(0, 4) === '0001') {
             $scope.postData.NoDeadLine = 1
           } else {
             $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
@@ -113,6 +113,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     $scope.postData.payType = ''
     $scope.postData.gift = ''
     $scope.postData.IsPromotion = false
+  }
+  // 选中服务期限无期限后清除 结束日期
+  $scope.clearEndDate = function () {
+    $scope.postData.NoDeadLine = !$scope.postData.NoDeadLine;
+    if ($scope.postData.NoDeadLine) {
+      $scope.postData.BusnissDeadline = ''
+    }
   }
 
   $scope.toCheck = function(){
@@ -211,10 +218,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
         if (data.SalesId) delete data.SalesId
         if (data.BusnissDeadline) {
-          if (data.BusnissDeadline.substr(0, 4) === '0001') {
+          if (data.BusnissDeadline.substr(0, 4) === '0001' || data.BusnissDeadline.substr(0, 4) === '9999') {
             data.BusnissDeadline = ""
+            data.NoDeadLine = 1
           } else {
             data.BusnissDeadline = new Date(data.BusnissDeadline)
+            data.NoDeadLine = 0
           }
         } else {
           data.BusnissDeadline = ""
@@ -237,10 +246,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         var data = res.data
         // console.log(data, '$scope.postData')
         if (data.BusnissDeadline) {
-          if (data.BusnissDeadline.substr(0, 4) === '0001') {
+          if (data.BusnissDeadline.substr(0, 4) === '0001' || data.BusnissDeadline.substr(0, 4) === '9999') {
             data.BusnissDeadline = ""
+            data.NoDeadLine = 1
           } else {
             data.BusnissDeadline = new Date(data.BusnissDeadline)
+            data.NoDeadLine = 0
           }
         } else {
           data.BusnissDeadline = ""
@@ -612,10 +623,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         $scope.isCompanyReadonly = false
       }
       // 处理返回的时间
-      if (result.BusnissDeadline.substr(0, 4) === '0001') {
+      if (result.BusnissDeadline.substr(0, 4) === '0001' || result.BusnissDeadline.substr(0, 4) === '9999') {
           result.BusnissDeadline = "";
+          result.NoDeadLine = 1
       } else {
           result.BusnissDeadline = new Date(result.BusnissDeadline);
+          result.NoDeadLine = 0
       }
       if (result.ServiceStart.substr(0, 4) === '0001') {
           result.ServiceStart = "";
@@ -664,8 +677,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           $scope.category = 3;
           $scope.isNewCompany = true
           $scope.complementCompanyInfo = true // 补全公司信息的时候 其他两项不允许修改
+          if (result.Status != 2 && result.Category == 3) { // 复审未审核时 再点击记账准备 此时公司名称不能修改
+            $scope.isChangeCompanyName = true // 此时公司名字不能修改
+          }
           if(result.Status == 2 && result.Category == 3) { // 如果复审也通过 就全部不许修改
             $scope.isReadOnly = true;
+            $scope.isChangeCompanyName = true // 此时公司名字不能修改
             if (!$scope.postData.IsPromotion) { // 老订单之前没参加活动就不显示活动和礼包
               $scope.promotionShow = true
             }
@@ -775,10 +792,18 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     postData.PayType = postData.payType.Id
     // postData.payTypeObj = postData.payType
     delete postData.payType
-    if ($scope.searchType != 1) {
-      postData.IsSync = 1
-    } else {
-      postData.IsSync = 0
+    if (!orderId) {
+      if ($scope.searchType != 1) {
+        postData.IsSync = 1
+      } else {
+        postData.IsSync = 0
+      }
+    } else if (orderId) { // 修改的时候原来返回是啥就是啥
+      if ($scope.result && $scope.result.Customer && $scope.result.Customer.IsSync == 1) {
+        postData.IsSync = 1
+      } else if ($scope.result && $scope.result.Customer && $scope.result.Customer.IsSync == 0) {
+        postData.IsSync = 0
+      }
     }
     console.log(postData, '最终提交数据')
     // 判断是否存在预提单初审通过但是未复审的情况 && 判断账期是否连续
@@ -906,10 +931,18 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     }
     postData.PayType = postData.payType.Id
     delete postData.payType
-    if ($scope.searchType != 1) {
-      postData.IsSync = 1
-    } else {
-      postData.IsSync = 0
+    if (!orderId) {
+      if ($scope.searchType != 1) {
+        postData.IsSync = 1
+      } else {
+        postData.IsSync = 0
+      }
+    } else if (orderId) { // 修改的时候原来返回是啥就是啥
+      if ($scope.result && $scope.result.Customer && $scope.result.Customer.IsSync == 1) {
+        postData.IsSync = 1
+      } else if ($scope.result && $scope.result.Customer && $scope.result.Customer.IsSync == 0) {
+        postData.IsSync = 0
+      }
     }
     console.log(postData, '最终提交数据')
     var params = {
@@ -985,10 +1018,28 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     postData.PayType = postData.payType.Id
     // postData.payTypeObj = postData.payType
     delete postData.payType
-    if ($scope.searchType != 1) {
-      postData.IsSync = 1
-    } else {
-      postData.IsSync = 0
+    if (!orderId) {
+      if ($scope.searchType != 1) {
+        postData.IsSync = 1
+      } else {
+        postData.IsSync = 0
+      }
+    } else if (orderId) { // 修改的时候原来返回是啥就是啥
+      if ($scope.isChangeCompanyName) { // 记账准备未审核前再进行修改
+        if ($scope.result && $scope.result.Customer && $scope.result.Customer.IsSync == 1) {
+          postData.IsSync = 1
+        } else if ($scope.result && $scope.result.Customer && $scope.result.Customer.IsSync == 0) {
+          postData.IsSync = 0
+        }
+      } else { // 第一次记账准备
+        if ($scope.result && $scope.result.Customer && $scope.searchType != 1) {
+          postData.IsSync = 1
+          postData.Customer.IsSync = 1
+        } else if ($scope.result && $scope.result.Customer && $scope.searchType == 1) {
+          postData.IsSync = 0
+          postData.Customer.IsSync = 0
+        }
+      }
     }
     console.log(postData, '最终提交数据')
     var params = {

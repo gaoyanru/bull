@@ -13,20 +13,21 @@
         <span>基本信息</span>
     </div>
     <div class="custom-tips">
-        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        <!-- <i class="fa fa-exclamation-circle" aria-hidden="true"></i> -->
         <span>【温馨提示】可根据客户在国家企业信息公示系统的链接地址，快速完成工商信息的录入。</span>
     </div>
     <div class="row mt-20">
       <div class="col-md-6">
         <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
-        <div class="col-md-6">
+        <div class="col-md-8">
           <div class="input-group" style="width:100%">
-            <input type="text" class="form-control" ng-model="postData.Name" disabled required>
+            <span style="display: inline-block;height: 32px;line-height: 32px;">{{postData.Name}}</span>
+            <!-- <input type="text" class="form-control" ng-model="postData.Name" disabled required> -->
           </div>
         </div>
         <div class="clearfix mb-20"></div>
         <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
-        <div class="col-md-6">
+        <div class="col-md-8">
           <input type="text" class="form-control" ng-model="postData.Contacts" maxlength="10" disabled required>
         </div>
       </div>
@@ -34,16 +35,16 @@
       <div class="col-md-6">
         <ul class="business-license-right">
           <li>
-            <label class="col-md-4 control-label"><span class="required"></span>所在城市：</label>
-            <div class="col-md-3">
+            <label class="col-md-3 control-label"><span class="required"></span>所在城市：</label>
+            <div class="col-md-8">
               <select class="form-control" ng-model="postData.CityCode" disabled>
                 <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
               </select>
             </div>
           </li>
           <li>
-            <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
-            <div class="col-md-6">
+            <label class="col-md-3 control-label"><span class="required"></span>手机号：</label>
+            <div class="col-md-8">
               <input type="text" class="form-control" ng-model="postData.Mobile" maxlength="11" disabled required>
             </div>
           </li>
@@ -63,39 +64,39 @@
         <ul class="business-license-right">
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
-            <div class="col-md-6">
+            <div class="col-md-8">
               <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" disabled required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>法人身份证号：</label>
-            <div class="col-md-6">
+            <div class="col-md-8">
               <input type="text" class="form-control" ng-model="postData.PersonCardID" maxlength="18" disabled required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
-            <div class="col-md-6">
+            <div class="col-md-8">
               <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" disabled required/>
             </div>
           </li>
           <li>
-            <label class="col-md-4 control-label"><span class="required"></span>社会统一信用代码：</label>
-            <div class="col-md-6">
+            <label class="col-md-4 control-label"><span class="required"></span>统一信用代码：</label>
+            <div class="col-md-8">
               <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" disabled required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>营业期限：</label>
-            <div class="col-md-6">
+            <div class="col-md-8">
               <div class="input-group" style="width:120%">
                 <input type="text" class="date-input" uib-datepicker-popup ng-model="postData.RegisterDate" is-open="startDateIsOpened" datepicker-options="startDateOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
                  ng-change="setMinDate()" disabled required/>
                 <span class="input-group-date">-</span>
-                <input ng-hide="postData.NoDeadLine" type="text" class="date-input" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-disabled="postData.NoDeadLine" ng-click="endDateIsOpened = !endDateIsOpened"
+                <input ng-hide="postData.NoDeadLine" type="text" class="date-input" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-disabled="!postData.NoDeadLine" ng-click="endDateIsOpened = !endDateIsOpened"
                  ng-change="setMinDate()"/>
                 <label class="date-deadline"ng-hide="!postData.NoDeadLine">
-                  <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1"/>
+                  <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" disabled value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1"/>
                   无期限
                 </label>
               </div>
@@ -103,13 +104,13 @@
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>注册资金：</label>
-            <div class="col-md-6">
+            <div class="col-md-8">
               <input type="text" class="form-control" ng-model="postData.RegisteredCapital" disabled required/>
             </div>
           </li>
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
-            <div class="col-md-6">
+            <div class="col-md-8">
               <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" disabled required></textarea>
             </div>
           </li>
@@ -197,7 +198,7 @@
           <!-- <input type="file" nv-file-select="" title="上传文件" multiple style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;opacity: 0;width: 130px;margin-left:20px" ng-disabled="isReadOnly">
         </div> -->
       </div>
-      <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
+      <div class="col-sm-10 clearfix mt-5" style="padding-left:0">
         <p>请上传清晰的合同照片，图片大小不要超过1M</p>
       </div>
     </div>
@@ -229,8 +230,8 @@
 
     <div class="form-group">
       <div class="col-sm-offset-10 col-sm-2 text-right">
-        <button  ng-if="!readonly" type="submit" class="btn btn-warning" ng-click="save()">变更</button>
-        <button ng-if="showClose" type="button" class="btn btn-primary" ng-click="close()">关闭</button>
+        <button ng-if="showClose" type="button" class="btn" ng-click="close()">关闭</button>
+        <button  ng-if="!readonly" type="submit" class="btn btn-primary" ng-click="save()">变更</button>
       </div>
     </div>
   </div>

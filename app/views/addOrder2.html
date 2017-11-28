@@ -28,29 +28,31 @@
           <span>基本信息</span>
       </div>
       <div class="custom-tips">
-          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+          <!-- <i class="fa fa-exclamation-circle" aria-hidden="true"></i> -->
           <span>【温馨提示】可根据客户在国家企业信息公示系统的链接地址，快速完成工商信息的录入。</span>
       </div>
-      <div class="row mt-20">
+      <div class="row mt-20" style="position:relative;">
         <div class="col-md-6">
           <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
-          <div class="col-md-6">
-            <div ng-if="!orderId" class="input-group">
+          <div class="col-md-8">
+            <div ng-if="!orderId">
               <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly" required>
               <!-- <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">检索</div> -->
-              <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
+              <!-- <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-style">快速录入</div> -->
               <ul class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>
             </div>
             <div ng-if="orderId" class="input-group" style="width:100%">
-              <input type="text" class="form-control" ng-model="postData.Name" disabled required>
+              <span style="display: inline-block;height: 32px;line-height: 32px;">{{postData.Name}}</span>
+              <!-- <input type="text" class="form-control" ng-model="postData.Name" disabled required> -->
             </div>
             <span style="color: red; font-size: 12px;" ng-if="searchError" ng-bind="searchError"></span>
           </div>
+          <div ng-if="!orderId" ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-style">快速录入</div>
           <div class="clearfix mb-20"></div>
           <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <input type="text" class="form-control" ng-model="postData.Contacts" maxlength="10" ng-disabled="isReadOnly" required>
           </div>
         </div>
@@ -58,16 +60,16 @@
         <div class="col-md-6">
           <ul class="business-license-right">
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>所在城市：</label>
+              <label class="col-md-3 control-label"><span class="required"></span>所在城市：</label>
               <div class="col-md-3">
-                <select class="form-control" ng-model="postData.CityCode" ng-disabled="isReadOnly">
+                <select class="form-control" ng-model="postData.CityCode" ng-disabled="isReadOnly" style="width:112%">
                   <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
                 </select>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>手机号：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.Mobile" maxlength="11" ng-disabled="isReadOnly" required>
               </div>
             </li>
@@ -86,32 +88,32 @@
         <div class="col-md-6">
           <ul class="business-license-right">
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>法人姓名：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" ng-disabled="isLegalPersonReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>法人身份证号：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>法人身份证号：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.PersonCardID" maxlength="18" ng-disabled="isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>公司住所：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" ng-disabled="isAddressReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>社会统一信用代码：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>统一信用代码：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" ng-disabled="isRegNOReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>营业期限：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>营业期限：</label>
+              <div class="col-md-8">
                 <div class="input-group" style="width:120%">
                   <input type="text" class="date-input" uib-datepicker-popup ng-model="postData.RegisterDate" is-open="startDateIsOpened" datepicker-options="startDateOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
                    ng-change="setMinDate()" ng-disabled="isCompanyReadonly || isReadOnly" required/>
@@ -119,21 +121,21 @@
                   <input ng-hide="isReadOnly && postData.NoDeadLine" type="text" class="date-input" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-disabled="postData.NoDeadLine || isCompanyReadonly || isReadOnly" ng-click="endDateIsOpened = !endDateIsOpened"
                    ng-change="setMinDate()"/>
                   <label class="date-deadline"ng-hide="isReadOnly && !postData.NoDeadLine">
-                    <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1" ng-disabled="isCompanyReadonly || isReadOnly"/>
+                    <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="clearEndDate()" ng-checked="postData.NoDeadLine == 1" ng-disabled="isCompanyReadonly || isReadOnly"/>
                     无期限
                   </label>
                 </div>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>注册资金：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>注册资金：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.RegisteredCapital" ng-disabled="isRegisteredCapitalReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>经营范围：</label>
+              <div class="col-md-8">
                 <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isBusinessScopeReadonly || isReadOnly" required></textarea>
               </div>
             </li>
@@ -146,37 +148,43 @@
       </div>
       <div>
         <div class="form-group">
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>合同编号:
-          </label>
-          <div class="col-sm-3">
-            <input type="text" class="form-control" ng-model="postData.ContractNO" ng-disabled="isReadOnly" required>
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>合同编号:
+            </label>
+            <div class="col-md-8">
+              <input type="text" class="form-control" ng-model="postData.ContractNO" ng-disabled="isReadOnly" required>
+            </div>
           </div>
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>纳税人类别:
-          </label>
-          <div class="col-sm-5">
-            <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" ng-disabled="isReadOnly" ng-click="clearPaytype()" value="1"> 小规模
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>纳税人类别:
             </label>
-            <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" ng-disabled="isReadOnly" ng-click="clearPaytype()"  value="2"> 一般纳税人
-            </label>
+            <div class="col-md-8">
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" ng-disabled="isReadOnly" ng-click="clearPaytype()" value="1"> 小规模
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" ng-disabled="isReadOnly" ng-click="clearPaytype()"  value="2"> 一般纳税人
+              </label>
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>套餐类型:
-          </label>
-          <div class="col-sm-10">
-            <custom-radio ng-show="!isReadOnly" ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
-            <custom-radio ng-show="isReadOnly" ng-model="payTypeReadonly[0]" options="payTypeReadonly" ng-disabled="isReadOnly"></custom-radio>
+          <div class="col-md-9" style="margin-left:-3px;">
+            <label class="col-md-2 control-label" for="">
+              <span class="required"></span>套餐类型:
+            </label>
+            <div class="col-md-8">
+              <custom-radio ng-show="!isReadOnly" ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
+              <custom-radio ng-show="isReadOnly" ng-model="payTypeReadonly[0]" options="payTypeReadonly" ng-disabled="isReadOnly"></custom-radio>
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-10">
+          <div class="col-md-9" style="margin-left:-3px;">
+            <div class="col-md-2"></div>
             <select class="form-control gift-select" ng-model="postData.gift"  ng-disabled="isReadOnly">
               <option value="">不使用礼包</option>
               <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
@@ -193,30 +201,36 @@
         </div>
 
         <div class="form-group">
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>开始账期:
-          </label>
-          <div class="col-sm-3">
-            <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened"  ng-disabled="isReadOnly" required/>
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>开始账期:
+            </label>
+            <div class="col-md-8">
+              <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened"  ng-disabled="isReadOnly" required/>
+            </div>
           </div>
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>结束账期:
-          </label>
-          <div class="col-sm-3">
-            <input ng-if="!isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" ng-value="setEndDate()" disabled/>
-            <input ng-if="isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" disabled>
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>结束账期:
+            </label>
+            <div class="col-md-8">
+              <input ng-if="!isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" ng-value="setEndDate()" disabled/>
+              <input ng-if="isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" disabled>
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="" class="col-sm-2 control-label">
-            <span class="required"></span>合同金额:
-          </label>
-          <div class="col-sm-3">
-            <input type="number" class="form-control" ng-model="postData.ContractAmount" ng-value="setprice()" ng-disabled="true">
+          <div class="col-md-6">
+            <label for="" class="col-md-3 control-label">
+              <span class="required"></span>合同金额:
+            </label>
+            <div class="col-md-6">
+              <input type="number" class="form-control" ng-model="postData.ContractAmount" ng-value="setprice()" ng-disabled="true">
+            </div>
           </div>
-          <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
-            <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
+          <div class="col-md-offset-1 col-sm-10 clearfix mt-5">
+            <p class="red" style="margin-left: 45px;">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
           </div>
         </div>
       </div>
@@ -227,7 +241,7 @@
           <span>基本信息</span>
       </div>
       <div class="custom-tips">
-          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+          <!-- <i class="fa fa-exclamation-circle" aria-hidden="true"></i> -->
           <span>【温馨提示】支持对二代居民身份证的关键字段识别。上传身份证后，即可自动读取并带出姓名、身份证号等信息。</span>
       </div>
 
@@ -277,7 +291,7 @@
           <span>合同信息</span>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label class="col-sm-2 control-label" for="">
             <span class="required"></span>合同编号:
           </label>
@@ -295,18 +309,51 @@
               <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2"> 一般纳税人
             </label>
           </div>
+        </div> -->
+        <div class="form-group">
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>合同编号:
+            </label>
+            <div class="col-md-8">
+              <input type="text" class="form-control" ng-model="postData.ContractNO" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>纳税人类别:
+            </label>
+            <div class="col-md-8">
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1"> 小规模
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2"> 一般纳税人
+              </label>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label class="col-sm-2 control-label" for="">
             <span class="required"></span>套餐类型:
           </label>
           <div class="col-sm-10">
             <custom-radio ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
           </div>
+        </div> -->
+        <div class="form-group">
+          <div class="col-md-9" style="margin-left:-3px;">
+            <label class="col-md-2 control-label" for="">
+              <span class="required"></span>套餐类型:
+            </label>
+            <div class="col-md-8">
+              <custom-radio ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <div class="col-sm-2"></div>
           <div class="col-sm-10">
             <select class="form-control gift-select" ng-model="postData.gift">
@@ -319,9 +366,23 @@
               <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
             </div>
           </div>
+        </div> -->
+        <div class="form-group">
+          <div class="col-md-9" style="margin-left:-3px;">
+            <div class="col-md-2"></div>
+            <select class="form-control gift-select" ng-model="postData.gift"  ng-disabled="isReadOnly">
+              <option value="">不使用礼包</option>
+              <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
+            </select>
+            <div class="promition-style">
+              <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()" ng-change="getChoosePromiton()">
+              <span>{{promotion.PromotionName}}</span>
+              <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
         <label for="" class="col-sm-2 control-label">
           <span class="required"></span>合同金额:
         </label>
@@ -330,6 +391,19 @@
         </div>
         <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
           <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
+        </div>
+      </div> -->
+      <div class="form-group">
+        <div class="col-md-6">
+          <label for="" class="col-md-3 control-label">
+            <span class="required"></span>合同金额:
+          </label>
+          <div class="col-md-6">
+            <input type="number" class="form-control" ng-model="postData.ContractAmount" ng-value="setprice()" ng-disabled="true">
+          </div>
+        </div>
+        <div class="col-md-offset-1 col-sm-10 clearfix mt-5">
+          <p class="red" style="margin-left: 45px;">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
         </div>
       </div>
       </div>
@@ -340,29 +414,31 @@
           <span>基本信息</span>
       </div>
       <div class="custom-tips">
-          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+          <!-- <i class="fa fa-exclamation-circle" aria-hidden="true"></i> -->
           <span>【温馨提示】可根据客户在国家企业信息公示系统的链接地址，快速完成工商信息的录入。</span>
       </div>
-      <div class="row mt-20">
+      <div class="row mt-20" style="position:relative;">
         <div class="col-md-6">
           <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
-          <div class="col-md-6">
-            <div ng-if="!isReadOnly" class="input-group">
+          <div class="col-md-8">
+            <div ng-if="!isChangeCompanyName">
               <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly || isReadOnly" required>
               <!-- <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">检索</div> -->
-              <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入</div>
+              <!-- <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入</div> -->
               <ul class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>
             </div>
-            <div ng-if="isReadOnly" class="input-group" style="width:100%">
-              <input type="text" class="form-control" ng-model="postData.Name" disabled required>
+            <div ng-if="isChangeCompanyName" class="input-group" style="width:100%">
+              <span style="display: inline-block;height: 32px;line-height: 32px;">{{postData.Name}}</span>
+              <!-- <input type="text" class="form-control" ng-model="postData.Name" disabled required> -->
             </div>
             <span style="color: red; font-size: 12px;" ng-if="searchError" ng-bind="searchError"></span>
           </div>
+          <div ng-if="!isChangeCompanyName" ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-style">快速录入</div>
           <div class="clearfix mb-20"></div>
           <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <input type="text" class="form-control" ng-model="postData.Contacts" maxlength="10" ng-disabled="isReadOnly" required>
           </div>
         </div>
@@ -370,16 +446,16 @@
         <div class="col-md-6">
           <ul class="business-license-right">
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>所在城市：</label>
+              <label class="col-md-3 control-label"><span class="required"></span>所在城市：</label>
               <div class="col-md-3">
-                <select class="form-control" ng-model="postData.CityCode" ng-disabled="complementCompanyInfo">
+                <select class="form-control" ng-model="postData.CityCode" ng-disabled="complementCompanyInfo" style="width:112%">
                   <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
                 </select>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>手机号：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.Mobile" maxlength="11" ng-disabled="isReadOnly" required>
               </div>
             </li>
@@ -398,32 +474,32 @@
         <div class="col-md-6">
           <ul class="business-license-right">
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>法人姓名：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" ng-disabled="isLegalPersonReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>法人身份证号：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>法人身份证号：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.PersonCardID" maxlength="18" ng-disabled="isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>公司住所：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" ng-disabled="isAddressReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>社会统一信用代码：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>统一信用代码：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.RegNO" maxlength="18" ng-disabled="isRegNOReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>营业期限：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>营业期限：</label>
+              <div class="col-md-8">
                 <div class="input-group" style="width:120%">
                   <input type="text" class="date-input" uib-datepicker-popup ng-model="postData.RegisterDate" is-open="startDateIsOpened" datepicker-options="startDateOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="startDateIsOpened = !startDateIsOpened"
                    ng-change="setMinDate()" ng-disabled="isCompanyReadonly || isReadOnly" required/>
@@ -431,21 +507,21 @@
                   <input ng-hide="isReadOnly && postData.NoDeadLine" type="text" class="date-input" uib-datepicker-popup ng-model="postData.BusnissDeadline" is-open="endDateIsOpened" datepicker-options="endDateOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-disabled="postData.NoDeadLine || isCompanyReadonly || isReadOnly" ng-click="endDateIsOpened = !endDateIsOpened"
                    ng-change="setMinDate()"/>
                   <label class="date-deadline"ng-hide="isReadOnly && !postData.NoDeadLine">
-                    <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="postData.NoDeadLine = !postData.NoDeadLine; " ng-checked="postData.NoDeadLine == 1" ng-disabled="isCompanyReadonly || isReadOnly"/>
+                    <input ng-hide="isReadOnly && postData.NoDeadLine" type="checkbox" name="noLimitDate" ng-readonly="isReadOnly" value="1" ng-click="clearEndDate()" ng-checked="postData.NoDeadLine == 1" ng-disabled="isCompanyReadonly || isReadOnly"/>
                     无期限
                   </label>
                 </div>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>注册资金：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>注册资金：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.RegisteredCapital" ng-disabled="isRegisteredCapitalReadonly || isReadOnly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>经营范围：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>经营范围：</label>
+              <div class="col-md-8">
                 <textarea type="text" class="form-control" rows="9" ng-model="postData.BusinessScope" ng-disabled="isBusinessScopeReadonly || isReadOnly" required></textarea>
               </div>
             </li>
@@ -458,97 +534,112 @@
         </div>
 
         <div class="form-group">
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>合同编号:
-          </label>
-          <div class="col-sm-3">
-            <input type="text" class="form-control" ng-model="postData.ContractNO" ng-disabled="complementCompanyInfo" required>
-          </div>
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>纳税人类别:
-          </label>
-          <div class="col-sm-5">
-            <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1" ng-disabled="complementCompanyInfo"> 小规模
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>合同编号:
             </label>
-            <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2" ng-disabled="complementCompanyInfo"> 一般纳税人
+            <div class="col-md-8">
+              <input type="text" class="form-control" ng-model="postData.ContractNO" ng-disabled="complementCompanyInfo" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>纳税人类别:
             </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>套餐类型:
-          </label>
-          <div class="col-sm-10">
-            <custom-radio ng-show="!isReadOnly" ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()" ng-disabled="complementCompanyInfo"></custom-radio>
-            <custom-radio ng-show="isReadOnly" ng-model="payTypeReadonly[0]" options="payTypeReadonly" ng-disabled="isReadOnly"></custom-radio>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-10">
-            <select class="form-control gift-select" ng-model="postData.gift" ng-disabled="complementCompanyInfo">
-              <option value="">不使用礼包</option>
-              <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
-            </select>
-            <div class="promition-style">
-              <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="complementCompanyInfo">
-              <span>{{promotion.PromotionName}}</span>
-              <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+            <div class="col-md-8">
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1" ng-disabled="complementCompanyInfo"> 小规模
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2" ng-disabled="complementCompanyInfo"> 一般纳税人
+              </label>
             </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>开始账期:
-          </label>
-          <div class="col-sm-3">
-            <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened" required ng-disabled="isReadOnly"/>
-          </div>
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>结束账期:
-          </label>
-          <div class="col-sm-3">
-            <input ng-if="!isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" ng-value="setEndDate()" disabled/>
-            <input ng-if="isReadOnly" type="text"class="date-input" ng-model="postData.ServiceEnd" disabled>
+          <div class="col-md-9" style="margin-left:-3px;">
+            <label class="col-md-2 control-label" for="">
+              <span class="required"></span>套餐类型:
+            </label>
+            <div class="col-md-9">
+              <custom-radio ng-show="!isReadOnly" ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()" ng-disabled="complementCompanyInfo"></custom-radio>
+              <custom-radio ng-show="isReadOnly" ng-model="payTypeReadonly[0]" options="payTypeReadonly" ng-disabled="isReadOnly"></custom-radio>
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-        <label for="" class="col-sm-2 control-label">
-          <span class="required"></span>合同金额:
+          <div class="col-md-9" style="margin-left:-3px;">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <select class="form-control gift-select" ng-model="postData.gift" ng-disabled="complementCompanyInfo">
+                <option value="">不使用礼包</option>
+                <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
+              </select>
+              <div class="promition-style">
+                <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="complementCompanyInfo">
+                <span>{{promotion.PromotionName}}</span>
+                <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>开始账期:
+            </label>
+            <div class="col-md-8">
+              <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened" required ng-disabled="isReadOnly"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="col-md-3 control-label" for="">
+              <span class="required"></span>结束账期:
+            </label>
+            <div class="col-md-8">
+              <input ng-if="!isReadOnly" type="text" class="date-input" ng-model="postData.ServiceEnd" ng-value="setEndDate()" disabled/>
+              <input ng-if="isReadOnly" type="text"class="date-input" ng-model="postData.ServiceEnd" disabled>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-6">
+            <label for="" class="col-md-3 control-label">
+              <span class="required"></span>合同金额:
+            </label>
+            <div class="col-md-8">
+              <input type="number" class="form-control" ng-model="postData.ContractAmount" ng-value="setprice()" ng-disabled="true">
+            </div>
+          </div>
+          <div class="col-md-offset-1 col-sm-10 clearfix mt-5">
+            <p class="red" style="margin-left: 45px;">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-6">
+        <label for="" class="col-md-3 control-label">
+          <span></span>合同照片:
         </label>
-        <div class="col-sm-3">
-          <input type="number" class="form-control" ng-model="postData.ContractAmount" ng-value="setprice()" ng-disabled="true">
-        </div>
-        <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
-          <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
+        <div class="col-md-8">
+          <div class="upload-file-btn pull-left mr-20">
+            <span>上传文件</span>
+            <input type="file" nv-file-select="" uploader="uploader1" title="上传文件" multiple style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;opacity: 0;width: 130px;margin-left:20px" ng-disabled="isReadOnly">
+          </div>
         </div>
       </div>
+      <div class="col-md-offset-1 col-sm-10 clearfix mt-5">
+        <p style="margin-left: 45px;">请上传清晰的合同照片，图片大小不要超过1M</p>
       </div>
     </div>
-
     <div class="form-group">
-      <label for="" class="col-sm-2 control-label">
-        <span></span>合同照片:
-      </label>
-      <div class="col-sm-5">
-        <div class="upload-file-btn pull-left mr-20">
-          <span>上传文件</span>
-          <input type="file" nv-file-select="" uploader="uploader1" title="上传文件" multiple style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;opacity: 0;width: 130px;margin-left:20px" ng-disabled="isReadOnly">
-        </div>
-      </div>
-      <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
-        <p>请上传清晰的合同照片，图片大小不要超过1M</p>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <div class="col-sm-2"></div>
+      <div class="col-md-1" style="margin-left:45px"></div>
       <div ng-if="!isReadOnly" class="col-sm-10 img-container clearfix">
           <img ng-repeat="img in imgs" ng-src="{{img}}" additional="?x-oss-process=image/resize,m_lfit,h_75,w_100" alt="" pic-view pic-delete="imgs.splice({{$index}},1)">
       </div>
@@ -558,28 +649,35 @@
     </div>
 
     <div class="form-group">
-      <label for="" class="col-sm-2 control-label">
-        <span></span>备注:
-      </label>
-      <div class="col-sm-10">
-        <textarea class="form-control" id="" rows="4" ng-model="postData.Remark" ng-disabled="isReadOnly"></textarea>
+      <div class="col-md-12">
+        <label for="" class="col-md-1 control-label" style="margin-left:45px">
+          <span></span>备注:
+        </label>
+        <div class="col-md-9">
+          <textarea class="form-control" id="" rows="4" ng-model="postData.Remark" ng-disabled="isReadOnly"></textarea>
+        </div>
       </div>
     </div>
 
-    <div class="form-group"  ng-if="postData.Status === 3">
-      <label for="" class="col-sm-2 control-label">
-        <span></span>拒审原因:
-      </label>
-      <div class="col-sm-10">
-        <textarea class="form-control" id="" rows="4"  style="color:red;" ng-bind="postData.BackReason" disabled></textarea>
+    <div ng-if="postData.Status === 3">
+      <div class="add-order-title">
+        <span>拒审原因</span>
+      </div>
+      <div class="form-group" >
+        <label for="" class="col-sm-2 control-label">
+          <span></span>拒审原因:
+        </label>
+        <div class="col-sm-10">
+          <textarea class="form-control" id="" rows="4"  style="color:red;" ng-bind="postData.BackReason" disabled></textarea>
+        </div>
       </div>
     </div>
 
     <div class="form-group">
-      <div class="col-sm-offset-10 col-sm-2 text-right">
-        <button ng-if="showClose" type="button" class="btn btn-warning" ng-click="close()">关闭</button>
-        <button ng-show="postData.Status != 3 && !isReadOnly" type="submit" class="btn btn-warning">保存</button>
-        <button ng-if="postData.Status === 3 && !isReadOnly" type="button" class="btn btn-warning" ng-click="save(true)">保存</button>
+      <div class="col-sm-offset-10 col-sm-2" style="margin-left: 45%;">
+        <button ng-if="showClose" type="button" class="btn" ng-click="close()">关闭</button>
+        <button ng-show="postData.Status != 3 && !isReadOnly" type="submit" class="btn btn-primary">保存</button>
+        <button ng-if="postData.Status === 3 && !isReadOnly" type="button" class="btn btn-primary" ng-click="save(true)">保存</button>
       </div>
     </div>
   </div>
