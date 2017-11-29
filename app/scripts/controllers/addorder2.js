@@ -253,6 +253,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
   // 本地数据库选择公司带出本地工商信息
   $scope.companySelect = function (name, id) {
+    $('.dropdown-company-list').parent().removeClass('open');
     $scope.companySelected = true;
     $scope.isCompanyReadonly = false // 不是检索出的信息可以修改
     // // console.log($scope.searchType, '$scope.searchType')
@@ -626,6 +627,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     $http.get("/api/orders/" + orderId).success(function (result) {
       // 加载初始需要的数据
       console.log(result.data, 'res')
+      $scope.companyInfo = result.data
       initDict(function(type){
         switch(type){
           case 1:

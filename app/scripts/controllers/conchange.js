@@ -141,7 +141,7 @@
                 if (result.NoDeadLine) {
                     result.BusnissDeadline = '';
                 }
-                result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
+                result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : '';
                 $scope.imgs = result.ContractPath
                 $scope.serviceStartOptions.maxDate = new Date(result.ServiceEnd);
                 // console.log(result, 'result')
@@ -192,6 +192,7 @@
             var postData = angular.copy($scope.postData);
             delete postData.Customer;
             delete postData.Promotion;
+            // console.log(postData.ContractPath)
             postData.RegisterDate = $filter('date')($scope.postData.RegisterDate, 'yyyy-MM-dd');
             postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
             postData.ServiceStart = $filter('date')($scope.postData.ServiceStart, 'yyyy-MM-dd');

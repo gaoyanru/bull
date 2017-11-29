@@ -57,6 +57,7 @@ angular.module('channelApp').directive('customFileUploader', function(){
       }
 
       ele.find('.upload-area').click(function(e){
+        if(ele.attr('disabled')) return;
         if(ngModel && ngModel.$viewValue){
           if(e.target.tagName.toUpperCase() == 'SPAN'){
             ele.find('input[type=file]').trigger('click');
