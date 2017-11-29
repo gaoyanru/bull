@@ -35,6 +35,25 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     modalInstance.result.then(function (result) {
         // console.log(result, 'result')
         if (result) {
+          // 返回有值需要做之前可编辑处理
+          $scope.isCompanyReadonly = false
+          $scope.postData.LegalPerson = ''
+          $scope.isLegalPersonReadonly = false
+          $scope.PersonCardID = ''
+          $scope.postData.Address = ''
+          $scope.isAddressReadonly = false
+          $scope.postData.RegNO = ''
+          $scope.isRegNOReadonly = false
+          $scope.postData.RegisterDate = ''
+          $scope.postData.BusnissDeadline = ''
+          if ($scope.postData.NoNoDeadLine) {
+            $scope.postData.NoNoDeadLine = 0
+          }
+          $scope.postData.RegisteredCapital = ''
+          $scope.isRegisteredCapitalReadonly = false
+          $scope.postData.BusinessScope = ''
+          $scope.isBusinessScopeReadonly = false
+
           $scope.resultInfo = result // 清空公司时需要使用这个数据判断是否清空法人姓名
           // console.log('aa')
           $scope.searchType = 3 // 标记是快速录入获取到的信息
@@ -80,19 +99,46 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           }
           $scope.postData.RegisteredCapital = result.RegisteredCapital
         } else {
-          alert('抱歉，没有检索到企业信息，请重试或手动录入！')
+          // alert('抱歉，没有检索到企业信息，请重试或手动录入！')
+          alertModal('抱歉，没有检索到企业信息，请重试或手动录入！')
         }
     }, function () {
 
     });
   }
+  // 统一弹框
+  function alertModal(msg) {
+    var errorMsg = msg
+    var modalInstance = $uibModal.open({
+        templateUrl: 'views/summit_modal.html',
+        size: "md",
+        controller: 'SummitModal',
+        resolve: {
+          error: function () {
+             return errorMsg
+          },
+          sign: function() {
+            return true
+          }
+        }
+    });
+    modalInstance.result.then(function (result) {
+
+    }, function () {
+
+    });
+  }
+
   // 检索出的信息当修改公司名称时候 工商信息清空
   $scope.clearCompanyInfo = function() {
     // // console.log($scope.searchType, $scope.postData.Name, $scope.postData.Name.trim() == $scope.searchCompanyInfo.CompanyName, 'keydown')
     if ($scope.searchType == 3 && $scope.postData.Name.trim() != $scope.searchCompanyInfo.CompanyName) {
-       $scope.postData.Address = ''
+        $scope.postData.Address = ''
         $scope.postData.BusinessScope = ''
         $scope.postData.BusnissDeadline = ''
+        if ($scope.postData.NoNoDeadLine) {
+          $scope.postData.NoNoDeadLine = 0
+        }
         if ($scope.resultInfo.LegalPerson) {
           $scope.postData.LegalPerson = ''
         }
@@ -548,7 +594,8 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.postData.PersonCardID = data.data.PersonCardID
           } else if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso && $scope.isLegalPersonReadonly) {
             $scope.postData.PersonCardPath = ''
-            alert('身份证上的法人姓名与营业执照上的法人不符')
+            // alert('身份证上的法人姓名与营业执照上的法人不符')
+            alertModal('身份证上的法人姓名与营业执照上的法人不符')
             // $scope.postData.LegalPerson = $scope.postData.LegalPerson
             // $scope.postData.PersonCardID = ''
           } else {
@@ -556,7 +603,8 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.postData.PersonCardID = data.data.PersonCardID
           }
         } else if (data.status && !data.data) {
-          alert('无法识别身份信息，请上传清晰的身份证或手动输入法人、法人身份证号！')
+          // alert('无法识别身份信息，请上传清晰的身份证或手动输入法人、法人身份证号！')
+          alertModal('无法识别身份信息，请上传清晰的身份证或手动输入法人、法人身份证号！')
         }
       })
 
@@ -852,8 +900,11 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
                     controller: 'SummitModal',
                     resolve: {
                       error: function () {
-                         return errorMsg;
-                     }
+                        return errorMsg;
+                      },
+                      sign: function () {
+                        return false;
+                      }
                     }
                 });
                 modalInstance.result.then(function (result) {
@@ -1163,8 +1214,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-}]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'error', function($scope, $http, $uibModalInstance, error) {
+}]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'error', 'sign', function($scope, $http, $uibModalInstance, error, sign) {
   console.log(error, 'error')
+  $scope.sign = sign
   $scope.alertMsg = error
   $scope.submit = function () {
     var canSubmit = true

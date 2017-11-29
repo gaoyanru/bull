@@ -92,7 +92,7 @@
     padding: 8px 0px;
     line-height: 36px;
     width: 100%;
-    background-color: #eee;
+    background-color: #f0fafa;
     color: #1b9bfc;
     font-size: 14px;
     padding: 0px 10px;
@@ -126,7 +126,7 @@
 /* 图品上传 */
 
 .img-upload-container {
-    width: 400px;
+    width: 450px;
     text-align: center;
 }
 
@@ -136,6 +136,7 @@
     height: 226px;
     background: url('../images/imgbg.png');
     position: relative;
+    background-size: 370px 226px;
 }
 .upload-area img {
   width: 100%;
@@ -258,7 +259,7 @@
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
-  /*padding: 6px 12px;*/
+  padding: 6px 12px;
 }
 .input-group-date {
   float: left;

@@ -35,7 +35,7 @@
       <div class="col-md-6">
         <ul class="business-license-right">
           <li>
-            <label class="col-md-3 control-label"><span class="required"></span>所在城市：</label>
+            <label class="col-md-4 control-label"><span class="required"></span>所在城市：</label>
             <div class="col-md-8">
               <select class="form-control" ng-model="postData.CityCode" disabled>
                 <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
@@ -43,7 +43,7 @@
             </div>
           </li>
           <li>
-            <label class="col-md-3 control-label"><span class="required"></span>手机号：</label>
+            <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
             <div class="col-md-8">
               <input type="text" class="form-control" ng-model="postData.Mobile" maxlength="11" disabled required>
             </div>
@@ -77,7 +77,7 @@
           <li>
             <label class="col-md-4 control-label"><span class="required"></span>公司住所：</label>
             <div class="col-md-8">
-              <input type="text" class="form-control" ng-model="postData.Address" maxlength="100" disabled required/>
+              <textarea type="text" class="form-control" ng-model="postData.Address" maxlength="100" disabled required></textarea>
             </div>
           </li>
           <li>
@@ -123,35 +123,41 @@
     </div>
 
     <div class="form-group">
-      <label class="col-sm-2 control-label" for="">
-        <span class="required"></span>合同编号:
-      </label>
-      <div class="col-sm-3">
-        <input type="text" class="form-control" ng-model="postData.ContractNO" disabled required>
+      <div class="col-md-6">
+        <label class="col-md-3 control-label" for="">
+          <span class="required"></span>合同编号：
+        </label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" ng-model="postData.ContractNO" disabled required>
+        </div>
       </div>
-      <label class="col-sm-2 control-label" for="">
-        <span class="required"></span>纳税人类别:
-      </label>
-      <div class="col-sm-5">
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" disabled value="1"> 小规模
+      <div class="col-md-6">
+        <label class="col-md-4 control-label" for="">
+          <span class="required"></span>纳税人类别：
         </label>
-        <label class="radio-inline">
-          <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" disabled value="2"> 一般纳税人
-        </label>
+        <div class="col-md-8">
+          <label class="radio-inline">
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" disabled value="1"> 小规模
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" disabled value="2"> 一般纳税人
+          </label>
+        </div>
       </div>
     </div>
 
     <div class="form-group">
-      <label class="col-sm-2 control-label" for="">
-        <span class="required"></span>套餐类型:
-      </label>
-      <div class="col-sm-10" style="height:34px;line-height:34px;">
-        <span>产品变更</span>
+      <div class="col-md-6">
+        <label class="col-md-3 control-label" for="">
+          <span class="required"></span>套餐类型：
+        </label>
+        <div class="col-md-8" style="height:34px;line-height:34px;">
+          <span>产品变更</span>
+        </div>
       </div>
     </div>
 
-    <div ng-if="postData.GiftTypeName || promotion.PromotionName" class="form-group">
+    <!-- <div ng-if="postData.GiftTypeName || promotion.PromotionName" class="form-group">
       <div class="col-sm-2"></div>
       <div class="col-sm-10">
         <span ng-if="postData.GiftTypeName">{{postData.GiftTypeName + '(￥' + postData.GiftPrice + ')'}}</span>
@@ -159,72 +165,87 @@
           <span>{{promotion.PromotionName}}</span>
         </div>
       </div>
+    </div> -->
+
+    <div class="form-group">
+      <div class="col-md-6">
+        <label class="col-md-3 control-label" for="">
+          <span class="required"></span>开始账期：
+        </label>
+        <div class="col-md-8">
+          <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened" ng-change="setprice()" required ng-disabled="readonly"/>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="col-md-4 control-label" for="">
+          <span class="required"></span>结束账期：
+        </label>
+        <div class="col-md-8">
+          <input type="text" class="date-input" ng-model="postData.ServiceEnd" disabled>
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
-      <label class="col-sm-2 control-label" for="">
-        <span class="required"></span>开始账期:
-      </label>
-      <div class="col-sm-3">
-        <input type="text" class="date-input" uib-datepicker-popup="yyyy-MM" ng-model="postData.ServiceStart" is-open="serviceStartIsOpened" datepicker-options="serviceStartOptions" close-text="关闭" current-text="今天" clear-text="清空" readonly ng-click="serviceStartIsOpened = !serviceStartIsOpened" ng-change="setprice()" required ng-disabled="readonly"/>
+      <div class="col-md-6">
+        <label for="" class="col-md-3 control-label">
+          <span class="required"></span>合同金额：
+        </label>
+        <div class="col-md-8">
+          <input type="number" class="form-control" ng-model="postData.ContractAmount" disabled>
+        </div>
       </div>
-      <label class="col-sm-2 control-label" for="">
-        <span class="required"></span>结束账期:
-      </label>
-      <div class="col-sm-3">
-        <input type="text" class="date-input" ng-model="postData.ServiceEnd" disabled>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="" class="col-sm-2 control-label">
-        <span class="required"></span>合同金额:
-      </label>
-      <div class="col-sm-3">
-        <input type="number" class="form-control" ng-model="postData.ContractAmount" disabled>
-      </div>
-      <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
+      <div class="col-md-offset-1 col-sm-10 clearfix mt-5" style="padding-left:42px">
         <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="" class="col-sm-2 control-label">
-        <span></span>合同照片:
-      </label>
-      <div class="col-sm-5">
-        <div class="upload-file-btn pull-left mr-20">
-          <span>上传文件</span>
-          <!-- <input type="file" nv-file-select="" title="上传文件" multiple style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;opacity: 0;width: 130px;margin-left:20px" ng-disabled="isReadOnly">
-        </div> -->
+      <div class="col-md-6">
+        <label for="" class="col-md-3 control-label">
+          <span></span>合同照片：
+        </label>
+        <div class="col-md-8">
+          <div class="upload-file-btn pull-left mr-20">
+            <span>上传文件</span>
+            <!-- <input type="file" nv-file-select="" title="上传文件" multiple style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;opacity: 0;width: 130px;margin-left:20px" ng-disabled="isReadOnly">
+          </div> -->
+        </div>
       </div>
-      <div class="col-sm-10 clearfix mt-5" style="padding-left:0">
+      <div class="col-md-10 clearfix mt-5" style="padding-left:130px">
         <p>请上传清晰的合同照片，图片大小不要超过1M</p>
       </div>
     </div>
 
     <div class="form-group">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-10 img-container clearfix">
-          <img ng-repeat="img in imgs" ng-src="{{img}}" additional="?x-oss-process=image/resize,m_lfit,h_75,w_100" alt="" pic-view>
+      <div class="col-md-12">
+        <div class="col-md-1"></div>
+        <div class="col-md-8 img-container clearfix" style="padding-left:50px">
+            <img ng-repeat="img in imgs" ng-src="{{img}}" additional="?x-oss-process=image/resize,m_lfit,h_75,w_100" alt="" pic-view>
+        </div>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="" class="col-sm-2 control-label">
-        <span></span>备注:
-      </label>
-      <div class="col-sm-10">
-        <textarea class="form-control" id="" rows="4" ng-model="postData.Remark" disabled></textarea>
+      <div class="col-md-6">
+        <label for="" class="col-md-3 control-label">
+          <span></span>备注：
+        </label>
+        <div class="col-md-8" style="padding-left:10px">
+          <textarea class="form-control" id="" rows="4" ng-model="postData.Remark" disabled></textarea>
+        </div>
       </div>
     </div>
 
-    <div class="form-group"  ng-if="postData.Status === 3">
-      <label for="" class="col-sm-2 control-label">
-        <span></span>拒审原因:
-      </label>
-      <div class="col-sm-10">
-        <textarea class="form-control" id="" rows="4"  style="color:red;" ng-bind="postData.BackReason" disabled></textarea>
+    <div ng-if="postData.Status === 3" class="add-order-title">
+      <span>拒审原因</span>
+    </div>
+    <div class="form-group" ng-if="postData.Status === 3">
+      <div class="col-md-6">
+        <label for="" class="col-md-3 control-label">
+          <span></span>驳回原因：
+        </label>
+        <div class="col-md-6" style="margin-top: 8px;color:red;">{{postData.BackReason}}</div>
       </div>
     </div>
 

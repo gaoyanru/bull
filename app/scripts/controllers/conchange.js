@@ -141,6 +141,8 @@
                 if (result.NoDeadLine) {
                     result.BusnissDeadline = '';
                 }
+                result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
+                $scope.imgs = result.ContractPath
                 $scope.serviceStartOptions.maxDate = new Date(result.ServiceEnd);
                 // console.log(result, 'result')
                 // console.log(result.ServiceStart, $scope.dateOptions2.minDate, 'minDate')
