@@ -17,8 +17,8 @@ angular.module('channelApp').directive('customFileUploader', function(){
         var file = ele.find('input[type=file]')[0].files[0];
         if(!file) return;
 
-        if(file.size > 1024*1024){
-          alert('图片大小超过1M!');
+        if(file.size > 1024*1024*3){
+          alert('图片大小超过3M!');
           return;
         }
         if(/^(?!image)./.test(file.type)){

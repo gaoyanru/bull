@@ -82,8 +82,8 @@
       </div>
       <div class="row">
         <div class="col-md-6">
-          <custom-file-uploader class="ml-20" ng-model="postData.PersonCardPath" uploader="ImgUploader" title="请上传清晰的身份证人像面，图片大小不要超过1M" ng-disabled="isReadOnly"></custom-file-uploader>
-          <custom-file-uploader ng-model="postData.BusinessLicense" uploader="ImgUploader1" class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过1M" ng-disabled="isReadOnly"></custom-file-uploader>
+          <custom-file-uploader class="ml-20" ng-model="postData.PersonCardPath" uploader="ImgUploader" title="请上传清晰的身份证人像面，图片大小不要超过3M" ng-disabled="isReadOnly"></custom-file-uploader>
+          <custom-file-uploader ng-model="postData.BusinessLicense" uploader="ImgUploader1" class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过3M" ng-disabled="isReadOnly"></custom-file-uploader>
         </div>
         <div class="col-md-6">
           <ul class="business-license-right">
@@ -190,7 +190,7 @@
               <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
             </select>
             <div ng-if="!isReadOnly" class="promition-style">
-              <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()">
+              <input ng-show="promotion.PromotionName" type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()">
               <span>{{promotion.PromotionName}}</span>
               <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
             </div>
@@ -247,39 +247,39 @@
 
       <div class="row mt-20">
         <div class="col-md-6">
-          <custom-file-uploader class="ml-20" ng-model="postData.PersonCardPath" uploader="ImgUploader" title="请上传清晰的身份证人像面，图片大小不要超过1M"></custom-file-uploader>
+          <custom-file-uploader class="ml-20" ng-model="postData.PersonCardPath" uploader="ImgUploader" title="请上传清晰的身份证人像面，图片大小不要超过3M"></custom-file-uploader>
         </div>
         <div class="col-md-6">
           <ul class="business-license-right">
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>所在城市：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>所在城市：</label>
+              <div class="col-md-8">
                 <select class="form-control" ng-model="postData.CityCode">
                   <option ng-repeat="city in cities" ng-selected="postData.CityCode == city.CityCode" value="{{city.CityCode}}">{{::city.CityName}}</option>
                 </select>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>法人姓名：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>法人姓名：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.LegalPerson" maxlength="20" ng-disabled="isCompanyReadonly" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>法人身份证号：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>法人身份证号：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.PersonCardID" maxlength="18" required/>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>联系人：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.Contacts" maxlength="10" required>
               </div>
             </li>
             <li>
-              <label class="col-md-4 control-label"><span class="required"></span>手机号：</label>
-              <div class="col-md-6">
+              <label class="col-md-3 control-label"><span class="required"></span>手机号：</label>
+              <div class="col-md-8">
                 <input type="text" class="form-control" ng-model="postData.Mobile" maxlength="11" required>
               </div>
             </li>
@@ -375,7 +375,7 @@
               <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
             </select>
             <div class="promition-style">
-              <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()" ng-change="getChoosePromiton()">
+              <input ng-show="promotion.PromotionName" type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()" ng-change="getChoosePromiton()">
               <span>{{promotion.PromotionName}}</span>
               <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
             </div>
@@ -468,8 +468,8 @@
       </div>
       <div class="row">
         <div class="col-md-6">
-          <custom-file-uploader class="ml-20" ng-model="postData.PersonCardPath" uploader="ImgUploader" title="请上传清晰的身份证人像面，图片大小不要超过1M" ng-disabled="isReadOnly"></custom-file-uploader>
-          <custom-file-uploader ng-model="postData.BusinessLicense" uploader="ImgUploader1" class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过1M" ng-disabled="isReadOnly"></custom-file-uploader>
+          <custom-file-uploader class="ml-20" ng-model="postData.PersonCardPath" uploader="ImgUploader" title="请上传清晰的身份证人像面，图片大小不要超过3M" ng-disabled="isReadOnly"></custom-file-uploader>
+          <custom-file-uploader ng-model="postData.BusinessLicense" uploader="ImgUploader1" class="mt-40 ml-20" title="请上传清晰的营业执照，图片大小不要超过3M" ng-disabled="isReadOnly"></custom-file-uploader>
         </div>
         <div class="col-md-6">
           <ul class="business-license-right">
@@ -578,7 +578,7 @@
                 <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
               </select>
               <div class="promition-style">
-                <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="complementCompanyInfo">
+                <input ng-show="promotion.PromotionName" type="checkbox" ng-model="postData.IsPromotion" ng-disabled="complementCompanyInfo">
                 <span>{{promotion.PromotionName}}</span>
                 <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
               </div>
@@ -664,11 +664,11 @@
         <span>拒审原因</span>
       </div>
       <div class="form-group" ng-if="postData.Status === 3">
-        <div class="col-md-6">
-          <label for="" class="col-md-3 control-label">
+        <div class="col-md-9">
+          <label for="" class="col-md-2 control-label">
             <span></span>驳回原因：
           </label>
-          <div class="col-md-6" style="margin-top: 8px;color:red;">{{postData.BackReason}}</div>
+          <div class="col-md-10" style="margin-top: 8px;color:red;">{{postData.BackReason}}</div>
         </div>
       </div>
     </div>

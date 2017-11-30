@@ -77,7 +77,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           $scope.postData.Name = result.CompanyName
           if (result.LegalPerson) {
             $scope.isLegalPersonReadonly = true
-            if ($scope.postData.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
+            if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
               $scope.postData.LegalPerson = result.LegalPerson
               $scope.postData.PersonCardID = ''
             } else {
@@ -886,7 +886,8 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       console.log(res)
       if (res.status) {
         if (res.data > 0) {
-          alert('该法人存在未完成的预提单，请先完成预提单')
+          // alert('该法人存在未完成的预提单，请先完成预提单')
+          alertModal('该法人存在未完成的预提单，请先完成预提单')
           return
         } else if (res.data == 0){
           // 提交验证账期是否连续
