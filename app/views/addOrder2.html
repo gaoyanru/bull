@@ -291,25 +291,6 @@
           <span>合同信息</span>
         </div>
 
-        <!-- <div class="form-group">
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>合同编号:
-          </label>
-          <div class="col-sm-3">
-            <input type="text" class="form-control" ng-model="postData.ContractNO" required>
-          </div>
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>纳税人类别:
-          </label>
-          <div class="col-sm-5">
-            <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-model="postData.AddedValue" value="1"> 小规模
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-model="postData.AddedValue" value="2"> 一般纳税人
-            </label>
-          </div>
-        </div> -->
         <div class="form-group">
           <div class="col-md-6">
             <label class="col-md-3 control-label" for="">
@@ -334,14 +315,6 @@
           </div>
         </div>
 
-        <!-- <div class="form-group">
-          <label class="col-sm-2 control-label" for="">
-            <span class="required"></span>套餐类型:
-          </label>
-          <div class="col-sm-10">
-            <custom-radio ng-model="postData.payType" options="payTypes[postData.AddedValue]" ng-click="promitionCanChoose()"  ng-disabled="isReadOnly"></custom-radio>
-          </div>
-        </div> -->
         <div class="form-group">
           <div class="col-md-9" style="margin-left:-3px;">
             <label class="col-md-2 control-label" for="">
@@ -353,20 +326,6 @@
           </div>
         </div>
 
-        <!-- <div class="form-group">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-10">
-            <select class="form-control gift-select" ng-model="postData.gift">
-              <option value="">不使用礼包</option>
-              <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
-            </select>
-            <div class="promition-style">
-              <input type="checkbox" ng-model="postData.IsPromotion" ng-disabled="IsPromotionValid()" ng-change="getChoosePromiton()">
-              <span>{{promotion.PromotionName}}</span>
-              <span ng-if="promotion.Num<20">(剩余{{::promotion.Num}})</span>
-            </div>
-          </div>
-        </div> -->
         <div class="form-group">
           <div class="col-md-9" style="margin-left:-3px;">
             <div class="col-md-2"></div>
@@ -382,17 +341,6 @@
           </div>
         </div>
 
-        <!-- <div class="form-group">
-        <label for="" class="col-sm-2 control-label">
-          <span class="required"></span>合同金额:
-        </label>
-        <div class="col-sm-3">
-          <input type="number" class="form-control" ng-model="postData.ContractAmount" ng-value="setprice()" ng-disabled="true">
-        </div>
-        <div class="col-sm-offset-2 col-sm-10 clearfix mt-5">
-          <p class="red">合同金额根据所属城市、纳税人类别、套餐类型自动计算，不包含礼包价格</p>
-        </div>
-      </div> -->
       <div class="form-group">
         <div class="col-md-6">
           <label for="" class="col-md-3 control-label">
