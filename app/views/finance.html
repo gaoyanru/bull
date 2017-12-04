@@ -50,9 +50,9 @@
                     <td style="min-width:150px">{{::finance.BillTime}}</td>
                     <!--  -->
                     <td style="min-width:50px" ng-if="selectedType.type === 1 && finance.Category == 1">
-                      <a ng-if="finance.OrderCategory != 2 && finance.Status" ui-sref="main.addOrder({orderId: finance.OrderId})">查看订单</a>
-                      <a ng-if="finance.OrderCategory == 2 && finance.Status" ui-sref="main.addOrder({orderId: finance.OrderId})">预提单查看订单</a>
-                      <a ng-if="!finance.Status" ng-click="msgAlert()">退单查看订单</a>
+                      <a ng-show="finance.OrderCategory != 2 && finance.Status" href="#/main/addOrder2/{{::finance.OrderId}}/1" >查看订单</a>
+                      <a ng-show="finance.OrderCategory == 2 && finance.Status" href="#/main/addOrder2/{{::finance.OrderId}}/1" >预提单查看订单</a>
+                      <a ng-show="!finance.Status" ng-click="msgAlert()">退单查看订单</a>
                     </td>
                 </tr>
             </tbody>

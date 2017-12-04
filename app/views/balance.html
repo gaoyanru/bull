@@ -94,8 +94,8 @@
                                 <!-- <td ng-repeat="col in row.cols  track by $index" ng-class="{'text-right': rightAlign && rightAlign.indexOf($index)>-1}" ng-bind-html="col"></td> -->
                                 <td style="width:90px" ng-if="row.Category == 1">
                                   <!-- Category == 1支付 2充值 -->
-                                   <a href="#/main/addOrder2/{{::row.OrderId}}" ng-show="row.OrderCategory != 2 && row.Status">查看订单</a>
-                                   <a href="#/main/addOrder2/{{::row.OrderId}}" ng-show="row.OrderCategory == 2 && row.Status">预提单查看订单</a>
+                                   <a href="#/main/addOrder2/{{::row.OrderId}}/1" ng-show="row.OrderCategory != 2 && row.Status">查看订单</a>
+                                   <a href="#/main/addOrder2/{{::row.OrderId}}/1" ng-show="row.OrderCategory == 2 && row.Status">预提单查看订单</a>
                                    <a ng-click="msgAlert()" ng-show="!row.Status">退单查看订单</a>
                                  </td>
                             </tr>

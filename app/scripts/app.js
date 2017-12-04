@@ -55,7 +55,7 @@ channelApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'use
             //     controller: ''
             // })
             .state('main.addOrder', {
-                url: '/addOrder2/:orderId',
+                url: '/addOrder2/:orderId/:isView',
                 templateUrl: 'views/addOrder2.html',
                 controller: ''
             }).state('main.balance', { //余额（会员）

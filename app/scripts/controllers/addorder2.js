@@ -741,7 +741,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           $scope.isCompanyReadonly = false
         }
       }
-      console.log($scope.$parent, '$parent')
+      console.log($stateParams, '$stateParams')
+      if ($stateParams.isView) {
+        $scope.isReadOnly = true;
+        $scope.category = result.Category;
+        $scope.isChangeCompanyName = true
+        return
+      }
       if ((result.Category == 2 && result.Status == 2) || result.Category == 3) { // 预提单初审通过 || 记账准备时候 之前填的基本信息和合同信息都不允许修改 只需要补充公司资料即可
           $scope.category = 3;
           $scope.isNewCompany = true

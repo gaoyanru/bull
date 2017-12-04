@@ -182,15 +182,4 @@ angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filt
 
       });
     }
-}]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'error', 'sign', function($scope, $http, $uibModalInstance, error, sign) {
-  console.log(error, 'error')
-  $scope.sign = sign
-  $scope.alertMsg = error
-  $scope.submit = function () {
-    var canSubmit = true
-    $uibModalInstance.close(canSubmit);
-  }
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
 }]);
