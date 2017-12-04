@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filter', function($scope, $http,$filter) {
+angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filter', '$uibModal', function($scope, $http,$filter, $uibModal) {
     //搜索参数
     $scope.searchParams = {
         startTime: '', //开始时间
@@ -162,5 +162,35 @@ angular.module('channelApp').controller('BalanceCtrl', ['$scope', '$http','$filt
         });
         return data;
     }
+    $scope.msgAlert = function () {
+      var modalInstance = $uibModal.open({
+          templateUrl: 'views/summit_modal.html',
+          size: "md",
+          controller: 'SummitModal',
+          resolve: {
+            error: function () {
+               return '该订单已退单'
+            },
+            sign: function() {
+              return true
+            }
+          }
+      });
+      modalInstance.result.then(function (result) {
 
+      }, function () {
+
+      });
+    }
+}]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'error', 'sign', function($scope, $http, $uibModalInstance, error, sign) {
+  console.log(error, 'error')
+  $scope.sign = sign
+  $scope.alertMsg = error
+  $scope.submit = function () {
+    var canSubmit = true
+    $uibModalInstance.close(canSubmit);
+  }
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
 }]);

@@ -23,89 +23,91 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.gifts = []
   $scope.submited = false // 是否验证必填
   $scope.priceList = [] // 存储套餐类型返回值
+  $scope.category = 1
 
-  $scope.fastCheck = function() { // 快速录入
-    var modalInstance = $uibModal.open({
-        templateUrl: 'views/addorder_company_modal.html',
-        size: "md",
-        controller: 'AddorderCompanyModal',
-        resolve: {
-        }
-    });
-    modalInstance.result.then(function (result) {
-        // console.log(result, 'result')
-        if (result) {
-          // 返回有值需要做之前可编辑处理
-          $scope.isCompanyReadonly = false
-          $scope.postData.LegalPerson = ''
-          $scope.isLegalPersonReadonly = false
-          $scope.PersonCardID = ''
-          $scope.postData.Address = ''
-          $scope.isAddressReadonly = false
-          $scope.postData.RegNO = ''
-          $scope.isRegNOReadonly = false
-          $scope.postData.RegisterDate = ''
-          $scope.postData.BusnissDeadline = ''
-          if ($scope.postData.NoNoDeadLine) {
-            $scope.postData.NoNoDeadLine = 0
-          }
-          $scope.postData.RegisteredCapital = ''
-          $scope.isRegisteredCapitalReadonly = false
-          $scope.postData.BusinessScope = ''
-          $scope.isBusinessScopeReadonly = false
-
-          $scope.resultInfo = result // 清空公司时需要使用这个数据判断是否清空法人姓名
-          // console.log('aa')
-          $scope.searchType = 3 // 标记是快速录入获取到的信息
-          $scope.isCompanyReadonly = true // 检索出的信息只读
-          $scope.searchCompanyInfo = result // 检索出的信息赋值到其他 来确定公司名称在提交之前是否修改 修改则检索出的信息清空
-          $scope.nameReadonly = false // 检索出后公司名称可以修改
-          if (result.Address) {
-            $scope.isAddressReadonly = true
-          }
-          $scope.postData.Address = result.Address
-          if (result.BusinessScope) {
-            $scope.isBusinessScopeReadonly = true
-          }
-          $scope.postData.BusinessScope = result.BusinessScope
-          if (!result.BusnissDeadline || result.BusnissDeadline.substr(0, 4) === '9999' || result.BusnissDeadline.substr(0, 4) === '0001') {
-            $scope.postData.NoDeadLine = 1
-          } else {
-            $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
-            $scope.postData.NoDeadLine = 0
-          }
-          $scope.postData.Name = result.CompanyName
-          if (result.LegalPerson) {
-            $scope.isLegalPersonReadonly = true
-            if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
-              $scope.postData.LegalPerson = result.LegalPerson
-              $scope.postData.PersonCardID = ''
-            } else {
-              $scope.postData.LegalPerson = result.LegalPerson
-            }
-          } else {
-            $scope.isLegalPersonReadonly = false
-          }
-          if (result.RegNO) {
-            $scope.isRegNOReadonly = true
-          }
-          $scope.postData.RegNO = result.RegNO
-          if (result.RegisterDate) {
-            $scope.isRegisterDateReadonly = true
-          }
-          $scope.postData.RegisterDate = new Date(result.RegisterDate)
-          if (result.RegisteredCapital) {
-            $scope.isRegisteredCapitalReadonly = true
-          }
-          $scope.postData.RegisteredCapital = result.RegisteredCapital
-        } else {
-          // alert('抱歉，没有检索到企业信息，请重试或手动录入！')
-          alertModal('抱歉，没有检索到企业信息，请重试或手动录入！')
-        }
-    }, function () {
-
-    });
-  }
+  // $scope.fastCheck = function() { // 快速录入
+  //   var modalInstance = $uibModal.open({
+  //       templateUrl: 'views/addorder_company_modal.html',
+  //       size: "md",
+  //       controller: 'AddorderCompanyModal',
+  //       resolve: {
+  //       }
+  //   });
+  //   modalInstance.result.then(function (result) {
+  //       // console.log(result, 'result')
+  //       if (result) {
+  //         // 返回有值需要做之前可编辑处理
+  //         $scope.isCompanyReadonly = false
+  //         $scope.postData.LegalPerson = ''
+  //         $scope.isLegalPersonReadonly = false
+  //         $scope.PersonCardID = ''
+  //         $scope.postData.Address = ''
+  //         $scope.isAddressReadonly = false
+  //         $scope.postData.RegNO = ''
+  //         $scope.isRegNOReadonly = false
+  //         $scope.postData.RegisterDate = ''
+  //         $scope.postData.BusnissDeadline = ''
+  //         if ($scope.postData.NoNoDeadLine) {
+  //           $scope.postData.NoNoDeadLine = 0
+  //         }
+  //         $scope.postData.RegisteredCapital = ''
+  //         $scope.isRegisteredCapitalReadonly = false
+  //         $scope.postData.BusinessScope = ''
+  //         $scope.isBusinessScopeReadonly = false
+  //
+  //         $scope.resultInfo = result // 清空公司时需要使用这个数据判断是否清空法人姓名
+  //         // console.log('aa')
+  //         $scope.searchType = 3 // 标记是快速录入获取到的信息
+  //         $scope.isCompanyReadonly = true // 检索出的信息只读
+  //         $scope.searchCompanyInfo = result // 检索出的信息赋值到其他 来确定公司名称在提交之前是否修改 修改则检索出的信息清空
+  //         $scope.nameReadonly = false // 检索出后公司名称可以修改
+  //         if (result.Address) {
+  //           $scope.isAddressReadonly = true
+  //         }
+  //         $scope.postData.Address = result.Address
+  //         if (result.BusinessScope) {
+  //           $scope.isBusinessScopeReadonly = true
+  //         }
+  //         $scope.postData.BusinessScope = result.BusinessScope
+  //         if (!result.BusnissDeadline || result.BusnissDeadline.substr(0, 4) === '9999' || result.BusnissDeadline.substr(0, 4) === '0001') {
+  //           $scope.postData.NoDeadLine = 1
+  //         } else {
+  //           $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
+  //           $scope.postData.NoDeadLine = 0
+  //         }
+  //         $scope.postData.Name = result.CompanyName
+  //         if (result.LegalPerson) {
+  //           $scope.isLegalPersonReadonly = true
+  //           if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
+  //             $scope.postData.LegalPerson = result.LegalPerson
+  //             $scope.postData.PersonCardID = ''
+  //             $scope.postData.PersonCardPath = ''
+  //           } else {
+  //             $scope.postData.LegalPerson = result.LegalPerson
+  //           }
+  //         } else {
+  //           $scope.isLegalPersonReadonly = false
+  //         }
+  //         if (result.RegNO) {
+  //           $scope.isRegNOReadonly = true
+  //         }
+  //         $scope.postData.RegNO = result.RegNO
+  //         if (result.RegisterDate) {
+  //           $scope.isRegisterDateReadonly = true
+  //         }
+  //         $scope.postData.RegisterDate = new Date(result.RegisterDate)
+  //         if (result.RegisteredCapital) {
+  //           $scope.isRegisteredCapitalReadonly = true
+  //         }
+  //         $scope.postData.RegisteredCapital = result.RegisteredCapital
+  //       } else {
+  //         // alert('抱歉，没有检索到企业信息，请重试或手动录入！')
+  //         alertModal('抱歉，没有检索到企业信息，请重试或手动录入！')
+  //       }
+  //   }, function () {
+  //
+  //   });
+  // }
   // 统一弹框
   function alertModal(msg) {
     var errorMsg = msg
@@ -561,7 +563,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       orderId = $stateParams.orderId || $scope.$parent.orderId || false;
   }
   // 控制是否预提单 category==1新增 category==2预提单
-  $scope.category = 1
+
   $scope.setCategory = function () {
     if ($scope.postData.OrderId) return
     $scope.postData = {
@@ -590,18 +592,34 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       $http.get('/api/order/getpersoncardbypath?path=' + res.sourceUrl).success(function (data) {
         // console.log(data, 'data')
         if (data.status && data.data.LegalPerson) {
-          if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson && $scope.isLegalPersonReadonly) { //意思是检索出来了
-            $scope.postData.LegalPerson = data.data.LegalPerson
-            $scope.postData.PersonCardID = data.data.PersonCardID
-          } else if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso && $scope.isLegalPersonReadonly) {
-            $scope.postData.PersonCardPath = ''
-            // alert('身份证上的法人姓名与营业执照上的法人不符')
-            alertModal('身份证上的法人姓名与营业执照上的法人不符')
-            // $scope.postData.LegalPerson = $scope.postData.LegalPerson
-            // $scope.postData.PersonCardID = ''
+          if (orderId) {
+            if ($scope.postData.Customer.IsSync == 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson && $scope.isLegalPersonReadonly) { //意思是检索出来了
+              $scope.postData.LegalPerson = data.data.LegalPerson
+              $scope.postData.PersonCardID = data.data.PersonCardID
+            } else if ($scope.postData.Customer.IsSync == 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso && $scope.isLegalPersonReadonly) {
+              $scope.postData.PersonCardPath = ''
+              // alert('身份证上的法人姓名与营业执照上的法人不符')
+              alertModal('身份证上的法人姓名与营业执照上的法人不符')
+              // $scope.postData.LegalPerson = $scope.postData.LegalPerson
+              // $scope.postData.PersonCardID = ''
+            } else {
+              $scope.postData.LegalPerson = data.data.LegalPerson
+              $scope.postData.PersonCardID = data.data.PersonCardID
+            }
           } else {
-            $scope.postData.LegalPerson = data.data.LegalPerson
-            $scope.postData.PersonCardID = data.data.PersonCardID
+            if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson && $scope.isLegalPersonReadonly) { //意思是检索出来了
+              $scope.postData.LegalPerson = data.data.LegalPerson
+              $scope.postData.PersonCardID = data.data.PersonCardID
+            } else if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso && $scope.isLegalPersonReadonly) {
+              $scope.postData.PersonCardPath = ''
+              // alert('身份证上的法人姓名与营业执照上的法人不符')
+              alertModal('身份证上的法人姓名与营业执照上的法人不符')
+              // $scope.postData.LegalPerson = $scope.postData.LegalPerson
+              // $scope.postData.PersonCardID = ''
+            } else {
+              $scope.postData.LegalPerson = data.data.LegalPerson
+              $scope.postData.PersonCardID = data.data.PersonCardID
+            }
           }
         } else if (data.status && !data.data) {
           // alert('无法识别身份信息，请上传清晰的身份证或手动输入法人、法人身份证号！')
@@ -723,6 +741,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           $scope.isCompanyReadonly = false
         }
       }
+      console.log($scope.$parent, '$parent')
       if ((result.Category == 2 && result.Status == 2) || result.Category == 3) { // 预提单初审通过 || 记账准备时候 之前填的基本信息和合同信息都不允许修改 只需要补充公司资料即可
           $scope.category = 3;
           $scope.isNewCompany = true
@@ -755,6 +774,104 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   } else {
     initDict();
     getBanlance();
+  }
+
+  $scope.fastCheck = function() { // 快速录入
+    var modalInstance = $uibModal.open({
+        templateUrl: 'views/addorder_company_modal.html',
+        size: "md",
+        controller: 'AddorderCompanyModal',
+        resolve: {
+        }
+    });
+    modalInstance.result.then(function (result) {
+        // console.log(result, 'result')
+        if (result) {
+          // 返回有值需要做之前可编辑处理
+          if (orderId && $scope.postData.Category != 2) {
+            $scope.isCompanyReadonly = false
+            $scope.postData.LegalPerson = ''
+            $scope.isLegalPersonReadonly = false
+            $scope.PersonCardID = ''
+            $scope.postData.Address = ''
+            $scope.isAddressReadonly = false
+            $scope.postData.RegNO = ''
+            $scope.isRegNOReadonly = false
+            $scope.postData.RegisterDate = ''
+            $scope.postData.BusnissDeadline = ''
+          }
+
+          if ($scope.postData.NoNoDeadLine) {
+            $scope.postData.NoNoDeadLine = 0
+          }
+          $scope.postData.RegisteredCapital = ''
+          $scope.isRegisteredCapitalReadonly = false
+          $scope.postData.BusinessScope = ''
+          $scope.isBusinessScopeReadonly = false
+
+          $scope.resultInfo = result // 清空公司时需要使用这个数据判断是否清空法人姓名
+          // console.log('aa')
+          $scope.searchType = 3 // 标记是快速录入获取到的信息
+          $scope.isCompanyReadonly = true // 检索出的信息只读
+          $scope.searchCompanyInfo = result // 检索出的信息赋值到其他 来确定公司名称在提交之前是否修改 修改则检索出的信息清空
+          $scope.nameReadonly = false // 检索出后公司名称可以修改
+          if (result.Address) {
+            $scope.isAddressReadonly = true
+          }
+          $scope.postData.Address = result.Address
+          if (result.BusinessScope) {
+            $scope.isBusinessScopeReadonly = true
+          }
+          $scope.postData.BusinessScope = result.BusinessScope
+          if (!result.BusnissDeadline || result.BusnissDeadline.substr(0, 4) === '9999' || result.BusnissDeadline.substr(0, 4) === '0001') {
+            $scope.postData.NoDeadLine = 1
+          } else {
+            $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
+            $scope.postData.NoDeadLine = 0
+          }
+          $scope.postData.Name = result.CompanyName
+          if (result.LegalPerson) {
+            $scope.isLegalPersonReadonly = true
+            if (orderId) {
+              if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
+                $scope.postData.LegalPerson = result.LegalPerson
+                $scope.postData.PersonCardID = ''
+                $scope.postData.PersonCardPath = ''
+              } else {
+                $scope.postData.LegalPerson = result.LegalPerson
+              }
+            } else {
+              if ($scope.postData && $scope.postData.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
+                $scope.postData.LegalPerson = result.LegalPerson
+                $scope.postData.PersonCardID = ''
+                $scope.postData.PersonCardPath = ''
+              } else {
+                $scope.postData.LegalPerson = result.LegalPerson
+              }
+            }
+
+          } else {
+            $scope.isLegalPersonReadonly = false
+          }
+          if (result.RegNO) {
+            $scope.isRegNOReadonly = true
+          }
+          $scope.postData.RegNO = result.RegNO
+          if (result.RegisterDate) {
+            $scope.isRegisterDateReadonly = true
+          }
+          $scope.postData.RegisterDate = new Date(result.RegisterDate)
+          if (result.RegisteredCapital) {
+            $scope.isRegisteredCapitalReadonly = true
+          }
+          $scope.postData.RegisteredCapital = result.RegisteredCapital
+        } else {
+          // alert('抱歉，没有检索到企业信息，请重试或手动录入！')
+          alertModal('抱歉，没有检索到企业信息，请重试或手动录入！')
+        }
+    }, function () {
+
+    });
   }
 
   $scope.save = function(isSave){

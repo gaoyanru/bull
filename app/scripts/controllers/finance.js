@@ -8,7 +8,7 @@
  * Controller of the channelApp
  */
 angular.module('channelApp')
-    .controller('FinanceCtrl', ['$scope', 'FinanceService','user', function ($scope, FinanceService,user) {
+    .controller('FinanceCtrl', ['$scope', 'FinanceService','$uibModal', 'user', function ($scope, FinanceService, $uibModal, user) {
 
         $scope.user = user.get();
 
@@ -82,4 +82,35 @@ angular.module('channelApp')
             $scope.pageChanged();
         };
 
+        $scope.msgAlert = function () {
+          var modalInstance = $uibModal.open({
+              templateUrl: 'views/summit_modal.html',
+              size: "md",
+              controller: 'SummitModal',
+              resolve: {
+                error: function () {
+                   return '该订单已退单'
+                },
+                sign: function() {
+                  return true
+                }
+              }
+          });
+          modalInstance.result.then(function (result) {
+
+          }, function () {
+
+          });
+        }
+     }]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'error', 'sign', function($scope, $http, $uibModalInstance, error, sign) {
+       console.log(error, 'error')
+       $scope.sign = sign
+       $scope.alertMsg = error
+       $scope.submit = function () {
+         var canSubmit = true
+         $uibModalInstance.close(canSubmit);
+       }
+       $scope.cancel = function () {
+         $uibModalInstance.dismiss('cancel');
+       };
      }]);
