@@ -368,13 +368,15 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         $scope.giftList = res.data // 用于选择礼包后计算结束账期所用数据
         cb && cb(2)
         for (var i  in res.data) {
-          res.data[i].GiftTypeName = res.data[i].GiftTypeName + '￥' + res.data[i].Price
-          if (!$scope.gifts[res.data[i].AddedValue]) {
-            $scope.gifts[res.data[i].AddedValue] = []
+          if (res.data[i].Num > 0) {
+            res.data[i].GiftTypeName = res.data[i].GiftTypeName + '￥' + res.data[i].Price
+            if (!$scope.gifts[res.data[i].AddedValue]) {
+              $scope.gifts[res.data[i].AddedValue] = []
+            }
+            $scope.gifts[res.data[i].AddedValue].push(res.data[i])
           }
-          $scope.gifts[res.data[i].AddedValue].push(res.data[i])
         }
-        // // console.log($scope.gifts)
+        console.log($scope.gifts)
       }
     })
   }
