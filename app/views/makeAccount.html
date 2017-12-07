@@ -32,6 +32,7 @@
                       <th rowspan="2">确认零票</th>
                       <th rowspan="2">未传票	</th>
                       <th colspan="3" class="text-center">账务确认</th>
+                      <th rowspan="2">已确认比率</th>
                       <th colspan="2" class="text-center">报税</th>
                   </tr>
                   <tr class="info">
@@ -52,6 +53,7 @@
                       <th class="text-right">{{aMakeAccountUnConfirm}}</th>
                       <!-- <th class="text-right">{{aReceiptCompleteUnMakeAccount}}</th> -->
                       <th class="text-right">{{aConfirm}}</th>
+                      <th class="text-right"></th>
                       <th class="text-right">{{aTax}}</th>
                       <th class="text-right">{{aUnTax}}</th>
                   </tr>
@@ -71,6 +73,9 @@
                   <td style="text-align:center; width:150px; text-decoration: underline; color: blue;" ng-click="downloadColumn2(item)">{{item.MakeAccountUnConfirm}}</td>
                   <!-- <td style="text-align:center; width:150px">{{item.ReceiptCompleteUnMakeAccount}}</td> -->
                   <td style="text-align:center; width:120px">{{item.Confirm}}</td>
+
+                  <td style="text-align:center; width:120px">{{item.ConfirmRate}}</td>
+
                   <td style="text-align:center; width:150px">{{item.Tax}}</td>
                   <td style="text-align:center; width:150px; text-decoration: underline; color: blue;" ng-click="downloadColumn3(item)">{{item.UnTax}}</td>
                 </tr>

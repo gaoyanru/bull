@@ -27,15 +27,24 @@
                       <th>市</th>
                       <th>一级代理商</th>
                       <th>二级代理商</th>
+                      <th>Agent系统客户数</th>
                       <th>未建账客户数</th>
+                      <th>未建账比率</th>
                       <th>10天以内未建账</th>
-                      <th>10天以上未建账	</th>
+                      <th>10天以上未建账</th>
+                      <th>未开始账期未建账客户数</th>
                   </tr>
                   <tr>
                       <th colspan="4">合计</th>
+                      <th class="text-right">{{aTotalNum}}</th>
+
                       <th class="text-right">{{aUnMakeAccount}}</th>
+
+                      <th class="text-right">{{aUnMakeAccountRate}}</th>
                       <th class="text-right">{{aUnMakeAccountLess10Day}}</th>
                       <th class="text-right">{{aUnMakeAccountMore10Day}}</th>
+
+                      <th class="text-right">{{b}}</th>
                   </tr>
               </thead>
               <tbody>
@@ -45,9 +54,16 @@
                   <td style="text-align:center; width:120px">{{item.CityName}}</td>
                   <td style="text-align:center; width:120px">{{item.ChannelName1}}</td>
                   <td style="text-align:center; width:120px">{{item.ChannelName2}}</td>
+
+                  <td style="text-align:center; width:120px">{{item.TotalNum}}</td>
                   <td style="text-align:center; width:120px; text-decoration: underline; color: blue;" ng-click="downloadColumn1(item)">{{item.UnMakeAccount}}</td>
+
+                  <td style="text-align:center; width:120px">{{item.UnMakeAccountRate}}</td>
+
                   <td style="text-align:center; width:120px">{{item.UnMakeAccountLess10Day}}</td>
                   <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn2(item)">{{item.UnMakeAccountMore10Day}}</td>
+
+                  <td style="text-align:center; width:120px"></td>
                 </tr>
               </tbody>
           </table>

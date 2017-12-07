@@ -193,6 +193,7 @@
             delete postData.Customer;
             delete postData.Promotion;
             // console.log(postData.ContractPath)
+            postData.ContractPath = $scope.imgs ? $scope.imgs.join(';') : ''
             postData.RegisterDate = $filter('date')($scope.postData.RegisterDate, 'yyyy-MM-dd');
             postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
             postData.ServiceStart = $filter('date')($scope.postData.ServiceStart, 'yyyy-MM-dd');

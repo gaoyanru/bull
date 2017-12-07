@@ -24,6 +24,7 @@ angular.module('channelApp').controller('OperateAccount', ['$scope', '$http', '$
     function formateData(data) {
         var aAllCusNum = 0,
             aTotalNum  = 0,
+            aTiDanZero  = 0,
             aNoSetUpNum  = 0,
             aRingNum  = 0,
             aLateNum  = 0,
@@ -32,6 +33,7 @@ angular.module('channelApp').controller('OperateAccount', ['$scope', '$http', '$
         angular.forEach(data, function(item) {
             aAllCusNum += +item.AllCusNum;
             aTotalNum += +item.TotalNum;
+            aTiDanZero += +item.TiDanZero;
             aNoSetUpNum += +item.NoSetUpNum;
             aRingNum += +item.RingNum;
             aLateNum += +item.LateNum;
@@ -40,6 +42,7 @@ angular.module('channelApp').controller('OperateAccount', ['$scope', '$http', '$
         });
         $scope.aAllCusNum = aAllCusNum;
         $scope.aTotalNum = aTotalNum;
+        $scope.aTiDanZero = aTiDanZero;
         $scope.aNoSetUpNum = aNoSetUpNum;
         $scope.aRingNum = aRingNum;
         $scope.aLateNum = aLateNum;
