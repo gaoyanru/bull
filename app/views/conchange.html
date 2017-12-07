@@ -16,7 +16,7 @@
                 <tr class="info">
                     <th>城市</th>
                     <th>公司名称</th>
-                    <th>合同签订日期</th>
+                    <!-- <th>合同签订日期</th> -->
                     <th>支付方式</th>
                     <th>操作</th>
                 </tr>
@@ -25,7 +25,7 @@
                 <tr ng-repeat="customer in customers">
                     <td>{{::customer.CityName}}</td>
                     <td>{{::customer.Name}}</td>
-                    <td>{{::customer.ContractDate|tDate}}</td>
+                    <!-- <td>{{::customer.ContractDate|tDate}}</td> -->
                     <td>{{::customer.PriceName}}</td>
                     <td class="table-opt" ng-show="{{customer.IsChanging == 0}}">
                         <a href="javascript:;" ng-click="view(customer.OrderId)">变更</a>
