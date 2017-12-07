@@ -187,7 +187,7 @@
         $scope.save = function(isSave) {
             if ($scope.loading) return;
 
-            if (!confirm("您确定企业性质变更日期为：" + $filter('date')($scope.postData.ServiceStart, 'yyyy-MM') + "?")) return;
+            if (!confirm("您确定纳税人类别变更日期为：" + $filter('date')($scope.postData.ServiceStart, 'yyyy-MM') + "?")) return;
 
             var postData = angular.copy($scope.postData);
             delete postData.Customer;
@@ -221,7 +221,7 @@
             } else {
                 postData.FreChangeOrderId = $scope.postData.OrderId;
                 delete postData.OrderId;
-                postData.Remark = (postData.Remark || "") + "企业性质变更;"
+                postData.Remark = (postData.Remark || "") + "纳税人类别变更;"
             }
             $scope.loading = true;
             $http(params).success(function(result) {
