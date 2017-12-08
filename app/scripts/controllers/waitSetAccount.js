@@ -22,24 +22,24 @@ angular.module('channelApp').controller('WaitSetAccount', ['$scope', '$http', '$
     function formateData(data) {
         var aTotalNum  = 0,
             aUnMakeAccount = 0,
-            aUnMakeAccountRate = 0
+            aUnMakeAccountRate = 0,
             aUnMakeAccountLess10Day  = 0,
-            aUnMakeAccountMore10Day  = 0;
-            b = 0
+            aUnMakeAccountMore10Day  = 0,
+            aUnBusinessDate = 0;
         angular.forEach(data, function(item) {
             aTotalNum += +item.TotalNum;
             aUnMakeAccount += +item.UnMakeAccount;
             aUnMakeAccountRate += +item.UnMakeAccountRate;
             aUnMakeAccountLess10Day += +item.UnMakeAccountLess10Day;
             aUnMakeAccountMore10Day += +item.UnMakeAccountMore10Day;
-            b += +item.sss
+            aUnBusinessDate += +item.UnBusinessDate;
         });
         $scope.aTotalNum = aTotalNum;
         $scope.aUnMakeAccount = aUnMakeAccount;
         $scope.aUnMakeAccountRate = aUnMakeAccountRate;
         $scope.aUnMakeAccountLess10Day = aUnMakeAccountLess10Day;
         $scope.aUnMakeAccountMore10Day = aUnMakeAccountMore10Day;
-        $scope.b = b;
+        $scope.aUnBusinessDate = aUnBusinessDate;
         return data;
     }
     $scope.url = 'https://agent.pilipa.cn/api/v1/AgentExport.ashx'

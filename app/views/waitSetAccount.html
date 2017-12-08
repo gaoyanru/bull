@@ -40,11 +40,11 @@
 
                       <th class="text-right">{{aUnMakeAccount}}</th>
 
-                      <th class="text-right">{{aUnMakeAccountRate}}</th>
+                      <th class="text-right"></th>
                       <th class="text-right">{{aUnMakeAccountLess10Day}}</th>
                       <th class="text-right">{{aUnMakeAccountMore10Day}}</th>
 
-                      <th class="text-right">{{b}}</th>
+                      <th class="text-right">{{aUnBusinessDate}}</th>
                   </tr>
               </thead>
               <tbody>
@@ -58,12 +58,12 @@
                   <td style="text-align:center; width:120px">{{item.TotalNum}}</td>
                   <td style="text-align:center; width:120px; text-decoration: underline; color: blue;" ng-click="downloadColumn1(item)">{{item.UnMakeAccount}}</td>
 
-                  <td style="text-align:center; width:120px">{{item.UnMakeAccountRate}}</td>
+                  <td style="text-align:center; width:120px">{{item.UnMakeAccountRate | filterNum}}</td>
 
                   <td style="text-align:center; width:120px">{{item.UnMakeAccountLess10Day}}</td>
                   <td style="text-align:center; width:100px; text-decoration: underline; color: blue;" ng-click="downloadColumn2(item)">{{item.UnMakeAccountMore10Day}}</td>
 
-                  <td style="text-align:center; width:120px"></td>
+                  <td style="text-align:center; width:120px">{{item.UnBusinessDate}}</td>
                 </tr>
               </tbody>
           </table>

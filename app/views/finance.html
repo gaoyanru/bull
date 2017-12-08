@@ -34,7 +34,7 @@
                     <th ng-if="user.IsCenter==1 || user.Category==2 || selectedType.type !== 1 ">备注</th>
                     <!-- <th ng-if="user.IsCenter==0 && user.Category !=2 && selectedType.type === 1 ">合同金额</th> -->
                     <th>操作时间</th>
-                    <th>操作</th>
+                    <th ng-if="selectedType.type === 1 ">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,10 +49,11 @@
                     <td ng-if="user.IsCenter==0 && user.Category !=2 && selectedType.type === 1 ">{{::finance.ContractAmount}}</td>
                     <td style="min-width:150px">{{::finance.BillTime}}</td>
                     <!--  -->
-                    <td style="min-width:50px" ng-if="selectedType.type === 1 && finance.Category == 1">
-                      <a ng-show="finance.OrderCategory != 2 && finance.Status" href="#/main/addOrder2/{{::finance.OrderId}}/1" >查看订单</a>
-                      <a ng-show="finance.OrderCategory == 2 && finance.Status" href="#/main/addOrder2/{{::finance.OrderId}}/1" >预提单查看订单</a>
-                      <a ng-show="!finance.Status" ng-click="msgAlert()">退单查看订单</a>
+                    <td style="min-width:50px" ng-if="selectedType.type === 1">
+                      <a ng-show="finance.Category == 1 && finance.OrderCategory != 2 && finance.Status" href="#/main/addOrder2/{{::finance.OrderId}}/1" >查看订单</a>
+                      <a ng-show="finance.Category == 1 && finance.OrderCategory == 2 && finance.Status" href="#/main/addOrder2/{{::finance.OrderId}}/1" >查看订单</a>
+                      <a ng-show="finance.Category == 1 && !finance.Status" ng-click="msgAlert()">查看订单</a>
+                      <a ng-show="finance.Category != 1"></a>
                     </td>
                 </tr>
             </tbody>

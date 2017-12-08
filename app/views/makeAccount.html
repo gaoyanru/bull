@@ -74,7 +74,7 @@
                   <!-- <td style="text-align:center; width:150px">{{item.ReceiptCompleteUnMakeAccount}}</td> -->
                   <td style="text-align:center; width:120px">{{item.Confirm}}</td>
 
-                  <td style="text-align:center; width:120px">{{item.ConfirmRate}}</td>
+                  <td style="text-align:center; width:120px">{{item.ConfirmRate | filterNum}}</td>
 
                   <td style="text-align:center; width:150px">{{item.Tax}}</td>
                   <td style="text-align:center; width:150px; text-decoration: underline; color: blue;" ng-click="downloadColumn3(item)">{{item.UnTax}}</td>
