@@ -54,7 +54,8 @@ angular.module('channelApp').controller('MakeAccount', ['$scope', '$http', '$fil
         $scope.aUnTax = aUnTax;
         return data;
     }
-    $scope.url = 'https://agent.pilipa.cn/api/v1/AgentExport.ashx'
+    // $scope.url = 'https://agent.pilipa.cn/api/v1/AgentExport.ashx'
+    $scope.url = 'http://123.56.31.133:8083/api/v1/AgentExport.ashx'
     $scope.downloadColumn1 = function(item) {
       // console.log(item)
       var AccountId = item.AccountId
