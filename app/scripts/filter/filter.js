@@ -177,6 +177,7 @@ angular.module('channelApp').filter('filterAddValue', function() {
     return filter;
 }).filter('tDate', function () {
     var filter = function (param) {
+        if (!param) return '';
         if (param.substr(0, 4) == "0001") return '';
         return param ? param.substring(0, 10) : '';
     };

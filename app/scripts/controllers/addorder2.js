@@ -1016,7 +1016,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           return
         } else if (res.data == 0){
           // 提交验证账期是否连续
-          $http.get('api/order/CheckIsConnectDate?servicestart=' + servicestart + '&customerid=' + companyId).success(function (res) {
+          console.log(orderId, 'orderId')
+          var orderid = orderId ? orderId : 0
+          $http.get('api/order/CheckIsConnectDate?servicestart=' + servicestart + '&customerid=' + companyId + '&orderid=' + orderid).success(function (res) {
             if (res.status) {
               if (!res.data) { // 证明账期连续的
                 submitOrder(params)
