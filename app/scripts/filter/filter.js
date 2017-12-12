@@ -227,7 +227,11 @@ angular.module('channelApp').filter('filterAddValue', function() {
     }
 }).filter('filterNum', function() {
     return function(value) {
+      if (value) {
         return (value*100).toFixed(2) + '%';
+      } else {
+        return ''
+      }
     }
 }).filter('filterStatus', function() {
     return function(value) {

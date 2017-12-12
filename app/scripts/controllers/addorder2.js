@@ -263,7 +263,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       $http.get('/api/orders/company?name=' + encodeURI(name)).success(function (res) {
         $scope.companyInfo = res.data[0]
         var data = res.data[0]
-        console.log(data);
+        // console.log(data);
         $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
         if (data.SalesId) delete data.SalesId
         if (data.BusnissDeadline) {
@@ -329,7 +329,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     // 获取代理商所在城市信息  及根据所在城市获取服务费
     $http.get('/api/citybychannel').success(function (data) {
       $scope.cities = data.data;
-      console.log($scope.postData.CityCode, '$scope.postData.CityCode')
+      // console.log($scope.postData.CityCode, '$scope.postData.CityCode')
       if (!$scope.postData.CityCode) { // 默认选择第一个城市
         $scope.postData.CityCode = $scope.cities[0].CityCode;
       }
@@ -376,14 +376,14 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.gifts[res.data[i].AddedValue].push(res.data[i])
           }
         }
-        console.log($scope.gifts)
+        // console.log($scope.gifts)
       }
     })
   }
   // 活动(新增时) 修改需要调已经选择了的活动
   function channelUsePromotion() {
     $http.get('/api/newpromotion/getchannelpromotionbyorder').success(function (res) {
-      console.log(res, 'res')
+      // console.log(res, 'res')
       if (res.status) {
         $scope.promotion = res.data
         // setIsProm()
@@ -421,7 +421,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     // 判断活动是否适用当前套餐 适用就默认选中
     if ($scope.postData.payType && $scope.postData.payType.Id) {
       var val = $scope.postData.payType
-      console.log(val, 'val')
+      // console.log(val, 'val')
       if ($scope.promotion) { // 有活动时且是一年且是新增 && 修改之前选择了活动
         var p = $scope.promotion.PromotionDetailsEntityList
         for (var i in p) {
@@ -450,7 +450,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     var payType = _.find($scope.priceList, {
         "Id": +$scope.postData.payType.Id
     });
-    console.log(payType, 'payType')
+    // console.log(payType, 'payType')
     if (!payType) return
     var addMonth = payType.ServiceMonths; // 正常合同的服务月份
     var giftAndPromotionMonth = 0
@@ -459,7 +459,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       var gift = _.find($scope.giftList, function (item) {
           return item.Id === +$scope.postData.gift;
       });
-      console.log(gift, 'gift')
+      // console.log(gift, 'gift')
       giftAndPromotionMonth = giftAndPromotionMonth +  gift.MonthNum
     }
     if ($scope.promotion && $scope.postData.IsPromotion && $scope.promotion.PromotionType == 1) {
@@ -476,7 +476,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     }
     addMonth += giftAndPromotionMonth
-    console.log(addMonth, 'addMonth')
+    // console.log(addMonth, 'addMonth')
     var date = new Date($scope.postData.ServiceStart);
     var enddate = new Date(date.setMonth(date.getMonth() + addMonth - 1));
 
@@ -646,7 +646,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
     $http.get("/api/orders/" + orderId).success(function (result) {
       // 加载初始需要的数据
-      console.log(result.data, 'res')
+      // console.log(result.data, 'res')
       $scope.companyInfo = result.data
       initDict(function(type){
         switch(type){
@@ -664,7 +664,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             });
             if(res && res[0]){
               $scope.postData.gift = res[0].Id.toString() || '';
-              console.log($scope.postData.gift)
+              // console.log($scope.postData.gift)
             }
             break;
           defalut:
@@ -727,7 +727,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
       $scope.postData = result
 
-      console.log($scope.postData, 'data');
+      // console.log($scope.postData, 'data');
       // 判断正式订单1 还是 预提单2 记账准备3
       $scope.category = result.Category;
       // 判断是否是续费订单
@@ -743,7 +743,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           $scope.isCompanyReadonly = false
         }
       }
-      console.log($stateParams, '$stateParams')
+      // console.log($stateParams, '$stateParams')
       if ($stateParams.isView) {
         $scope.isReadOnly = true;
         $scope.category = result.Category;
@@ -833,6 +833,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           $scope.postData.BusinessScope = result.BusinessScope
           if (!result.BusnissDeadline || result.BusnissDeadline.substr(0, 4) === '9999' || result.BusnissDeadline.substr(0, 4) === '0001') {
             $scope.postData.NoDeadLine = 1
+            $scope.postData.BusnissDeadline = ''
           } else {
             $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
             $scope.postData.NoDeadLine = 0
@@ -938,7 +939,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         alert("请填写营业期限！");
         return;
     }
-    console.log($scope.myForm)
+    // console.log($scope.myForm)
 
     postData.RegisterDate = $filter('date')($scope.postData.RegisterDate, 'yyyy-MM-dd');
     postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
@@ -980,14 +981,14 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         postData.IsSync = 0
       }
     }
-    console.log(postData, '最终提交数据')
+    // console.log(postData, '最终提交数据')
     // 判断是否存在预提单初审通过但是未复审的情况 && 判断账期是否连续
     // 提交订单验证是否存在预提单
     var PersonCardID = postData.PersonCardID
-    console.log(PersonCardID, 'PersonCardID')
+    // console.log(PersonCardID, 'PersonCardID')
 
     var servicestart = postData.ServiceStart
-    console.log($scope.companyInfo)
+    // console.log($scope.companyInfo)
     if ($scope.companyInfo && $scope.companyInfo.CustomerId) {
       var companyId = $scope.companyInfo.CustomerId
     } else {
@@ -1008,7 +1009,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     $scope.loading = true;
 
     $http.get('api/order/CheckStatusByPersonalCard?personancard=' + PersonCardID ).success(function (res) {
-      console.log(res)
+      // console.log(res)
       if (res.status) {
         if (res.data > 0) {
           // alert('该法人存在未完成的预提单，请先完成预提单')
@@ -1016,7 +1017,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           return
         } else if (res.data == 0){
           // 提交验证账期是否连续
-          console.log(orderId, 'orderId')
+          // console.log(orderId, 'orderId')
           var orderid = orderId ? orderId : 0
           $http.get('api/order/CheckIsConnectDate?servicestart=' + servicestart + '&customerid=' + companyId + '&orderid=' + orderid).success(function (res) {
             if (res.status) {
@@ -1038,7 +1039,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
                     }
                 });
                 modalInstance.result.then(function (result) {
-                  console.log(result, 'result')
+                  // console.log(result, 'result')
                   if (result) {
                     submitOrder(params)
                   }
@@ -1125,7 +1126,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         postData.IsSync = 0
       }
     }
-    console.log(postData, '最终提交数据')
+    // console.log(postData, '最终提交数据')
     var params = {
         url: '/api/orderszj',
         data: postData,
@@ -1222,7 +1223,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         }
       }
     }
-    console.log(postData, '最终提交数据')
+    // console.log(postData, '最终提交数据')
     var params = {
         url: '/api/supplementaryinfo',
         data: postData,
@@ -1345,7 +1346,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     $uibModalInstance.dismiss('cancel');
   };
 }]).controller('SummitModal', ['$scope', '$http', '$uibModalInstance', 'error', 'sign', function($scope, $http, $uibModalInstance, error, sign) {
-  console.log(error, 'error')
+  // console.log(error, 'error')
   $scope.sign = sign
   $scope.alertMsg = error
   $scope.submit = function () {
