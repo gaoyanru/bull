@@ -609,10 +609,11 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
               $scope.postData.PersonCardID = data.data.PersonCardID
             }
           } else {
+            console.log($scope.postData.LegalPerson, data.data.LegalPerson, $scope.postData.LegalPerson == data.data.LegalPerson)
             if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson && $scope.isLegalPersonReadonly) { //意思是检索出来了
               $scope.postData.LegalPerson = data.data.LegalPerson
               $scope.postData.PersonCardID = data.data.PersonCardID
-            } else if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso && $scope.isLegalPersonReadonly) {
+            } else if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerson && $scope.isLegalPersonReadonly) {
               $scope.postData.PersonCardPath = ''
               // alert('身份证上的法人姓名与营业执照上的法人不符')
               alertModal('身份证上的法人姓名与营业执照上的法人不符')
@@ -927,10 +928,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         alert("请上传营业执照！");
         return;
     }
-    if (!$scope.postData.PersonCardPath) {
-        alert("请上传法人身份证！");
-        return;
-    }
+    // if (!$scope.postData.PersonCardPath) {
+    //     alert("请上传法人身份证！");
+    //     return;
+    // }
     if (!postData.payType) {
         alert("请选择套餐类型！");
         return;
