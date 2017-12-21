@@ -10,6 +10,8 @@
 angular.module('channelApp')
     .controller('MainCtrl', ['$scope', '$http', '$state', '$stateParams', '$uibModal', 'user', '$timeout', function($scope, $http, $state, $stateParams, $uibModal, user, $timeout) {
         $scope.user = user.get();
+        $scope.noticelists = [];
+        $scope.doclists = [];
 
         function sortFn(a, b) {
             return a.Rank > b.Rank;
@@ -112,4 +114,41 @@ angular.module('channelApp')
             verifyBalance();
         }
 
+        // 首页路由
+        $scope.goMainHtml = function () {
+          console.log($state, '$state')
+          $state.go('main');
+        }
+        // 获取公告列表
+        function getNoticeLists() {
+          var data = angular.extend({
+              offset: 0,
+              limit: 3,
+              title: '',
+              type: 0
+          }, data);
+          $http.get('/api/notice/getnoticelist?' + jQuery.param(data)).success(function(result) {
+              $scope.noticelists = result.data;
+              console.log($scope.noticelists)
+          });
+        }
+        getNoticeLists()
+        // 获取文档列表
+        function getFileList() {
+          var data = angular.extend({
+              offset: 0,
+              limit: 7,
+              filename: '',
+              type: 2
+          }, data);
+          $http.get('/api/doc/getdoclist?' + jQuery.param(data)).success(function(result) {
+              $scope.doclists = result.data;
+              console.log($scope.doclists)
+          });
+        }
+        getFileList()
+        //
+        $scope.goMoreNotice = function () {
+
+        }
     }]);
