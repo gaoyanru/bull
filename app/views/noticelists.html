@@ -1,0 +1,32 @@
+<div class="notice-list">
+  <div class="vheader">
+    <h2>
+      最新公告
+      <span class="back-last" ng-click="goBackHome()"><<返回首页</span>
+    </h2>
+  </div>
+  <div class="other-style">
+    <div class="list-item-other" ng-repeat="list in noticelists">
+      <span class="data-sign" ng-if="list.IsNew">新</span>
+      <span class="detail-item" ng-click="noticeDetail(list.id)">{{list.Title}}</span>
+      <span class="date-float">{{list.CreateDate}}</span>
+    </div>
+  </div>
+  <div class="u-paginator form-inline paga-size">
+      <uib-pagination total-items="paginator.total" items-per-page="paginator.perPage" boundary-links="true" ng-model="paginator.currentPage" previous-text="{{::paginator.previousText}}" next-text="{{::paginator.nextText}}" first-text="{{::paginator.firstText}}"
+       last-text="{{::paginator.lastText}}" force-ellipses="true" max-size="6" num-pages="paginator.numPages" ng-change="pageChanged()">
+      </uib-pagination>
+      <div class="u-pages">
+          <span>{{paginator.currentPage}}</span> /
+          <span>{{paginator.numPages}}</span>
+      </div>
+      <form name="paginatorForm" novalidate>
+          <div class="input-group">
+              <input type="number" name="paginatorInput" ng-model="currentPage" required min="1" max="{{paginator.numPages}}" class="form-control">
+              <span class="input-group-btn">
+        <button class="btn btn-default" type="button"  ng-disabled="!paginatorForm.$valid" ng-click="setCurrentPage()">Go!</button>
+      </span>
+          </div>
+      </form>
+  </div>
+</div>

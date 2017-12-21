@@ -1,0 +1,17 @@
+<div class="notice-detail notice-list">
+  <div class="vheader">
+    <h3>
+      公告详情
+      <span class="back-last" ng-click="goBackLast()"><<返回上一页</span>
+    </h3>
+  </div>
+  <div class="content">
+    <h3>{{detailData.Title}}</h3>
+    <div class="detail-nav">
+        <span>发布日期：{{detailData.CreateDate}}</span>
+    </div>
+    <div class="detail-con">
+      <pre><textarea class="detail-area" ng-model="detailData.Text" rows="18"></textarea></pre>
+    </div>
+  </div>
+</div>

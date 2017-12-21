@@ -40,6 +40,18 @@ channelApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'use
                 url: '/main',
                 templateUrl: 'views/main.html',
                 controller: 'MainCtrl'
+            }).state('main.noticelists', {
+                url: '/noticelists',
+                templateUrl: 'views/noticelists.html',
+                controller: 'NoticeList'
+            }).state('main.doclist', {
+                url: '/doclist',
+                templateUrl: 'views/doclist.html',
+                controller: 'Doclist'
+            }).state('main.noticeDetail', {
+                url: '/noticeDetail/:id',
+                templateUrl: 'views/noticeDetail.html',
+                controller: 'NoticeDetail'
             }).state('main.employee', {
                 url: '/employee',
                 templateUrl: 'views/employee.html',

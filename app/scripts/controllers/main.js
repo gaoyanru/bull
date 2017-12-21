@@ -65,7 +65,7 @@ angular.module('channelApp')
             var route = $state.current.name;
             var uPath = getNodeByName($scope.navTreeModel, route);
             if (uPath.length === 0) {
-                $state.go('main');
+                // $state.go('main');
                 return;
             }
             $scope.selectedNavTree = uPath.pop();
@@ -139,7 +139,7 @@ angular.module('channelApp')
               offset: 0,
               limit: 7,
               filename: '',
-              type: 2
+              type: 0
           }, data);
           $http.get('/api/doc/getdoclist?' + jQuery.param(data)).success(function(result) {
               $scope.doclists = result.data;
@@ -147,8 +147,21 @@ angular.module('channelApp')
           });
         }
         getFileList()
-        //
+        // 公告列表
         $scope.goMoreNotice = function () {
-
+          $state.go('main.noticelists')
+        }
+        // 公告详情
+        $scope.noticeDetail = function (id) {
+          console.log(id, 'id')
+          $state.go('main.noticeDetail', { id: id });
+        }
+        // 下载文档
+        $scope.download = function (url) {
+          window.open(url)
+        }
+        // 文档列表
+        $scope.goMorefile = function () {
+          $state.go('main.doclist')
         }
     }]);

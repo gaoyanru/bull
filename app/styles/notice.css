@@ -1,0 +1,90 @@
+.notice-list {
+  padding: 0 10px;
+}
+.notice-list h2 {
+  font-size: 24px;
+}
+.notice-list .back-last {
+  font-size: 12px;
+  font-weight: normal;
+  padding-left: 10px;
+  cursor: pointer;
+}
+.notice-list .back-last:hover {
+  color: #1b9bfc;
+}
+.notice-list .other-style .list-item-other {
+  padding: 15px 25px;
+  border-bottom: 1px solid #ccc;
+  clear: both;
+  overflow: hidden;
+  font-size: 16px;
+}
+.notice-list .other-style .list-item-other .detail-item:hover {
+  color: #1b9bfc;
+  cursor: pointer;
+}
+.notice-list .other-style .list-item-other .data-sign {
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid red;
+  color: red;
+}
+.notice-list .other-style .list-item-other .date-float {
+  float: right;
+  color: #969696;
+}
+.notice-list .other-style .list-item-other .date-float span {
+  float: right;
+  color: #969696;
+}
+.notice-list .paga-size {
+  margin-top: 25px
+}
+.notice-detail .content {
+  border: 1px solid #ccc;
+  box-shadow: -5px -5px 5px 3px #eee;
+  width: 96%;
+  height: 510px;
+  margin: 20px 2% 10px;
+  text-align: center;
+  padding: 10px 30px;
+}
+.notice-detail .content h3 {
+  font-weight: normal;
+  font-size: 20px;
+}
+.notice-detail .content .detail-nav {
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+  color: #969696;
+  font-size: 14px;
+  padding-bottom: 20px;
+}
+.notice-detail .content .detail-con {
+  margin-top: 30px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 20px;
+}
+.notice-detail .content .detail-con pre {
+  font-family: Microsoft YaHei;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: none;
+}
+.notice-detail .content .detail-con pre textarea {
+  border: none;
+  width: 100%;
+}
+.doc-list .search .form-control {
+  width: 200px;
+  float: left;
+  margin-right: 20px;
+}
+.doc-list .list-con .file-name {
+  width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -38,7 +38,7 @@
                   <div ng-if="noticelists.length" class="list-item" ng-repeat="list in noticelists">
                     <div>
                       <i ng-if="list.IsNew">新</i>
-                      <span ng-click="goDetail(list.id)">{{list.Title}}</span>
+                      <span ng-click="noticeDetail(list.id)">{{list.Title}}</span>
                     </div>
                     <p>{{list.CreateDate}}</p>
                   </div>

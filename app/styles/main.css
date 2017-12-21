@@ -122,7 +122,7 @@ header h2 {
  */
 .content-right .home-content {
   background: #eee;
-  padding: 10px;
+  padding: 10px ;
   overflow: hidden;
 }
 .content-right .home-content h4 {
@@ -140,7 +140,7 @@ header h2 {
 .content-right .home-content .dash-board {
   float: left;
   width: 60%;
-  height: 574px;
+  height: 570px;
   margin-right: 20px;
 }
 .content-right .home-content .dash-board .dash-board-bg {
@@ -148,7 +148,6 @@ header h2 {
   background: url('../images/dashboard.png');
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 284px 354px;
 }
 .content-right .home-content .home-right {
   float: left;
@@ -156,8 +155,10 @@ header h2 {
   overflow: hidden;
 }
 .content-right .home-content .home-right .notice, .content-right .home-content .home-right .document {
-  height: 277px;
-  margin-bottom: 20px
+  height: 270px;
+}
+.content-right .home-content .home-right .notice {
+  margin-bottom: 20px;
 }
 .content-right .home-content .home-right .notice h4, .content-right .home-content .home-right .document h4 {
   margin-bottom: 10px;
