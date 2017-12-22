@@ -965,6 +965,8 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       delete postData.GiftTypeName;
       delete postData.GiftPrice;
     }
+    let IsZero = postData.payType.IsZero
+    console.log(postData.payType, '当前订单的付款方式')
     postData.PayType = postData.payType.Id
     // postData.payTypeObj = postData.payType
     delete postData.payType
@@ -1017,38 +1019,42 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           return
         } else if (res.data == 0){
           // 提交验证账期是否连续
-          // console.log(orderId, 'orderId')
-          var orderid = orderId ? orderId : 0
-          $http.get('api/order/CheckIsConnectDate?servicestart=' + servicestart + '&customerid=' + companyId + '&orderid=' + orderid).success(function (res) {
-            if (res.status) {
-              if (!res.data) { // 证明账期连续的
-                submitOrder(params)
-              } else { // 账期不连续
-                var errorMsg = res.data
-                var modalInstance = $uibModal.open({
-                    templateUrl: 'views/summit_modal.html',
-                    size: "md",
-                    controller: 'SummitModal',
-                    resolve: {
-                      error: function () {
-                        return errorMsg;
-                      },
-                      sign: function () {
-                        return false;
+          console.log(IsZero, 'IsZero')
+          if (IsZero == 1) { //零税不需要判断账期是否连续
+            submitOrder(params)
+          } else {
+            var orderid = orderId ? orderId : 0
+            $http.get('api/order/CheckIsConnectDate?servicestart=' + servicestart + '&customerid=' + companyId + '&orderid=' + orderid).success(function (res) {
+              if (res.status) {
+                if (!res.data) { // 证明账期连续的
+                  submitOrder(params)
+                } else { // 账期不连续
+                  var errorMsg = res.data
+                  var modalInstance = $uibModal.open({
+                      templateUrl: 'views/summit_modal.html',
+                      size: "md",
+                      controller: 'SummitModal',
+                      resolve: {
+                        error: function () {
+                          return errorMsg;
+                        },
+                        sign: function () {
+                          return false;
+                        }
                       }
+                  });
+                  modalInstance.result.then(function (result) {
+                    // console.log(result, 'result')
+                    if (result) {
+                      submitOrder(params)
                     }
-                });
-                modalInstance.result.then(function (result) {
-                  // console.log(result, 'result')
-                  if (result) {
-                    submitOrder(params)
-                  }
-                }, function () {
+                  }, function () {
 
-                });
+                  });
+                }
               }
-            }
-          })
+            })
+          }
         }
       }
     })
