@@ -2,6 +2,13 @@ angular.module('channelApp').controller('Doclist', ['$scope', '$http', '$filter'
   var doclists = [];
   $scope.filename = '';
   $scope.type = 2;
+  $scope.types = [{
+    type: 1,
+    name: '按上传日期倒序'
+  }, {
+    type: 2,
+    name: '按文件名称升序'
+  }]
   $scope.paginator = {
       total: 0,
       currentPage: 1,
@@ -38,7 +45,8 @@ angular.module('channelApp').controller('Doclist', ['$scope', '$http', '$filter'
     $state.go('main')
   }
   // 下载文件
-  $scope.download = function (url) {
+  $scope.download = function (id) {
+    var url = 'api/doc/downloadfile?id=' + id
     window.open(url)
   }
 }])

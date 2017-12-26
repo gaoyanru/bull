@@ -965,8 +965,8 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       delete postData.GiftTypeName;
       delete postData.GiftPrice;
     }
-    let IsZero = postData.payType.IsZero
-    console.log(postData.payType, '当前订单的付款方式')
+    var IsZero = postData.payType.IsZero
+    // console.log(postData.payType, '当前订单的付款方式')
     postData.PayType = postData.payType.Id
     // postData.payTypeObj = postData.payType
     delete postData.payType
@@ -1019,7 +1019,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           return
         } else if (res.data == 0){
           // 提交验证账期是否连续
-          console.log(IsZero, 'IsZero')
+          // console.log(IsZero, 'IsZero')
           if (IsZero == 1) { //零税不需要判断账期是否连续
             submitOrder(params)
           } else {

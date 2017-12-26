@@ -10,8 +10,7 @@
             <input type="text" ng-model="filename" class="form-control" placeholder="搜索文件名">
             <div class="form-group">
                 <select ng-model="type" class="form-control">
-                  <option value="1" ng-selected="type === 1">按上传日期倒序</option>
-                  <option value="2" ng-selected="type === 2">按文件名称升序</option>
+                  <option ng-repeat="item in types" value="{{item.type}}" ng-selected="type == item.type">{{item.name}}</option>
                 </select>
             </div>
             <button class="btn btn-primary" ng-click="getFileList()">查询</button>
@@ -34,7 +33,7 @@
                     <td>{{::row.CreateDate}}</td>
                     <td>
                         <div class="operate">
-                            <a href="javascript:;" ng-click="download(row.FilePath)">下载</a>
+                            <a href="javascript:;" ng-click="download(row.Id)">下载</a>
                         </div>
                     </td>
                 </tr>
