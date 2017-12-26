@@ -52,7 +52,7 @@
                 </h4>
                 <div ng-if="doclists.length" class="document-item" ng-repeat="list in doclists">
                   <i></i>
-                  <div ng-click="download(list.FilePath)">{{list.FileName}}</div>
+                  <div ng-click="download(list.Id)">{{list.FileName}}</div>
                 </div>
                 <div ng-if="!doclists.length" class="list-bg list-bg-document"></div>
               </div>

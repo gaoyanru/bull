@@ -25,89 +25,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.priceList = [] // 存储套餐类型返回值
   $scope.category = 1
 
-  // $scope.fastCheck = function() { // 快速录入
-  //   var modalInstance = $uibModal.open({
-  //       templateUrl: 'views/addorder_company_modal.html',
-  //       size: "md",
-  //       controller: 'AddorderCompanyModal',
-  //       resolve: {
-  //       }
-  //   });
-  //   modalInstance.result.then(function (result) {
-  //       // console.log(result, 'result')
-  //       if (result) {
-  //         // 返回有值需要做之前可编辑处理
-  //         $scope.isCompanyReadonly = false
-  //         $scope.postData.LegalPerson = ''
-  //         $scope.isLegalPersonReadonly = false
-  //         $scope.PersonCardID = ''
-  //         $scope.postData.Address = ''
-  //         $scope.isAddressReadonly = false
-  //         $scope.postData.RegNO = ''
-  //         $scope.isRegNOReadonly = false
-  //         $scope.postData.RegisterDate = ''
-  //         $scope.postData.BusnissDeadline = ''
-  //         if ($scope.postData.NoNoDeadLine) {
-  //           $scope.postData.NoNoDeadLine = 0
-  //         }
-  //         $scope.postData.RegisteredCapital = ''
-  //         $scope.isRegisteredCapitalReadonly = false
-  //         $scope.postData.BusinessScope = ''
-  //         $scope.isBusinessScopeReadonly = false
-  //
-  //         $scope.resultInfo = result // 清空公司时需要使用这个数据判断是否清空法人姓名
-  //         // console.log('aa')
-  //         $scope.searchType = 3 // 标记是快速录入获取到的信息
-  //         $scope.isCompanyReadonly = true // 检索出的信息只读
-  //         $scope.searchCompanyInfo = result // 检索出的信息赋值到其他 来确定公司名称在提交之前是否修改 修改则检索出的信息清空
-  //         $scope.nameReadonly = false // 检索出后公司名称可以修改
-  //         if (result.Address) {
-  //           $scope.isAddressReadonly = true
-  //         }
-  //         $scope.postData.Address = result.Address
-  //         if (result.BusinessScope) {
-  //           $scope.isBusinessScopeReadonly = true
-  //         }
-  //         $scope.postData.BusinessScope = result.BusinessScope
-  //         if (!result.BusnissDeadline || result.BusnissDeadline.substr(0, 4) === '9999' || result.BusnissDeadline.substr(0, 4) === '0001') {
-  //           $scope.postData.NoDeadLine = 1
-  //         } else {
-  //           $scope.postData.BusnissDeadline = new Date(result.BusnissDeadline)
-  //           $scope.postData.NoDeadLine = 0
-  //         }
-  //         $scope.postData.Name = result.CompanyName
-  //         if (result.LegalPerson) {
-  //           $scope.isLegalPersonReadonly = true
-  //           if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
-  //             $scope.postData.LegalPerson = result.LegalPerson
-  //             $scope.postData.PersonCardID = ''
-  //             $scope.postData.PersonCardPath = ''
-  //           } else {
-  //             $scope.postData.LegalPerson = result.LegalPerson
-  //           }
-  //         } else {
-  //           $scope.isLegalPersonReadonly = false
-  //         }
-  //         if (result.RegNO) {
-  //           $scope.isRegNOReadonly = true
-  //         }
-  //         $scope.postData.RegNO = result.RegNO
-  //         if (result.RegisterDate) {
-  //           $scope.isRegisterDateReadonly = true
-  //         }
-  //         $scope.postData.RegisterDate = new Date(result.RegisterDate)
-  //         if (result.RegisteredCapital) {
-  //           $scope.isRegisteredCapitalReadonly = true
-  //         }
-  //         $scope.postData.RegisteredCapital = result.RegisteredCapital
-  //       } else {
-  //         // alert('抱歉，没有检索到企业信息，请重试或手动录入！')
-  //         alertModal('抱歉，没有检索到企业信息，请重试或手动录入！')
-  //       }
-  //   }, function () {
-  //
-  //   });
-  // }
   // 统一弹框
   function alertModal(msg) {
     var errorMsg = msg
@@ -217,12 +134,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     }
   })
 
-  // $scope.$watch('postData.AddedValue',function() {
-  //   if (arguments[1] !== 1) {
-  //     $scope.postData.payType = ''
-  //     $scope.postData.gift = ''
-  //   }
-  // })
   $scope.$watch('postData.IsPromotion', function() {
     $scope.setprice()
     $scope.setEndDate()
@@ -390,7 +301,171 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     })
   }
-  channelUsePromotion()
+  $scope.orderId = $stateParams.orderId;
+  var orderId = $stateParams.orderId;
+  if (orderId && orderId.charAt(0) === 'C') {
+      var tmp = orderId.split('&');
+      $scope.companySelect(tmp[0].substr(1));
+      var tt = new Date(tmp[1]);
+      tt.setDate(1);
+      tt.setMonth(tt.getMonth() + 1);
+      $scope.serviceStartOptions.minDate = tt;
+      $scope.xfReadonly = true; // 续费时候预提单不能点击
+      orderId = null;
+      $scope.IsReOrder = true;
+  } else {
+      orderId = $stateParams.orderId || $scope.$parent.orderId || false;
+  }
+  if (orderId) {
+
+    $http.get("/api/orders/" + orderId).success(function (result) {
+      // 加载初始需要的数据
+      // console.log(result.data, 'res')
+      $scope.companyInfo = result.data
+      initDict(function(type){
+        switch(type){
+          case 1:
+            var val = _.filter($scope.priceList, {
+              "Id": + result.PayType
+            });
+            $scope.payTypeReadonly = val // 用于查看时候只显示一条已经选中的
+            $scope.postData.payType = val[0]
+            break;
+          case 2:
+            var res = _.filter($scope.giftList, {
+              "Price": result.GiftPrice,
+              "GiftTypeId": result.GiftTypeId
+            });
+            if(res && res[0]){
+              $scope.postData.gift = res[0].Id.toString() || '';
+              // console.log($scope.postData.gift)
+            }
+            break;
+          defalut:
+            break;
+        }
+
+      });
+       getBanlance();
+      $scope.result = angular.extend(result.data, result.data.Customer) // 修改默认是一年的付款方式活动默认选中?？
+      result = angular.extend(result.data, result.data.Customer)
+      // 如果之前选择了活动 就默认显示之前已经选择了的活动 而不是现在能享受的最新活动 否则就显示现在最新能享受的活动
+      if (result.IsPromotion) {
+        $scope.promotion = result.Promotion
+      } else {
+        channelUsePromotion()
+      }
+      // 处理当时检索出的信息时候 工商信息不能修改
+      if (result.IsSync) {
+        $scope.isCompanyReadonly = true
+        $scope.isLegalPersonReadonly = true
+        $scope.isRegNOReadonly = true
+        $scope.isRegisteredCapitalReadonly = true
+        $scope.isBusinessScopeReadonly = true
+        $scope.isAddressReadonly = true
+      } else {
+        $scope.isCompanyReadonly = false
+      }
+      // 处理返回的时间
+      if (result.BusnissDeadline.substr(0, 4) === '0001' || result.BusnissDeadline.substr(0, 4) === '9999') {
+          result.BusnissDeadline = "";
+          result.NoDeadLine = 1
+      } else {
+          result.BusnissDeadline = new Date(result.BusnissDeadline);
+          result.NoDeadLine = 0
+      }
+      if (result.ServiceStart.substr(0, 4) === '0001') {
+          result.ServiceStart = "";
+      } else {
+          result.ServiceStart = new Date(result.ServiceStart);
+      }
+      if (result.RegisterDate.substr(0, 4) === '0001') {
+          result.RegisterDate = "";
+      } else {
+          result.RegisterDate = new Date(result.RegisterDate);
+      }
+      if (result.ServiceEnd.substr(0, 4) === '0001') {
+          result.ServiceEnd = "";
+      } else {
+          result.ServiceEnd = result.ServiceEnd.substr(0, 7);
+      }
+      if (result.NoDeadLine) {
+          result.BusnissDeadline = '';
+      }
+      // 处理活动是不是默认选中
+      result.IsPromotion = !!result.IsPromotion;
+
+      // 处理合同照片
+      result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
+      $scope.imgs = result.ContractPath
+
+      $scope.postData = result
+
+      // console.log($scope.postData, 'data');
+      // 判断正式订单1 还是 预提单2 记账准备3
+      $scope.category = result.Category;
+      // 判断是否是续费订单
+      if ($scope.IsReOrder) {
+        $scope.postData.Status = 1
+      }
+      // 根据category判断1是查看修改正式订单2预提单查看修改3预提单转正式订单查看修改
+      if ($scope.category == 1 && result.Status != 2) { // 正常订单未审核和拒审修改查看时候 活动可以选择
+        // $scope.showProm = true;
+        if (result.IsSync) {
+          $scope.isCompanyReadonly = true // 检索出的信息不能修改
+        } else {
+          $scope.isCompanyReadonly = false
+        }
+      }
+      // console.log($stateParams, '$stateParams')
+      if ($stateParams.isView) {
+        $scope.isReadOnly = true;
+        $scope.category = result.Category;
+        $scope.isChangeCompanyName = true
+        return
+      }
+      if ((result.Category == 2 && result.Status == 2) || result.Category == 3) { // 预提单初审通过 || 记账准备时候 之前填的基本信息和合同信息都不允许修改 只需要补充公司资料即可
+          $scope.category = 3;
+          $scope.isNewCompany = true
+          $scope.complementCompanyInfo = true // 补全公司信息的时候 其他两项不允许修改
+          if (result.Status != 2 && result.Category == 3) { // 复审未审核时 再点击记账准备 此时公司名称不能修改
+            $scope.isChangeCompanyName = true // 此时公司名字不能修改
+          }
+          if(result.Status == 2 && result.Category == 3) { // 如果复审也通过 就全部不许修改
+            $scope.isReadOnly = true;
+            $scope.isChangeCompanyName = true // 此时公司名字不能修改
+            if (!$scope.postData.IsPromotion) { // 老订单之前没参加活动就不显示活动和礼包
+              $scope.promotionShow = true
+            }
+          }
+      }
+      if ($scope.postData.Status === 2 && $scope.category != 3) { // 审核通过的正式订单和预提单只能只读状态
+          $scope.isReadOnly = true;
+          if (!$scope.postData.IsPromotion) {
+            $scope.promotionShow = true
+          }
+      } else {
+          if ($scope.category != 3) { // 订单未审核修改或者拒审修改
+            if ($scope.category == 2 && result.Status != 2) {
+              $scope.isNewCompany = true
+            }
+             getBanlance();
+          }
+      }
+    })
+  } else {
+    initDict();
+    getBanlance();
+  }
+  if (orderId) {
+    if ($scope.result && $scope.result.IsPromotion) {
+      $scope.promotion = $scope.result.Promotion
+    } else if ($scope.result && !$scope.result.IsPromotion) {
+      channelUsePromotion()
+    }
+  } else {
+    channelUsePromotion()
+  }
   // 判断活动可不可选择
   $scope.IsPromotionValid = function () {
     if (!$scope.postData.payType) {
@@ -549,21 +624,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     formatYear: 'yyyy',
     minMode: 'month'
   }
-  $scope.orderId = $stateParams.orderId;
-  var orderId = $stateParams.orderId;
-  if (orderId && orderId.charAt(0) === 'C') {
-      var tmp = orderId.split('&');
-      $scope.companySelect(tmp[0].substr(1));
-      var tt = new Date(tmp[1]);
-      tt.setDate(1);
-      tt.setMonth(tt.getMonth() + 1);
-      $scope.serviceStartOptions.minDate = tt;
-      $scope.xfReadonly = true; // 续费时候预提单不能点击
-      orderId = null;
-      $scope.IsReOrder = true;
-  } else {
-      orderId = $stateParams.orderId || $scope.$parent.orderId || false;
-  }
   // 控制是否预提单 category==1新增 category==2预提单
 
   $scope.setCategory = function () {
@@ -641,148 +701,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.endDateOptions = {
     formatYear: 'yyyy'
   };
-
-  if (orderId) {
-
-    $http.get("/api/orders/" + orderId).success(function (result) {
-      // 加载初始需要的数据
-      // console.log(result.data, 'res')
-      $scope.companyInfo = result.data
-      initDict(function(type){
-        switch(type){
-          case 1:
-            var val = _.filter($scope.priceList, {
-              "Id": + result.PayType
-            });
-            $scope.payTypeReadonly = val // 用于查看时候只显示一条已经选中的
-            $scope.postData.payType = val[0]
-            break;
-          case 2:
-            var res = _.filter($scope.giftList, {
-              "Price": result.GiftPrice,
-              "GiftTypeId": result.GiftTypeId
-            });
-            if(res && res[0]){
-              $scope.postData.gift = res[0].Id.toString() || '';
-              // console.log($scope.postData.gift)
-            }
-            break;
-          defalut:
-            break;
-        }
-
-      });
-       getBanlance();
-      $scope.result = angular.extend(result.data, result.data.Customer) // 修改默认是一年的付款方式活动默认选中?？
-      result = angular.extend(result.data, result.data.Customer)
-      // 如果之前选择了活动 就默认显示之前已经选择了的活动 而不是现在能享受的最新活动 否则就显示现在最新能享受的活动
-      if (result.IsPromotion) {
-        $scope.promotion = result.Promotion
-      } else {
-        channelUsePromotion()
-      }
-      // 处理当时检索出的信息时候 工商信息不能修改
-      if (result.IsSync) {
-        $scope.isCompanyReadonly = true
-        $scope.isLegalPersonReadonly = true
-        $scope.isRegNOReadonly = true
-        $scope.isRegisteredCapitalReadonly = true
-        $scope.isBusinessScopeReadonly = true
-        $scope.isAddressReadonly = true
-      } else {
-        $scope.isCompanyReadonly = false
-      }
-      // 处理返回的时间
-      if (result.BusnissDeadline.substr(0, 4) === '0001' || result.BusnissDeadline.substr(0, 4) === '9999') {
-          result.BusnissDeadline = "";
-          result.NoDeadLine = 1
-      } else {
-          result.BusnissDeadline = new Date(result.BusnissDeadline);
-          result.NoDeadLine = 0
-      }
-      if (result.ServiceStart.substr(0, 4) === '0001') {
-          result.ServiceStart = "";
-      } else {
-          result.ServiceStart = new Date(result.ServiceStart);
-      }
-      if (result.RegisterDate.substr(0, 4) === '0001') {
-          result.RegisterDate = "";
-      } else {
-          result.RegisterDate = new Date(result.RegisterDate);
-      }
-      if (result.ServiceEnd.substr(0, 4) === '0001') {
-          result.ServiceEnd = "";
-      } else {
-          result.ServiceEnd = result.ServiceEnd.substr(0, 7);
-      }
-      if (result.NoDeadLine) {
-          result.BusnissDeadline = '';
-      }
-      // 处理活动是不是默认选中
-      result.IsPromotion = !!result.IsPromotion;
-
-      // 处理合同照片
-      result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
-      $scope.imgs = result.ContractPath
-
-      $scope.postData = result
-
-      // console.log($scope.postData, 'data');
-      // 判断正式订单1 还是 预提单2 记账准备3
-      $scope.category = result.Category;
-      // 判断是否是续费订单
-      if ($scope.IsReOrder) {
-        $scope.postData.Status = 1
-      }
-      // 根据category判断1是查看修改正式订单2预提单查看修改3预提单转正式订单查看修改
-      if ($scope.category == 1 && result.Status != 2) { // 正常订单未审核和拒审修改查看时候 活动可以选择
-        // $scope.showProm = true;
-        if (result.IsSync) {
-          $scope.isCompanyReadonly = true // 检索出的信息不能修改
-        } else {
-          $scope.isCompanyReadonly = false
-        }
-      }
-      // console.log($stateParams, '$stateParams')
-      if ($stateParams.isView) {
-        $scope.isReadOnly = true;
-        $scope.category = result.Category;
-        $scope.isChangeCompanyName = true
-        return
-      }
-      if ((result.Category == 2 && result.Status == 2) || result.Category == 3) { // 预提单初审通过 || 记账准备时候 之前填的基本信息和合同信息都不允许修改 只需要补充公司资料即可
-          $scope.category = 3;
-          $scope.isNewCompany = true
-          $scope.complementCompanyInfo = true // 补全公司信息的时候 其他两项不允许修改
-          if (result.Status != 2 && result.Category == 3) { // 复审未审核时 再点击记账准备 此时公司名称不能修改
-            $scope.isChangeCompanyName = true // 此时公司名字不能修改
-          }
-          if(result.Status == 2 && result.Category == 3) { // 如果复审也通过 就全部不许修改
-            $scope.isReadOnly = true;
-            $scope.isChangeCompanyName = true // 此时公司名字不能修改
-            if (!$scope.postData.IsPromotion) { // 老订单之前没参加活动就不显示活动和礼包
-              $scope.promotionShow = true
-            }
-          }
-      }
-      if ($scope.postData.Status === 2 && $scope.category != 3) { // 审核通过的正式订单和预提单只能只读状态
-          $scope.isReadOnly = true;
-          if (!$scope.postData.IsPromotion) {
-            $scope.promotionShow = true
-          }
-      } else {
-          if ($scope.category != 3) { // 订单未审核修改或者拒审修改
-            if ($scope.category == 2 && result.Status != 2) {
-              $scope.isNewCompany = true
-            }
-             getBanlance();
-          }
-      }
-    })
-  } else {
-    initDict();
-    getBanlance();
-  }
 
   $scope.fastCheck = function() { // 快速录入
     var modalInstance = $uibModal.open({

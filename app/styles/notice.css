@@ -33,6 +33,8 @@
 .notice-list .other-style .list-item-other .date-float {
   float: right;
   color: #969696;
+  font-size: 14px;
+  padding-right: 20px;
 }
 .notice-list .other-style .list-item-other .date-float span {
   float: right;

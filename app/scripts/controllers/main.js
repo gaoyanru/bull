@@ -157,7 +157,8 @@ angular.module('channelApp')
           $state.go('main.noticeDetail', { id: id });
         }
         // 下载文档
-        $scope.download = function (url) {
+        $scope.download = function (id) {
+          var url = 'api/doc/downloadfile?id=' + id
           window.open(url)
         }
         // 文档列表
