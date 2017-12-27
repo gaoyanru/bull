@@ -307,6 +307,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     })
   }
+  $scope.serviceStartOptions = {
+    formatYear: 'yyyy',
+    minMode: 'month'
+  }
   $scope.orderId = $stateParams.orderId;
   var orderId = $stateParams.orderId;
   if (orderId && orderId.charAt(0) === 'C') {
@@ -626,10 +630,6 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     }
     return ''
-  }
-  $scope.serviceStartOptions = {
-    formatYear: 'yyyy',
-    minMode: 'month'
   }
   // $scope.orderId = $stateParams.orderId;
   // var orderId = $stateParams.orderId;
