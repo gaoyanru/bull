@@ -16,7 +16,11 @@ angular.module('channelApp')
         function sortFn(a, b) {
             return a.Rank > b.Rank;
         }
-
+        $scope.curHeight = document.body.clientHeight - 60  + 'px'
+        // $scope.curHeight = ($(document).height() - 60) + 'px'
+        // $scope.rightcurHeight = ($(document).height() - 60) / 2 - 10 + 'px'
+        $scope.rightcurHeight = (document.body.clientHeight - 60) / 2 - 10 + 'px'
+        console.log($scope.curHeight, $scope.rightcurHeight)
         var navTreeModel = angular.fromJson($scope.user.FunctionList);
         navTreeModel = _.sortBy(navTreeModel,'Rank');
         navTreeModel.forEach(function(item) {
@@ -125,7 +129,7 @@ angular.module('channelApp')
               offset: 0,
               limit: 3,
               title: '',
-              type: 0
+              type: 1
           }, data);
           $http.get('/api/notice/getnoticelist?' + jQuery.param(data)).success(function(result) {
               $scope.noticelists = result.data;

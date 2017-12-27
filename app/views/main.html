@@ -23,13 +23,13 @@
         </div>
         <div class="content-right" ui-view>
           <div class="home-content">
-            <div class="board dash-board">
+            <div class="board dash-board" style="height: {{curHeight}}">
               <div class="dash-board-bg">
                 <h4>仪表盘</h4>
               </div>
             </div>
             <div class="home-right">
-              <div class="board notice">
+              <div class="board notice" style="height: {{rightcurHeight}}">
                 <h4>
                   最新公告
                   <span class="more" ng-click="goMoreNotice()">更多>></span>
@@ -45,7 +45,7 @@
                 </div>
                 <div ng-if="!noticelists.length" class="list-bg"></div>
               </div>
-              <div class="board document">
+              <div class="board document" style="height: {{rightcurHeight}}">
                 <h4>
                   帮助文档
                   <span class="more" ng-click="goMorefile()">更多>></span>
