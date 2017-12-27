@@ -526,6 +526,10 @@
                 <option value="">不使用礼包</option>
                 <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
               </select>
+              <!-- <select class="form-control gift-select" ng-model="postData.gift">
+                <option value="">不使用礼包</option>
+                <option ng-repeat="item in gifts[postData.AddedValue]" ng-selected="postData.gift == item.Id" value="{{item.Id}}">{{::item.GiftTypeName}}</option>
+              </select> -->
               <div class="promition-style">
                 <input ng-show="promotion.PromotionName" type="checkbox" ng-model="postData.IsPromotion" ng-disabled="complementCompanyInfo">
                 <span>{{promotion.PromotionName}}</span>

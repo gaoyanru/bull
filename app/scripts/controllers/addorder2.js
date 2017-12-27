@@ -279,6 +279,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         $scope.giftList = res.data // 用于选择礼包后计算结束账期所用数据
         cb && cb(2)
         for (var i  in res.data) {
+          if (res.data[i].Num == 0 && res.data[i].Id == $scope.postData.gift) {
+            res.data[i].Num += 1
+          }
           if (res.data[i].Num > 0) {
             res.data[i].GiftTypeName = res.data[i].GiftTypeName + '￥' + res.data[i].Price
             if (!$scope.gifts[res.data[i].AddedValue]) {
@@ -287,7 +290,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.gifts[res.data[i].AddedValue].push(res.data[i])
           }
         }
-        // console.log($scope.gifts)
+        console.log($scope.gifts)
       }
     })
   }
@@ -338,11 +341,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           case 2:
             var res = _.filter($scope.giftList, {
               "Price": result.GiftPrice,
-              "GiftTypeId": result.GiftTypeId
+              "GiftTypeId": result.GiftTypeId,
+              "AddedValue": result.Customer.AddedValue
             });
             if(res && res[0]){
               $scope.postData.gift = res[0].Id.toString() || '';
-              // console.log($scope.postData.gift)
+              console.log($scope.postData.gift)
             }
             break;
           defalut:
