@@ -349,7 +349,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
               });
               if(res && res[0]){
                 $scope.postData.gift = res[0].Id.toString() || '';
-                // console.log($scope.postData.gift)
+                console.log($scope.postData.gift)
               }
               break;
             defalut:
