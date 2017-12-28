@@ -127,7 +127,7 @@ angular.module('channelApp')
         function getNoticeLists() {
           var data = angular.extend({
               offset: 0,
-              limit: 3,
+              limit: 4,
               title: '',
               type: 1
           }, data);
@@ -141,7 +141,7 @@ angular.module('channelApp')
         function getFileList() {
           var data = angular.extend({
               offset: 0,
-              limit: 7,
+              limit: 9,
               filename: '',
               type: 0
           }, data);
