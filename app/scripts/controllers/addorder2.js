@@ -846,6 +846,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         alert("请补充必填项！");
         return;
     }
+    if ($scope.postData.Mobile.length < 11) {
+        alert("请输入11位手机号！");
+        return;
+    }
     if (!$scope.postData.BusinessLicense) {
         alert("请上传营业执照！");
         return;
@@ -1008,6 +1012,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         alert("请补充必填项！");
         return;
     }
+    if ($scope.postData.Mobile.length < 11) {
+        alert("请输入11位手机号！");
+        return;
+    }
     if (!$scope.postData.PersonCardPath) {
         alert("请上传法人身份证");
         return;
@@ -1088,6 +1096,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.saveTob = function (isSave, postData) {
     if ($scope.myForm.$invalid) {
         alert("请补充必填项！");
+        return;
+    }
+    if ($scope.postData.Mobile.length < 11) {
+        alert("请输入11位手机号！");
         return;
     }
     if (!$scope.postData.BusinessLicense) {

@@ -1,17 +1,24 @@
 'use strict';
 angular.module('channelApp').controller('StatisRenew', ['$scope', '$http', '$filter', 'user', 'Excel', '$timeout', function($scope, $http, $filter, user, Excel, $timeout) {
   $scope.params = {
-		year: '2017',
+		year: '',
 		months: '',
     status: ''
 	}
   $scope.postData = {}
   var date = new Date()
-  // console.log(date)
-  $scope.month = date.getMonth()
-  $scope.month = $scope.month < 10 ? ('0' + $scope.month) : $scope.month
-  // console.log($scope.month, '$scope.month')
-  $scope.params.months = $scope.month
+  var time = date.setMonth(-1)
+  var month = date.getMonth() + 1
+  var year = date.getFullYear()
+  console.log(month, year)
+  $scope.params.months = month < 10 ? ('0' + month) : month
+  $scope.params.year = year + ''
+  // var date = new Date()
+  // // console.log(date)
+  // $scope.month = date.getMonth()
+  // $scope.month = $scope.month < 10 ? ('0' + $scope.month) : $scope.month
+  // // console.log($scope.month, '$scope.month')
+  // $scope.params.months = $scope.month
   $scope.months = [];
 	for (var i = 1; i < 13; i++) {
 		$scope.months.push({

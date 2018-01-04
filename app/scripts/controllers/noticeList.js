@@ -15,7 +15,7 @@ angular.module('channelApp').controller('NoticeList', ['$scope', '$http', '$filt
       $scope.pageChanged();
   };
   $scope.pageChanged = function() {
-      getFileList()
+    getNoticeLists()
   };
   // 获取公告列表
   function getNoticeLists() {
@@ -35,6 +35,11 @@ angular.module('channelApp').controller('NoticeList', ['$scope', '$http', '$filt
   // 返回首页
   $scope.goBackHome = function () {
     $state.go('main')
+    // history.back()
+    console.log($state)
+
+    // location.href = '#/main'
+    // location.reload()
   }
   // 进入详情页
   $scope.noticeDetail = function (id) {

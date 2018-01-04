@@ -141,7 +141,7 @@ angular.module('channelApp')
         function getFileList() {
           var data = angular.extend({
               offset: 0,
-              limit: 9,
+              limit: 8,
               filename: '',
               type: 0
           }, data);
