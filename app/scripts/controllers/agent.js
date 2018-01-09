@@ -2,47 +2,7 @@
 angular.module('channelApp').controller('AgentListCtrl', ['$scope', '$http', '$state', '$uibModal', 'user', function ($scope, $http, $state, $uibModal, user) {
     $scope.isCenter = user.get().IsCenter;
     $scope.user = user.get();
-    var tbOptions = [{
-        header: '省',
-        col: 'ProvinceName',
-    }, {
-        header: '市',
-        col: 'CityName',
-    }, {
-        header: '一级代理商',
-        col: 'ChannelName1',
-    }, {
-        header: '二级代理商',
-        col: 'ChannelName2',
-    }, {
-        header: '地址',
-        col: 'Address'
-    }, {
-        header: '联系方式',
-        col: 'Tel,Mobile'
-    }];
-    $scope.rightAlign = [6];
-    var type = $state.$current.name === "main.agent" ? 1 : 2;
-    if (type == 1) {
-        tbOptions.push({
-            header: '余额',
-            col: 'Balance'
-        });
-        $scope.title = "代理管理";
-    } else {
-
-        $scope.title = "代理审核";
-    }
-    tbOptions.push({
-        header: '状态',
-        col: 'StatusStr'
-    });
-    $scope.isHide = (type == 2);
-    //var result = [{ CompanyName: '测试', ComanyAlias: '测试别名', OrderId: 'O123142143', hth: 'asdfadfasdfas', UserName: 'ABC' }];
-
-
-    $scope.headers = getHeaders();
-
+    $scope.status = 0
     $scope.addAgent = function () {
         var modalInstance = $uibModal.open({
             templateUrl: 'views/agentModal.html',
@@ -51,6 +11,9 @@ angular.module('channelApp').controller('AgentListCtrl', ['$scope', '$http', '$s
             resolve: {
                 agent: function () {
                     return null;
+                },
+                title: function() {
+                  return '申请下级代理商'
                 }
             },
             backdrop: 'static'
@@ -72,6 +35,9 @@ angular.module('channelApp').controller('AgentListCtrl', ['$scope', '$http', '$s
             resolve: {
                 agent: function () {
                     return row;
+                },
+                title: function() {
+                  return '修改下级代理商'
                 }
             },
             backdrop: 'static'
@@ -139,301 +105,25 @@ angular.module('channelApp').controller('AgentListCtrl', ['$scope', '$http', '$s
             });
         }
     }
-    $scope.setDiscount = function (row) {
-        var modalInstance = $uibModal.open({
-            backdrop: 'static',
-            templateUrl: 'views/setDiscount.html',
-            controller: ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance) {
-                $scope.discount = row.Discount;
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
-                $scope.ok = function () {
-                    var discount = +$scope.discount;
-                    if (!(discount > 0 && discount < 10)) {
-                        alert("请输入合理的折扣值");
-                        return;
-                    }
-                    $uibModalInstance.close($scope.discount);
-                }
-            }]
-        });
-        modalInstance.result.then(function (result) {
-            $http.put('/api/agent/' + row.ChannelId + '/discount', {
-                Discount: result
-            }).success(function () {
-                row.Discount = result;
-            });
-        }, function () {
-
-        });
-    }
-    $scope.setFetation = function (row) {
-        var modalInstance = $uibModal.open({
-            templateUrl: 'views/setFetation.html',
-            controller: ['$scope', '$uibModalInstance', function ($scope, $uibModalInstance) {
-                $scope.isFetation = row.IsFetation;
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
-                $scope.ok = function () {
-                    $uibModalInstance.close($scope.isFetation);
-                }
-            }]
-        });
-        modalInstance.result.then(function (result) {
-            $http.put('/api/agent/' + row.ChannelId + '/fetation', {
-                IsFetation: result
-            }).success(function () {
-                row.IsFetation = result;
-            });
-        }, function () {
-
-        });
-    }
-    $scope.setGift = function (row) {
-        var modalInstance = $uibModal.open({
-            templateUrl: 'views/setGift.html',
-            controller: ['$scope', '$uibModal', '$uibModalInstance', '$http', function ($scope, $uibModal, $uibModalInstance, $http) {
-                $scope.isFetation = row.IsFetation;
-                $scope.gift = {
-                    AddedValue: '1',
-                    ChannelId: row.ChannelId
-                };
-                $http.get('/api/gifttype').success(function (res) {
-                    $scope.giftTypes = res.data;
-                    $scope.gift.GiftTypeId = "" + res.data[0].Id;
-                });
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
-                $scope.ok = function () {
-                    $uibModalInstance.close();
-                };
-                $scope.save = function () {
-                    if (!$scope.gift.Price) {
-                        alert("请输入价格");
-                        return;
-                    }
-                    if (!$scope.gift.Num) {
-                        alert("请输入数量");
-                        return;
-                    }
-                    $http({
-                        method: 'post',
-                        url: '/api/gift',
-                        data: $scope.gift
-                    }).success(function () {
-                        getGifts();
-                    });
-                };
-                $scope.modify = function (row) {
-                    var modalInstance = $uibModal.open({
-                        templateUrl: 'views/setGift.html',
-                        controller: ['$scope', '$uibModal', '$uibModalInstance', '$http', function ($scope, $uibModal, $uibModalInstance, $http) {
-                            $scope.isFetation = row.IsFetation;
-                            $scope.gift = {
-                                AddedValue: '1',
-                                ChannelId: row.ChannelId
-                            };
-                            $http.get('/api/gifttype').success(function (res) {
-                                $scope.giftTypes = res.data;
-                                $scope.gift.GiftTypeId = "" + res.data[0].Id;
-                            });
-                            $scope.cancel = function () {
-                                $uibModalInstance.dismiss('cancel');
-                            };
-                            $scope.ok = function () {
-                                $uibModalInstance.close();
-                            };
-                            $scope.save = function () {
-                                if (!$scope.gift.Price) {
-                                    alert("请输入价格");
-                                    return;
-                                }
-                                if (!$scope.gift.Num) {
-                                    alert("请输入数量");
-                                    return;
-                                }
-                                $http({
-                                    method: 'post',
-                                    url: '/api/gift',
-                                    data: $scope.gift
-                                }).success(function () {
-                                    getGifts();
-                                });
-                            };
-                            // $scope.modify = function(row) {
-
-                            // };
-                            $scope.delete = function (row) {
-                                if (!confirm('确定要删除？')) return;
-                                $http.delete('/api/gift/' + row.Id).success(function () {
-                                    getGifts();
-                                });
-                            };
-
-                            function getGifts() {
-                                $http.get('/api/gift?ChannelId=' + row.ChannelId).success(function (res) {
-                                    $scope.data = res.data;
-                                });
-                            }
-                            getGifts();
-                        }]
-                    });
-                    modalInstance.result.then(function (result) {
-                        $http.put('/api/agent/' + row.ChannelId + '/fetation', {
-                            IsFetation: result
-                        }).success(function () {
-                            row.IsFetation = result;
-                        });
-                    }, function () {
-
-                    });
-                };
-                $scope.delete = function (row) {
-                    if (!confirm('确定要删除？')) return;
-                    $http.delete('/api/gift/' + row.Id).success(function () {
-                        getGifts();
-                    });
-                };
-
-                function getGifts() {
-                    $http.get('/api/gift?ChannelId=' + row.ChannelId).success(function (res) {
-                        $scope.data = res.data;
-                    });
-                }
-                getGifts();
-            }]
-        });
-
-        modalInstance.result.then(function (result) {
-            $http.put('/api/agent/' + row.ChannelId + '/fetation', {
-                IsFetation: result
-            }).success(function () {
-                row.IsFetation = result;
-            });
-        }, function () {
-
-        });
-    }
-    $scope.setProm = function (row) {
-        var modalInstance = $uibModal.open({
-            templateUrl: 'views/setProm.html',
-            controller: ['$scope', '$uibModal', '$uibModalInstance', '$http', function ($scope, $uibModal, $uibModalInstance, $http) {
-                $scope.prom = {
-                    ChannelId: row.ChannelId
-                };
-                $http.get('/api/promotion').success(function (res) {
-                    $scope.promTypes = res.data;
-                    $scope.prom.PromotionId = "" + res.data[0].Id;
-                });
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
-                $scope.ok = function () {
-                    $uibModalInstance.close();
-                };
-                $scope.dateOptions = {
-                    formatYear: 'yyyy',
-                };
-                $scope.save = function () {
-                    if (!$scope.prom.Num) {
-                        alert("请输入数量");
-                        return;
-                    }
-                    if (!$scope.prom.StartDate) {
-                        alert("请输入活动开始时间");
-                        return;
-                    }
-                    if (!$scope.prom.EndDate) {
-                        alert("请输入活动结束时间");
-                        return;
-                    }
-                    if ($scope.prom.StartDate > $scope.prom.EndDate) {
-                        alert('活动时间范围有误！');
-                        return;
-                    }
-                    var temp = _.find($scope.data, function (item) {
-                        var st = new Date(item.StartDate);
-                        var en = new Date(item.EndDate);
-                        if ($scope.prom.StartDate < en && $scope.prom.EndDate > st) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    });
-                    if (temp) {
-                        alert('活动时间范围内已存在活动，活动不允许重复');
-                        return;
-                    }
-                    $http({
-                        method: 'post',
-                        url: '/api/promotionconfig',
-                        data: $scope.prom
-                    }).success(function () {
-                        $scope.prom = {
-                            ChannelId: row.ChannelId
-                        };
-                        refreshData();
-                    });
-                };
-                $scope.delete = function (row) {
-                    if (!confirm('确定要删除？')) return;
-                    $http.delete('/api/promotionconfig/' + row.Id).success(function () {
-                        refreshData();
-                    });
-                };
-
-                function refreshData() {
-                    $http.get('/api/promotionconfig?ChannelId=' + row.ChannelId).success(function (res) {
-                        $scope.data = res.data;
-                    });
-                }
-                refreshData();
-            }]
-        });
-
-        modalInstance.result.then(function (result) {
-
-        }, function () {
-
-        });
-    }
-    $scope.setCus = function (item) {
-        var modalInstance = $uibModal.open({
-            templateUrl: 'views/customer_setting.html',
-            controller: 'CustomerSetting',
-            size: 'lg',
-            resolve: {
-                channel: function () {
-                    return item;
-                }
-            }
-        });
-        modalInstance.result.then(function (reason) {}, function () {
-
-        });
-    };
-    $scope.showReason = function (reason) {
-        var modalInstance = $uibModal.open({
-            templateUrl: 'views/messageModal.html',
-            controller: 'messageModalCtrl',
-            resolve: {
-                message: function () {
-                    return reason;
-                }
-            }
-        });
-        modalInstance.result.then(function (reason) {
-            item.Desc = reason;
-            pass(item, status).success(function () {
-                refreshData();
-            });
-        }, function () {
-
-        });
-    };
+    // $scope.showReason = function (reason) {
+    //     var modalInstance = $uibModal.open({
+    //         templateUrl: 'views/messageModal.html',
+    //         controller: 'messageModalCtrl',
+    //         resolve: {
+    //             message: function () {
+    //                 return reason;
+    //             }
+    //         }
+    //     });
+    //     modalInstance.result.then(function (reason) {
+    //         item.Desc = reason;
+    //         pass(item, status).success(function () {
+    //             refreshData();
+    //         });
+    //     }, function () {
+    //
+    //     });
+    // };
 
 
     /*
@@ -465,58 +155,25 @@ angular.module('channelApp').controller('AgentListCtrl', ['$scope', '$http', '$s
         return $http.put('/api/checkagent/' + data.ChannelId, data);
     }
 
-    function getHeaders() {
-        return tbOptions.map(function (item) {
-            return item.header
-        });
-    }
-
-    function formateData(data) {
-        var statusStr = {
-            1: '通过',
-            2: '审核中',
-            3: '拒审'
-        }
-        data.forEach(function (row) {
-            var cols = [];
-            row.StatusStr = statusStr[row.Status];
-            tbOptions.forEach(function (item) {
-                if (item.col.indexOf(',') > 0) {
-                    var c = item.col.split(',');
-                    cols.push((row[c[0]] || '') + '<br/>' + (row[c[1]] || ''));
-                } else {
-                    cols.push(row[item.col]);
-                }
-            });
-            row.cols = cols;
-        });
-        return data;
-    }
-
     function refreshData() {
         var url;
         var params = {
             limit: $scope.paginator.perPage,
             offset: $scope.paginator.perPage * ($scope.paginator.currentPage - 1),
-            channelname: $scope.channelname
+            channelname: $scope.channelname,
+            status: $scope.status
         }
-
-
-        $scope.paginator
-        if (type == 1) {
-            url = "/api/agent?";
-        } else {
-            url = "/api/agent/audit?";
-        }
-        $http.get(url + jQuery.param(params)).success(function (result) {
+        $http.get("/api/agents?" + jQuery.param(params)).success(function (result) {
             $scope.paginator.total = result.Count;
-            $scope.data = formateData(result.data);
+            $scope.data = result.data;
         })
     }
     refreshData();
 
-}]).controller('agentCtrlModal', ['$scope', '$http', '$uibModalInstance', 'agent', 'FileUploader', 'user', '$filter', function ($scope, $http, $uibModalInstance, agent, FileUploader, user, $filter) {
+}]).controller('agentCtrlModal', ['$scope', '$http', '$uibModalInstance', 'agent', 'FileUploader', 'user', '$filter', 'title', function ($scope, $http, $uibModalInstance, agent, FileUploader, user, $filter, title) {
     $scope.item = agent || {};
+    console.log($scope.item, '$scope.item')
+    $scope.title= title
     $scope.isCenter = user.get().IsCenter;
     if ($scope.item.ChannelId) {
         $http.get('/api/agent/' + $scope.item.ChannelId).success(function (result) {
@@ -611,29 +268,29 @@ angular.module('channelApp').controller('AgentListCtrl', ['$scope', '$http', '$s
         bindFormData(item, 3);
     };
 
-    $scope.uploader4 = new FileUploader({
-        url: uploadUrl,
-        autoUpload: true
-    });
-    $scope.uploader4.onCompleteItem = function (fileItem, response, status, headers) {
-        $scope.item.Documents2 = uploadUrl + '/' + $scope._key4;
-    };
-    $scope.uploader4.onErrorItem = uploadError;
-    $scope.uploader4.onBeforeUploadItem = function (item) {
-        bindFormData(item, 4);
-    };
+    // $scope.uploader4 = new FileUploader({
+    //     url: uploadUrl,
+    //     autoUpload: true
+    // });
+    // $scope.uploader4.onCompleteItem = function (fileItem, response, status, headers) {
+    //     $scope.item.Documents2 = uploadUrl + '/' + $scope._key4;
+    // };
+    // $scope.uploader4.onErrorItem = uploadError;
+    // $scope.uploader4.onBeforeUploadItem = function (item) {
+    //     bindFormData(item, 4);
+    // };
 
-    $scope.uploader5 = new FileUploader({
-        url: uploadUrl,
-        autoUpload: true
-    });
-    $scope.uploader5.onCompleteItem = function (fileItem, response, status, headers) {
-        $scope.item.Documents3 = uploadUrl + '/' + $scope._key5;
-    };
-    $scope.uploader5.onBeforeUploadItem = function (item) {
-        bindFormData(item, 5);
-    };
-    $scope.uploader5.onErrorItem = uploadError;
+    // $scope.uploader5 = new FileUploader({
+    //     url: uploadUrl,
+    //     autoUpload: true
+    // });
+    // $scope.uploader5.onCompleteItem = function (fileItem, response, status, headers) {
+    //     $scope.item.Documents3 = uploadUrl + '/' + $scope._key5;
+    // };
+    // $scope.uploader5.onBeforeUploadItem = function (item) {
+    //     bindFormData(item, 5);
+    // };
+    // $scope.uploader5.onErrorItem = uploadError;
 
     function bindFormData(item, up) {
         var key = buildKey(4, item.file.name);
@@ -757,29 +414,29 @@ angular.module('channelApp').controller('AgentListCtrl', ['$scope', '$http', '$s
         bindFormData(item, 3);
     };
 
-    $scope.uploader4 = new FileUploader({
-        url: uploadUrl,
-        autoUpload: true
-    });
-    $scope.uploader4.onCompleteItem = function (fileItem, response, status, headers) {
-        $scope.item.Documents2 = uploadUrl + '/' + $scope._key4;
-    };
-    $scope.uploader4.onErrorItem = uploadError;
-    $scope.uploader4.onBeforeUploadItem = function (item) {
-        bindFormData(item, 4);
-    };
+    // $scope.uploader4 = new FileUploader({
+    //     url: uploadUrl,
+    //     autoUpload: true
+    // });
+    // $scope.uploader4.onCompleteItem = function (fileItem, response, status, headers) {
+    //     $scope.item.Documents2 = uploadUrl + '/' + $scope._key4;
+    // };
+    // $scope.uploader4.onErrorItem = uploadError;
+    // $scope.uploader4.onBeforeUploadItem = function (item) {
+    //     bindFormData(item, 4);
+    // };
 
-    $scope.uploader5 = new FileUploader({
-        url: uploadUrl,
-        autoUpload: true
-    });
-    $scope.uploader5.onCompleteItem = function (fileItem, response, status, headers) {
-        $scope.item.Documents3 = uploadUrl + '/' + $scope._key5;
-    };
-    $scope.uploader5.onBeforeUploadItem = function (item) {
-        bindFormData(item, 5);
-    };
-    $scope.uploader5.onErrorItem = uploadError;
+    // $scope.uploader5 = new FileUploader({
+    //     url: uploadUrl,
+    //     autoUpload: true
+    // });
+    // $scope.uploader5.onCompleteItem = function (fileItem, response, status, headers) {
+    //     $scope.item.Documents3 = uploadUrl + '/' + $scope._key5;
+    // };
+    // $scope.uploader5.onBeforeUploadItem = function (item) {
+    //     bindFormData(item, 5);
+    // };
+    // $scope.uploader5.onErrorItem = uploadError;
 
     function bindFormData(item, up) {
         var key = buildKey(4, item.file.name);

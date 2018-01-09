@@ -110,7 +110,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     })
   }
-
+  $scope.closeList = function () {
+    $('.dropdown-company-list').parent().removeClass('open');
+  }
   $scope.$watch('postData.Name', function(){
     // $scope.searchType = 1;
     if (!orderId) {

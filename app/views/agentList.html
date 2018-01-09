@@ -1,41 +1,51 @@
 <div class="recharge">
-    <h2 class="clearfix"> 
-        {{::title}}
+    <h2 class="clearfix">
+        下级代理商管理
     </h2>
     <div class="well well-sm u-search form-inline">
         <div class="form-group">
             <label>代理商</label>：
             <input type="text" ng-model="channelname" class="form-control" tabindex="1">
         </div>
+        <div class="form-group">
+          <label>状态</label>：
+          <select ng-model="status" class="form-control">
+            <option ng-value="0" ng-selected="+status==0">全部</option>
+            <option ng-value="1">正常</option>
+            <option ng-value="2">未审核</option>
+            <option ng-value="3">拒审</option>
+        </select>
+        </div>
         <button type="button" class="btn btn-primary" ng-click="pageChanged()" tabindex="2">查询</button>
-        <button class="btn btn-primary pull-right" ng-if="isCenter" ng-hide="isHide" ng-click="addAgent()" tabindex="3">添加代理商</button>
+        <button class="btn btn-primary" ng-click="addAgent()" tabindex="3">申请下级代理商</button>
     </div>
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr class="info">
-                <th>序号</th>
-                <th ng-repeat="head in headers" ng-bind="head"></th>
+                <th>省</th>
+                <th>市</th>
+                <th>一级代理</th>
+                <th>二级代理</th>
+                <th>状态</th>
+                <th>入驻日期</th>
+                <th>余额</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="row in data">
-                <td ng-bind="$index+1"></td>
                 <td ng-repeat="col in row.cols  track by $index" ng-class="{'text-right': rightAlign && rightAlign.indexOf($index)>-1}" ng-bind-html="col"></td>
+                <td>{{row.ProvinceName}}</td>
+                <td>{{row.CityName}}</td>
+                <td>{{row.ChannelName1}}</td>
+                <td>{{row.ChannelName2}}</td>
+                <td>{{row.StatusText}}</td>
+                <td>{{row.CreateDate}}</td>
+                <td>{{row.Balance}}</td>
                 <td>
                     <div class="operate">
-                        <a href="javascript:;" ng-if="user.Category !== 7" ng-click="modify(row)">修改</a>
-                        <a href="javascript:;" ng-if="user.Category !== 7" ng-click="remove(row.ChannelId)">删除</a>
-                        <a href="javascript:;" ng-if="user.Category !== 7" ng-if="row.Status==3" ng-click="showReason(row.Describe)">驳回原因</a>
-                        <a href="javascript:;" ng-if="user.Category !== 7 &&isCenter &&(row.Status == 1)" ng-click="setDiscount(row)">设置折扣</a>
-                        <a href="javascript:;" ng-if="user.Category !== 7 &&isCenter &&(row.Status == 1)" ng-click="setFetation(row)">能否添加下级</a>
-                        <a href="javascript:;" ng-if="user.Category !== 7 &&isCenter &&(row.Status == 1)" ng-click="setGift(row)">礼包设置</a>
-                        <a href="javascript:;" ng-if="user.Category !== 7 &&isCenter &&(row.Status == 1)" ng-click="setProm(row)">活动设置</a>
-                        <a href="javascript:;" ng-if="isCenter &&(row.Status == 1)" ng-click="setCus(row)">客户设置</a>
-                    </div>
-                    <div class="operate" ng-if="isCenter &&(row.Status == 2)">
-                        <a href="javascript:;" ng-click="pass(row,1)">通过</a>
-                        <a href="javascript:;" ng-click="pass(row,3)">驳回</a>
+                        <a href="javascript:;" ng-click="modify(row)">修改</a>
+                        <a href="javascript:;" ng-if="row.Status != 1" ng-click="remove(row.ChannelId)">删除</a>
                     </div>
                 </td>
             </tr>
