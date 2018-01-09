@@ -184,6 +184,14 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         $scope.companyInfo = res.data[0]
         var data = res.data[0]
         // console.log(data);
+        if (data.IsSync) {
+          $scope.isCompanyReadonly = true
+          $scope.isLegalPersonReadonly = true
+          $scope.isRegNOReadonly = true
+          $scope.isRegisteredCapitalReadonly = true
+          $scope.isBusinessScopeReadonly = true
+          $scope.isAddressReadonly = true
+        }
         $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
         if (data.SalesId) delete data.SalesId
         if (data.BusnissDeadline) {
@@ -699,18 +707,33 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
               $scope.postData.PersonCardID = data.data.PersonCardID
             }
           } else {
-            if ($scope.searchType != 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson) { //意思是检索出来了 && $scope.isLegalPersonReadonly
-              $scope.postData.LegalPerson = data.data.LegalPerson
-              $scope.postData.PersonCardID = data.data.PersonCardID
-            } else if ($scope.searchType != 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso) { // && $scope.isLegalPersonReadonly
-              $scope.postData.PersonCardPath = ''
-              // alert('身份证上的法人姓名与营业执照上的法人不符')
-              alertModal('身份证上的法人姓名与营业执照上的法人不符')
-              // $scope.postData.LegalPerson = $scope.postData.LegalPerson
-              // $scope.postData.PersonCardID = ''
+            console.log($scope.xfReadonly, '$scope.xfReadonly')
+            console.log($scope.companyInfo.IsSync, '$scope.companyInfo.IsSync')
+            if ($scope.xfReadonly && $scope.companyInfo.IsSync) { // 如果是续费的话
+              if ($scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson) {
+                $scope.postData.LegalPerson = data.data.LegalPerson
+                $scope.postData.PersonCardID = data.data.PersonCardID
+              } else if ($scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso) {
+                $scope.postData.PersonCardPath = ''
+                alertModal('身份证上的法人姓名与营业执照上的法人不符')
+              } else {
+                $scope.postData.LegalPerson = data.data.LegalPerson
+                $scope.postData.PersonCardID = data.data.PersonCardID
+              }
             } else {
-              $scope.postData.LegalPerson = data.data.LegalPerson
-              $scope.postData.PersonCardID = data.data.PersonCardID
+              if ($scope.searchType != 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson) { //意思是检索出来了 && $scope.isLegalPersonReadonly
+                $scope.postData.LegalPerson = data.data.LegalPerson
+                $scope.postData.PersonCardID = data.data.PersonCardID
+              } else if ($scope.searchType != 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso) { // && $scope.isLegalPersonReadonly
+                $scope.postData.PersonCardPath = ''
+                // alert('身份证上的法人姓名与营业执照上的法人不符')
+                alertModal('身份证上的法人姓名与营业执照上的法人不符')
+                // $scope.postData.LegalPerson = $scope.postData.LegalPerson
+                // $scope.postData.PersonCardID = ''
+              } else {
+                $scope.postData.LegalPerson = data.data.LegalPerson
+                $scope.postData.PersonCardID = data.data.PersonCardID
+              }
             }
           }
         } else if (data.status && !data.data) {
