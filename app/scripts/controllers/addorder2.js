@@ -707,9 +707,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
               $scope.postData.PersonCardID = data.data.PersonCardID
             }
           } else {
-            console.log($scope.xfReadonly, '$scope.xfReadonly')
-            console.log($scope.companyInfo.IsSync, '$scope.companyInfo.IsSync')
-            if ($scope.xfReadonly && $scope.companyInfo.IsSync) { // 如果是续费的话
+            if ($scope.xfReadonly && $scope.companyInfo && $scope.companyInfo.IsSync) { // 如果是续费的话
               if ($scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson) {
                 $scope.postData.LegalPerson = data.data.LegalPerson
                 $scope.postData.PersonCardID = data.data.PersonCardID
