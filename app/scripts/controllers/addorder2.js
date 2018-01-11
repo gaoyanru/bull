@@ -51,7 +51,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   // 检索出的信息当修改公司名称时候 工商信息清空
   $scope.clearCompanyInfo = function() {
     // console.log($scope.searchType, $scope.postData.Name, $scope.searchCompanyInfo, 'keydown')
-    if ($scope.searchType != 1 && $scope.postData.Name.trim() != $scope.searchCompanyInfo.CompanyName) {
+    if ($scope.searchType != 1 && $scope.postData.Name != $scope.searchCompanyInfo.CompanyName) {
         $scope.postData.Address = ''
         $scope.postData.BusinessScope = ''
         $scope.postData.BusnissDeadline = ''
@@ -103,7 +103,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       return;
     }
     $scope.getMoreCompanyName($scope.postData.Name, function(){
-      $scope.searchError = $scope.companyList.length ? "" : "抱歉，没有检索到公司信息！";
+      $scope.searchError = $scope.companyList ? "" : "抱歉，没有检索到公司信息！";
       if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
         $('.dropdown-company-list').parent().removeClass('open');
       }else{
@@ -111,11 +111,11 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     })
   }
-  // $scope.closeList = function () {
-  //   setTimeout(function(){
-  //     $('.dropdown-company-list').parent().removeClass('open');
-  //   }, 0)
-  // }
+  $scope.closeList = function () {
+    setTimeout(function(){
+      $('.dropdown-company-list').parent().removeClass('open');
+    }, 500)
+  }
   $scope.$watch('postData.Name', function(){
     // $scope.searchType = 1;
     if (!orderId) {
@@ -227,6 +227,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       $http.get('/api/order/getcustomerbyty?code=' + id).success(function (res) {
         var data = res.data
         $scope.searchCompanyInfo = res.data
+        console.log($scope.isFirstcategory3)
+        if (orderId && $scope.isFirstcategory3 != 2) { // 如果修改的时候 判断公司名称是否相同 相同覆盖不相同不覆盖
+          if ($scope.postData.Name && $scope.postData.Name != data.CompanyName) {
+            alert('客户名称不一致，不允许修改！')
+            return
+          }
+        }
         // console.log(data, '$scope.postData')
         if (data.BusnissDeadline) {
           if (data.BusnissDeadline.substr(0, 4) === '0001' || data.BusnissDeadline.substr(0, 4) === '9999') {
@@ -450,6 +457,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
       // console.log($scope.postData, 'data');
       // 判断正式订单1 还是 预提单2 记账准备3
+      $scope.isFirstcategory3 = result.Category;
       $scope.category = result.Category;
       // 判断是否是续费订单
       if ($scope.IsReOrder) {
