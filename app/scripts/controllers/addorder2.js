@@ -50,7 +50,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
   // 检索出的信息当修改公司名称时候 工商信息清空
   $scope.clearCompanyInfo = function() {
-    // // console.log($scope.searchType, $scope.postData.Name, $scope.postData.Name.trim() == $scope.searchCompanyInfo.CompanyName, 'keydown')
+    // console.log($scope.searchType, $scope.postData.Name, $scope.searchCompanyInfo, 'keydown')
     if ($scope.searchType != 1 && $scope.postData.Name.trim() != $scope.searchCompanyInfo.CompanyName) {
         $scope.postData.Address = ''
         $scope.postData.BusinessScope = ''
@@ -58,9 +58,10 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         if ($scope.postData.NoNoDeadLine) {
           $scope.postData.NoNoDeadLine = 0
         }
-        if ($scope.resultInfo.LegalPerson) {
-          $scope.postData.LegalPerson = ''
-        }
+        // if ($scope.resultInfo.LegalPerson) {
+        //   $scope.postData.LegalPerson = ''
+        // }
+        $scope.postData.LegalPerson = ''
         $scope.postData.RegNO = ''
         $scope.postData.RegisterDate = ''
         $scope.postData.RegisteredCapital = ''
@@ -110,9 +111,11 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     })
   }
-  $scope.closeList = function () {
-    $('.dropdown-company-list').parent().removeClass('open');
-  }
+  // $scope.closeList = function () {
+  //   setTimeout(function(){
+  //     $('.dropdown-company-list').parent().removeClass('open');
+  //   }, 0)
+  // }
   $scope.$watch('postData.Name', function(){
     // $scope.searchType = 1;
     if (!orderId) {
@@ -175,6 +178,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
   // 本地数据库选择公司带出本地工商信息
   $scope.companySelect = function (name, id) {
+    console.log('选择公司')
     $('.dropdown-company-list').parent().removeClass('open');
     $scope.companySelected = true;
     $scope.isCompanyReadonly = false // 不是检索出的信息可以修改
@@ -192,7 +196,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           $scope.isBusinessScopeReadonly = true
           $scope.isAddressReadonly = true
         }
-        $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
+        // $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
         if (data.SalesId) delete data.SalesId
         if (data.BusnissDeadline) {
           if (data.BusnissDeadline.substr(0, 4) === '0001' || data.BusnissDeadline.substr(0, 4) === '9999') {
@@ -222,6 +226,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     } else {
       $http.get('/api/order/getcustomerbyty?code=' + id).success(function (res) {
         var data = res.data
+        $scope.searchCompanyInfo = res.data
         // console.log(data, '$scope.postData')
         if (data.BusnissDeadline) {
           if (data.BusnissDeadline.substr(0, 4) === '0001' || data.BusnissDeadline.substr(0, 4) === '9999') {
@@ -245,6 +250,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         if ($scope.postData.LegalPerson) {
           if (data.LegalPerson != $scope.postData.LegalPerson) {
             $scope.postData.PersonCardID = ''
+            $scope.isLegalPersonReadonly = true
           }
         } else {
           $scope.isLegalPersonReadonly = data.LegalPerson ? true: false
@@ -254,7 +260,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         $scope.isCompanyReadonly = data.RegisterDate ? true :false
         $scope.isRegisteredCapitalReadonly = data.RegisteredCapital ? true: false
         $scope.isBusinessScopeReadonly = data.BusinessScope ? true :false
-        $scope.nameReadonly = data.CompanyName ? true :false
+        // $scope.nameReadonly = data.CompanyName ? true :false
         $scope.postData = angular.extend($scope.postData, data);
         setTimeout(function(){
           $scope.companySelected = false;
