@@ -230,7 +230,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         console.log($scope.isFirstcategory3)
         if (orderId && $scope.isFirstcategory3 != 2) { // 如果修改的时候 判断公司名称是否相同 相同覆盖不相同不覆盖
           if ($scope.postData.Name && $scope.postData.Name != data.CompanyName) {
-            alert('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+            alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
             return
           }
         }
@@ -792,7 +792,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.isCompanyReadonly = false
             $scope.postData.LegalPerson = ''
             $scope.isLegalPersonReadonly = false
-            $scope.PersonCardID = ''
+            // $scope.PersonCardID = ''
             $scope.postData.Address = ''
             $scope.isAddressReadonly = false
             $scope.postData.RegNO = ''
@@ -834,7 +834,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           if (result.LegalPerson) {
             $scope.isLegalPersonReadonly = true
             if (orderId) {
-              if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
+              if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.Customer.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
                 $scope.postData.LegalPerson = result.LegalPerson
                 $scope.postData.PersonCardID = ''
                 $scope.postData.PersonCardPath = ''
