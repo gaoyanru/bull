@@ -783,7 +783,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         if (result) {
           if (orderId && $scope.isFirstcategory3 != 2) { // 如果修改的时候 判断公司名称是否相同 相同覆盖不相同不覆盖
             if ($scope.postData.Name && $scope.postData.Name != result.CompanyName) {
-              alert('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+              alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
               return
             }
           }
