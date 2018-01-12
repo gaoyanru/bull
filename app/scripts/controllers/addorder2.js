@@ -230,7 +230,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         console.log($scope.isFirstcategory3)
         if (orderId && $scope.isFirstcategory3 != 2) { // 如果修改的时候 判断公司名称是否相同 相同覆盖不相同不覆盖
           if ($scope.postData.Name && $scope.postData.Name != data.CompanyName) {
-            alert('客户名称不一致，不允许修改！')
+            alert('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
             return
           }
         }
@@ -781,6 +781,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     modalInstance.result.then(function (result) {
         // console.log(result, 'result')
         if (result) {
+          if (orderId && $scope.isFirstcategory3 != 2) { // 如果修改的时候 判断公司名称是否相同 相同覆盖不相同不覆盖
+            if ($scope.postData.Name && $scope.postData.Name != result.CompanyName) {
+              alert('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+              return
+            }
+          }
           // 返回有值需要做之前可编辑处理
           if (orderId && $scope.postData.Category != 2) {
             $scope.isCompanyReadonly = false
