@@ -235,6 +235,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           }
         }
         // console.log(data, '$scope.postData')
+        if (orderId) {
+          $scope.postData.Customer.IsSync = 1 // 目的 手动添加的订单修改的时候更新工商网信息时 再上传身份证不一致判断
+        }
         if (data.BusnissDeadline) {
           if (data.BusnissDeadline.substr(0, 4) === '0001' || data.BusnissDeadline.substr(0, 4) === '9999') {
             data.BusnissDeadline = ""
@@ -800,7 +803,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.postData.RegisterDate = ''
             $scope.postData.BusnissDeadline = ''
           }
-
+          if (orderId) {
+            $scope.postData.Customer.IsSync = 1 // 目的 手动添加的订单修改的时候更新工商网信息时 再上传身份证不一致判断
+          }
           if ($scope.postData.NoNoDeadLine) {
             $scope.postData.NoNoDeadLine = 0
           }
