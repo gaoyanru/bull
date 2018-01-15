@@ -234,6 +234,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             return
           }
         }
+        // 如果续费的时候点击检索需要判断公司名称是否和之前的一样
+        if ($scope.xfReadonly) {
+          if ($scope.postData.Name && $scope.postData.Name != data.CompanyName) {
+            alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+            return
+          }
+        }
         // console.log(data, '$scope.postData')
         if (orderId) {
           $scope.postData.Customer.IsSync = 1 // 目的 手动添加的订单修改的时候更新工商网信息时 再上传身份证不一致判断
@@ -785,6 +792,13 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         // console.log(result, 'result')
         if (result) {
           if (orderId && $scope.isFirstcategory3 != 2) { // 如果修改的时候 判断公司名称是否相同 相同覆盖不相同不覆盖
+            if ($scope.postData.Name && $scope.postData.Name != result.CompanyName) {
+              alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+              return
+            }
+          }
+          // 如果续费的时候点击检索需要判断公司名称是否和之前的一样
+          if ($scope.xfReadonly) {
             if ($scope.postData.Name && $scope.postData.Name != result.CompanyName) {
               alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
               return
