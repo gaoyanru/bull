@@ -50,17 +50,18 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
   // 检索出的信息当修改公司名称时候 工商信息清空
   $scope.clearCompanyInfo = function() {
-    // // console.log($scope.searchType, $scope.postData.Name, $scope.postData.Name.trim() == $scope.searchCompanyInfo.CompanyName, 'keydown')
-    if ($scope.searchType == 3 && $scope.postData.Name.trim() != $scope.searchCompanyInfo.CompanyName) {
+    // console.log($scope.searchType, $scope.postData.Name, $scope.searchCompanyInfo, 'keydown')
+    if ($scope.searchType != 1 && $scope.postData.Name != $scope.searchCompanyInfo.CompanyName) {
         $scope.postData.Address = ''
         $scope.postData.BusinessScope = ''
         $scope.postData.BusnissDeadline = ''
         if ($scope.postData.NoNoDeadLine) {
           $scope.postData.NoNoDeadLine = 0
         }
-        if ($scope.resultInfo.LegalPerson) {
-          $scope.postData.LegalPerson = ''
-        }
+        // if ($scope.resultInfo.LegalPerson) {
+        //   $scope.postData.LegalPerson = ''
+        // }
+        $scope.postData.LegalPerson = ''
         $scope.postData.RegNO = ''
         $scope.postData.RegisterDate = ''
         $scope.postData.RegisteredCapital = ''
@@ -90,12 +91,19 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   $scope.toCheck = function(){
     $scope.searchError = '';
     $scope.searchType = 2;
-    if($scope.postData.Name.length < 3){
+    if ($scope.nameReadonly) {
+      return
+    }
+    if (!$scope.postData.Name) {
+      $scope.searchError = "请输入公司名称！";
+      return
+    }
+    if($scope.postData.Name && $scope.postData.Name.length < 3){
       $scope.searchError = "请输入准确完整的公司名称！";
       return;
     }
     $scope.getMoreCompanyName($scope.postData.Name, function(){
-      $scope.searchError = $scope.companyList.length ? "" : "抱歉，没有检索到公司信息！";
+      $scope.searchError = $scope.companyList ? "" : "抱歉，没有检索到公司信息！";
       if($scope.postData.Name == '' || $scope.postData.Name.length < 3 || $scope.companyList.length === 0){
         $('.dropdown-company-list').parent().removeClass('open');
       }else{
@@ -103,7 +111,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       }
     })
   }
-
+  // $scope.closeList = function () {
+  //   console.log('收起下拉')
+  //   setTimeout(function(){
+  //     $('.dropdown-company-list').parent().removeClass('open');
+  //   }, 3000)
+  // }
   $scope.$watch('postData.Name', function(){
     // $scope.searchType = 1;
     if (!orderId) {
@@ -152,7 +165,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
 
   // 检索
   $scope.getMoreCompanyName = function getMoreCompanyName (val, cb) {
-    $http.get('/api/order/getcustomerlistbyty?size=10&word=' + encodeURI(val)).then(function (response) {
+    $http.get('/api/order/getcustomerlistbyty?size=7&word=' + encodeURI(val)).then(function (response) {
       var data = response.data;
       // console.log(data)
       if(data.status){
@@ -166,6 +179,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   }
   // 本地数据库选择公司带出本地工商信息
   $scope.companySelect = function (name, id) {
+    console.log('选择公司')
     $('.dropdown-company-list').parent().removeClass('open');
     $scope.companySelected = true;
     $scope.isCompanyReadonly = false // 不是检索出的信息可以修改
@@ -175,7 +189,15 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         $scope.companyInfo = res.data[0]
         var data = res.data[0]
         // console.log(data);
-        $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
+        if (data.IsSync) {
+          $scope.isCompanyReadonly = true
+          $scope.isLegalPersonReadonly = true
+          $scope.isRegNOReadonly = true
+          $scope.isRegisteredCapitalReadonly = true
+          $scope.isBusinessScopeReadonly = true
+          $scope.isAddressReadonly = true
+        }
+        // $scope.nameReadonly = true // 当本地数据库选择公司的时候 带出信息后公司名称不能在修改
         if (data.SalesId) delete data.SalesId
         if (data.BusnissDeadline) {
           if (data.BusnissDeadline.substr(0, 4) === '0001' || data.BusnissDeadline.substr(0, 4) === '9999') {
@@ -187,6 +209,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           }
         } else {
           data.BusnissDeadline = ""
+          data.NoDeadLine = 1
         }
 
         data.Name = data.Name.trim();
@@ -204,7 +227,25 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     } else {
       $http.get('/api/order/getcustomerbyty?code=' + id).success(function (res) {
         var data = res.data
+        $scope.searchCompanyInfo = res.data
+        console.log($scope.isFirstcategory3)
+        if (orderId && $scope.isFirstcategory3 != 2) { // 如果修改的时候 判断公司名称是否相同 相同覆盖不相同不覆盖
+          if ($scope.postData.Name && $scope.postData.Name != data.CompanyName) {
+            alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+            return
+          }
+        }
+        // 如果续费的时候点击检索需要判断公司名称是否和之前的一样
+        if ($scope.xfReadonly) {
+          if ($scope.postData.Name && $scope.postData.Name != data.CompanyName) {
+            alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+            return
+          }
+        }
         // console.log(data, '$scope.postData')
+        if (orderId) {
+          $scope.postData.Customer.IsSync = 1 // 目的 手动添加的订单修改的时候更新工商网信息时 再上传身份证不一致判断
+        }
         if (data.BusnissDeadline) {
           if (data.BusnissDeadline.substr(0, 4) === '0001' || data.BusnissDeadline.substr(0, 4) === '9999') {
             data.BusnissDeadline = ""
@@ -215,6 +256,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           }
         } else {
           data.BusnissDeadline = ""
+          data.NoDeadLine = 1
         }
         data.Name = data.CompanyName.trim();
         if (!data.RegisterDate) {
@@ -222,6 +264,21 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         } else {
           data.RegisterDate = new Date(data.RegisterDate)
         }
+        // 处理检索出的信息不能修改 没检索出可以修改 且一旦点击检索公司名称不能修改
+        if ($scope.postData.LegalPerson) {
+          if (data.LegalPerson != $scope.postData.LegalPerson) {
+            $scope.postData.PersonCardID = ''
+            $scope.isLegalPersonReadonly = true
+          }
+        } else {
+          $scope.isLegalPersonReadonly = data.LegalPerson ? true: false
+        }
+        $scope.isAddressReadonly = data.Address ? true :false
+        $scope.isRegNOReadonly = data.RegNO ? true: false
+        $scope.isCompanyReadonly = data.RegisterDate ? true :false
+        $scope.isRegisteredCapitalReadonly = data.RegisteredCapital ? true: false
+        $scope.isBusinessScopeReadonly = data.BusinessScope ? true :false
+        // $scope.nameReadonly = data.CompanyName ? true :false
         $scope.postData = angular.extend($scope.postData, data);
         setTimeout(function(){
           $scope.companySelected = false;
@@ -406,11 +463,12 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       // 处理合同照片
       result.ContractPath = result.ContractPath ? result.ContractPath.split(';') : [];
       $scope.imgs = result.ContractPath
-
+      $scope.ServiceCompanyCode = result.ServiceCompanyCode
       $scope.postData = result
 
       // console.log($scope.postData, 'data');
       // 判断正式订单1 还是 预提单2 记账准备3
+      $scope.isFirstcategory3 = result.Category;
       $scope.category = result.Category;
       // 判断是否是续费订单
       if ($scope.IsReOrder) {
@@ -659,7 +717,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
       $http.get('/api/order/getpersoncardbypath?path=' + res.sourceUrl).success(function (data) {
         // console.log(data, 'data')
         if (data.status && data.data.LegalPerson) {
-          if (orderId) {
+          if (orderId && $scope.postData.Category != 2) {
             if ($scope.postData.Customer.IsSync == 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson && $scope.isLegalPersonReadonly) { //意思是检索出来了
               $scope.postData.LegalPerson = data.data.LegalPerson
               $scope.postData.PersonCardID = data.data.PersonCardID
@@ -674,18 +732,31 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
               $scope.postData.PersonCardID = data.data.PersonCardID
             }
           } else {
-            if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson && $scope.isLegalPersonReadonly) { //意思是检索出来了
-              $scope.postData.LegalPerson = data.data.LegalPerson
-              $scope.postData.PersonCardID = data.data.PersonCardID
-            } else if ($scope.searchType == 3 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso && $scope.isLegalPersonReadonly) {
-              $scope.postData.PersonCardPath = ''
-              // alert('身份证上的法人姓名与营业执照上的法人不符')
-              alertModal('身份证上的法人姓名与营业执照上的法人不符')
-              // $scope.postData.LegalPerson = $scope.postData.LegalPerson
-              // $scope.postData.PersonCardID = ''
+            if ($scope.xfReadonly && $scope.companyInfo && $scope.companyInfo.IsSync) { // 如果是续费的话
+              if ($scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson) {
+                $scope.postData.LegalPerson = data.data.LegalPerson
+                $scope.postData.PersonCardID = data.data.PersonCardID
+              } else if ($scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso) {
+                $scope.postData.PersonCardPath = ''
+                alertModal('身份证上的法人姓名与营业执照上的法人不符')
+              } else {
+                $scope.postData.LegalPerson = data.data.LegalPerson
+                $scope.postData.PersonCardID = data.data.PersonCardID
+              }
             } else {
-              $scope.postData.LegalPerson = data.data.LegalPerson
-              $scope.postData.PersonCardID = data.data.PersonCardID
+              if ($scope.searchType != 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson == data.data.LegalPerson) { //意思是检索出来了 && $scope.isLegalPersonReadonly
+                $scope.postData.LegalPerson = data.data.LegalPerson
+                $scope.postData.PersonCardID = data.data.PersonCardID
+              } else if ($scope.searchType != 1 && $scope.postData.LegalPerson && $scope.postData.LegalPerson != data.data.LegalPerso) { // && $scope.isLegalPersonReadonly
+                $scope.postData.PersonCardPath = ''
+                // alert('身份证上的法人姓名与营业执照上的法人不符')
+                alertModal('身份证上的法人姓名与营业执照上的法人不符')
+                // $scope.postData.LegalPerson = $scope.postData.LegalPerson
+                // $scope.postData.PersonCardID = ''
+              } else {
+                $scope.postData.LegalPerson = data.data.LegalPerson
+                $scope.postData.PersonCardID = data.data.PersonCardID
+              }
             }
           }
         } else if (data.status && !data.data) {
@@ -708,6 +779,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
   };
 
   $scope.fastCheck = function() { // 快速录入
+    if ($scope.nameReadonly) {
+      return
+    }
     var modalInstance = $uibModal.open({
         templateUrl: 'views/addorder_company_modal.html',
         size: "md",
@@ -718,12 +792,25 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     modalInstance.result.then(function (result) {
         // console.log(result, 'result')
         if (result) {
+          if (orderId && $scope.isFirstcategory3 != 2) { // 如果修改的时候 判断公司名称是否相同 相同覆盖不相同不覆盖
+            if ($scope.postData.Name && $scope.postData.Name != result.CompanyName) {
+              alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+              return
+            }
+          }
+          // 如果续费的时候点击检索需要判断公司名称是否和之前的一样
+          if ($scope.xfReadonly) {
+            if ($scope.postData.Name && $scope.postData.Name != result.CompanyName) {
+              alertModal('客户名称不一致，不允许修改！如需修改工商信息，请删除订单后重提')
+              return
+            }
+          }
           // 返回有值需要做之前可编辑处理
           if (orderId && $scope.postData.Category != 2) {
             $scope.isCompanyReadonly = false
             $scope.postData.LegalPerson = ''
             $scope.isLegalPersonReadonly = false
-            $scope.PersonCardID = ''
+            // $scope.PersonCardID = ''
             $scope.postData.Address = ''
             $scope.isAddressReadonly = false
             $scope.postData.RegNO = ''
@@ -731,7 +818,9 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.postData.RegisterDate = ''
             $scope.postData.BusnissDeadline = ''
           }
-
+          if (orderId) {
+            $scope.postData.Customer.IsSync = 1 // 目的 手动添加的订单修改的时候更新工商网信息时 再上传身份证不一致判断
+          }
           if ($scope.postData.NoNoDeadLine) {
             $scope.postData.NoNoDeadLine = 0
           }
@@ -765,7 +854,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
           if (result.LegalPerson) {
             $scope.isLegalPersonReadonly = true
             if (orderId) {
-              if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
+              if ($scope.postData && $scope.postData.Customer && $scope.postData.Customer.LegalPerson && $scope.postData.Customer.LegalPerson != result.LegalPerson) { // 先上传身份证再检索出的公司法人姓名和身份证不一致时候
                 $scope.postData.LegalPerson = result.LegalPerson
                 $scope.postData.PersonCardID = ''
                 $scope.postData.PersonCardPath = ''
@@ -797,6 +886,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
             $scope.isRegisteredCapitalReadonly = true
           }
           $scope.postData.RegisteredCapital = result.RegisteredCapital
+          $scope.ServiceCompanyCode = result.ServiceCompanyCode
         } else {
           // alert('抱歉，没有检索到企业信息，请重试或手动录入！')
           alertModal('抱歉，没有检索到企业信息，请重试或手动录入！')
@@ -872,6 +962,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
     postData.ServiceStart = $filter('date')($scope.postData.ServiceStart, 'yyyy-MM-dd');
     postData.ServiceEnd = $filter('date')($scope.postData.ServiceEnd, 'yyyy-MM-dd');
+    postData.ServiceCompanyCode = postData.ServiceCompanyCode ? postData.ServiceCompanyCode : $scope.ServiceCompanyCode
     postData.ContractPath = imgs.join(';');
     if (postData.NoDeadLine) {
         postData.BusnissDeadline = '';
@@ -910,7 +1001,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         postData.IsSync = 0
       }
     }
-    // console.log(postData, '最终提交数据')
+    console.log(postData, '最终提交数据')
     // 判断是否存在预提单初审通过但是未复审的情况 && 判断账期是否连续
     // 提交订单验证是否存在预提单
     var PersonCardID = postData.PersonCardID
@@ -1118,6 +1209,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
     postData.BusnissDeadline = $filter('date')($scope.postData.BusnissDeadline, 'yyyy-MM-dd');
     postData.ServiceStart = $filter('date')($scope.postData.ServiceStart, 'yyyy-MM-dd');
     postData.ServiceEnd = $filter('date')($scope.postData.ServiceEnd, 'yyyy-MM-dd');
+    postData.ServiceCompanyCode = postData.ServiceCompanyCode ? postData.ServiceCompanyCode : $scope.ServiceCompanyCode
     postData.ContractPath = $scope.imgs.join(';');
     if (postData.NoDeadLine) {
         postData.BusnissDeadline = '';
@@ -1164,7 +1256,7 @@ angular.module('channelApp').controller('AddOrderCtrl2', ['$scope', '$http', '$f
         }
       }
     }
-    // console.log(postData, '最终提交数据')
+    console.log(postData, '记账准备最终提交数据')
     var params = {
         url: '/api/supplementaryinfo',
         data: postData,

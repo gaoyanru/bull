@@ -1,6 +1,6 @@
 <div class="modal-header">
     <span class="close" ng-click="cancel()">&times;</span>
-    <h3 class="modal-title">添加/修改代理商</h3>
+    <h3 class="modal-title">{{title}}</h3>
 </div>
 <div class="modal-body clearfix">
     <div ng-class="{padding:!isModal}">
@@ -17,28 +17,20 @@
                 </select>
             </div>
             <div class="form-group col-md-6">
-                <label for="">负责人</label>
-                <input type="text" class="form-control" ng-model="item.Principal" />
+                <label for="" class="required">负责人</label>
+                <input type="text" class="form-control" ng-model="item.Principal" required/>
             </div>
             <div class="form-group col-md-6">
-                <label for="">手机</label>
-                <input type="text" class="form-control" ng-model="item.Mobile" />
+                <label for="" class="required">手机</label>
+                <input type="text" class="form-control" ng-model="item.Mobile" required/>
             </div>
             <div class="form-group col-md-6">
-                <label for="">固定电话</label>
-                <input type="text" class="form-control" ng-model="item.Tel" />
+                <label for="" class="required">邮箱</label>
+                <input type="text" class="form-control" ng-model="item.Email" required/>
             </div>
             <div class="form-group col-md-6">
-                <label for="">传真</label>
-                <input type="text" class="form-control" ng-model="item.Fax" />
-            </div>
-            <div class="form-group col-md-6">
-                <label for="">地址</label>
-                <input type="text" class="form-control" ng-model="item.Address" />
-            </div>
-            <div class="form-group col-md-6">
-                <label for="">邮政编码</label>
-                <input type="text" class="form-control" ng-model="item.Postcode" />
+                <label for="" class="required">地址</label>
+                <input type="text" class="form-control" ng-model="item.Address" required/>
             </div>
             <div class="form-group col-md-6">
                 <label for="">法人</label>
@@ -59,19 +51,6 @@
             <div class="form-group col-md-6">
                 <label for="">银行账号</label>
                 <input type="text" class="form-control" ng-model="item.BankAccount" />
-            </div>
-            <div class="form-group col-md-6" ng-if="(!item.ChannelId) && isCenter">
-                <label for="" class="required">总经理用户名</label>
-                <input type="text" class="form-control" name="userName" ng-pattern="/^[@a-zA-Z0-9_\u4e00-\u9fa5]+$/" ng-model="item.UserName" required />
-                <span class="text-danger" ng-messages="agForm.userName.$error">
-                <i ng-message="pattern">
-                    请输入汉字数字字母或者下划线的任意组合
-                </i>
-            </span>
-            </div>
-            <div class="form-group col-md-6" ng-if="(!item.ChannelId) && isCenter">
-                <label for="" class="required">总经理密码</label>
-                <input type="text" class="form-control" ng-model="item.PassWrod" required/>
             </div>
         </div>
         <hr class="col-md-12" />
@@ -118,34 +97,10 @@
                     <div class="thumbnail noImg" ng-if="!item.Documents"></div>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <h4 class="text-center"><span class="upload_btn pull-right"><a href="javascript:;" class="btn btn-primary btn-sm" role="button">上传</a><input style="font-size:12px;" type="file" nv-file-select="" uploader="uploader4" /></span><span style="font-weight:700">税务登记证 </span> </h4>
-                        <div class="progress" style="">
-                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{ 'width': uploader4.progress + '%' }" style="width: 100%;"></div>
-                        </div>
-                    </div>
-
-                        <img class="order-img thumbnail" ng-if="item.Documents2" ng-src="{{item.Documents2}}" alt="" style="width:240px; height:190px; " pic-view>
-
-                    <div class="thumbnail noImg" ng-if="!item.Documents2"></div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <h4 class="text-center"><span class="upload_btn pull-right"><a href="javascript:;" class="btn btn-primary btn-sm" role="button">上传</a><input style="font-size:12px;" type="file" nv-file-select="" uploader="uploader5" /></span><span style="font-weight:700">组织机构代码证 </span> </h4>
-                        <div class="progress" style="">
-                            <div class="progress-bar progress-bar-striped" role="progressbar" ng-style="{ 'width': uploader5.progress + '%' }" style="width: 100%;"></div>
-                        </div>
-                    </div>
-               
-                        <img ng-if="item.Documents3" ng-if="item.Documents3"class="order-img thumbnail" ng-src="{{item.Documents3}}" alt="" style="width:240px; height:190px; " pic-view />
-       
-                    <div class="thumbnail noImg" ng-if="!item.Documents3"></div>
-                </div>
-            </div>
+        </div>
+        <div ng-if="item.Status == 3" class="form-group col-md-12">
+            <label style="width: auto">驳回原因</label>
+            <span style="color: red">{{item.BackReason}}</span>
         </div>
         <div class="form-group col-md-12 text-center" ng-if="!isModal">
             <button class="btn btn-primary" type="submit">添加</button>

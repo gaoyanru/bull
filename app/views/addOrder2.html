@@ -29,27 +29,28 @@
       </div>
       <div class="custom-tips">
           <!-- <i class="fa fa-exclamation-circle" aria-hidden="true"></i> -->
-          <span>【温馨提示】可根据客户在国家企业信息公示系统的链接地址，快速完成工商信息的录入。</span>
+          <span>【温馨提示】可通过“检索”或“快速录入”按钮，帮您完成工商信息的快速录入。</span>
       </div>
       <div class="row mt-20" style="position:relative;">
         <div class="col-md-6">
           <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
           <div class="col-md-8">
-            <div ng-if="!orderId">
-              <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly" required>
-              <!-- <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">检索</div> -->
+            <!-- <div ng-if="!orderId"> -->
+            <div>
+              <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly || orderId" style="width: 85%" ng-blur="closeList()" required>
+              <div ng-show="!isReadOnly" ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-toCheck-style">检索</div>
               <!-- <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-style">快速录入</div> -->
               <ul class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>
             </div>
-            <div ng-if="orderId" class="input-group" style="width:100%">
-              <span style="display: inline-block;height: 32px;line-height: 32px;">{{postData.Name}}</span>
+            <!-- <div ng-if="orderId" class="input-group" style="width:100%"> -->
+              <!-- <span style="display: inline-block;height: 32px;line-height: 32px;">{{postData.Name}}</span> -->
               <!-- <input type="text" class="form-control" ng-model="postData.Name" disabled required> -->
-            </div>
+            <!-- </div> -->
             <span style="color: red; font-size: 12px;" ng-if="searchError" ng-bind="searchError"></span>
           </div>
-          <div ng-if="!orderId" ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-style">快速录入</div>
+          <div ng-show="!isReadOnly" ng-click="fastCheck()" id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-style">快速录入</div>
           <div class="clearfix mb-20"></div>
           <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
           <div class="col-md-8">
@@ -364,27 +365,28 @@
       </div>
       <div class="custom-tips">
           <!-- <i class="fa fa-exclamation-circle" aria-hidden="true"></i> -->
-          <span>【温馨提示】可根据客户在国家企业信息公示系统的链接地址，快速完成工商信息的录入。</span>
+          <span>【温馨提示】可通过“检索”或“快速录入”按钮，帮您完成工商信息的快速录入。</span>
       </div>
       <div class="row mt-20" style="position:relative;">
         <div class="col-md-6">
           <label class="col-md-3 control-label"><span class="required"></span>公司名称：</label>
           <div class="col-md-8">
-            <div ng-if="!isChangeCompanyName">
-              <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly || isReadOnly" required>
-              <!-- <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">检索</div> -->
+            <!-- <div ng-if="!isChangeCompanyName"> -->
+            <div>
+              <input type="text" class="form-control" placeholder="请输入准确完整的公司名称"  ng-model="postData.Name" ng-keyup="clearCompanyInfo()" ng-disabled="nameReadonly || isReadOnly || isChangeCompanyName" required>
+              <div ng-click="toCheck()"  id="exampleInputAmount" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-toCheck-style">检索</div>
               <!-- <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue">快速录入</div> -->
               <ul class="dropdown-menu dropdown-company-list" aria-labelledby="exampleInputAmount">
                 <li ng-repeat="item in companyList" ng-click="companySelect(item.Name, item.id)"><a href="javascript:void(0)">{{item.Name}}</a></li>
               </ul>
             </div>
-            <div ng-if="isChangeCompanyName" class="input-group" style="width:100%">
-              <span style="display: inline-block;height: 32px;line-height: 32px;">{{postData.Name}}</span>
+            <!-- <div ng-if="isChangeCompanyName" class="input-group" style="width:100%"> -->
+              <!-- <span style="display: inline-block;height: 32px;line-height: 32px;">{{postData.Name}}</span> -->
               <!-- <input type="text" class="form-control" ng-model="postData.Name" disabled required> -->
-            </div>
+            <!-- </div> -->
             <span style="color: red; font-size: 12px;" ng-if="searchError" ng-bind="searchError"></span>
           </div>
-          <div ng-if="!isChangeCompanyName" ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-style">快速录入</div>
+          <div ng-click="fastCheck()"  id="exampleInputAmount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="input-group-addon input-group-addon-bg-blue add-order2-button-style">快速录入</div>
           <div class="clearfix mb-20"></div>
           <label class="col-md-3 control-label"><span class="required"></span>联系人：</label>
           <div class="col-md-8">
